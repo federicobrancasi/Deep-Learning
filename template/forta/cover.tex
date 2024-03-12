@@ -1,0 +1,71 @@
+\newcommand{\coverpage}[5]{
+% #1 - title
+% #2 - subtitle
+% #3 - author
+% #4 - date
+% #5 - subject
+\pagestyle{empty}
+\newgeometry{left=0cm,top=0cm,right=0cm,bottom=0cm}
+\begin{tikzpicture}[remember picture,overlay]
+
+% LAYERS ----------------------------------------------------------------------
+
+\pgfdeclarelayer{white}    % declare background layer
+\pgfdeclarelayer{black}    % declare background layer
+\pgfsetlayers{black,main,white}  % set the order of the layers (main is the standard layer)
+
+% black FILL ---------------------------------------------------------------------
+
+\begin{pgfonlayer}{black}
+    \fill[black] (current page.south west) rectangle (current page.north east);
+\end{pgfonlayer}
+
+% black POLYGONS -----------------------------------------------------------------
+
+\begin{pgfonlayer}{black}
+    \foreach \i [
+        evaluate=\i as \Ox using {5 + 0.2 * \i},
+        evaluate=\i as \Oy using {-4},
+        evaluate=\i as \R using {4 + 0.4 * \i},
+        evaluate=\i as \Tilt using {36 + 0.5 * \i},
+        evaluate=\i as \percent using {100-\i*5} % convert i to a percentage
+        ] in {0,...,20} {
+        \drawfortalogo{\Ox}{\Oy}{\R}{28}{8}{\Tilt}{very thick, densely dotted, draw=gray!\percent!black}
+    }
+\end{pgfonlayer}
+
+% white TEXT ---------------------------------------------------------------------
+
+\begin{pgfonlayer}{white}
+    % TITLE
+    \drawtext%
+    {\textsc{#1}}%
+    {$(current page.east)+(-2,-2)$}%
+    {2cm}%
+    {0}%
+    {anchor=east,text=white,align=right,font=\fontsize{64}{16}\headingfontfamily\bfseries};
+
+    % SUBTITLE
+    \drawtext%
+    {\textsc{#2}}%
+    {$(current page.east)+(-2,-4)$}%
+    {2cm}%
+    {0}%
+    {anchor=east,text=white,align=right,font=\fontsize{28}{16}\headingfontfamily};
+
+    % AUTHOR + DATE + SUBJECT
+    \drawtext%
+    {
+    {\color{white}Prepared by: }\textsc{\textbf{\color{white}#3}}\\
+    {\color{white}Date: }\textsc{\textbf{\color{white}#4}}\\{\color{white}Visit: }\textsc{\textbf{#5}}\\
+    }%
+    {$(current page.south east)+(-2,2)$}%
+    {6cm}%
+    {0}%
+    {anchor=east,text=white,align=right,font=\fontsize{12}{12}\headingfontfamily};
+\end{pgfonlayer}
+
+% RESET -----------------------------------------------------------------------
+\end{tikzpicture}
+\restoregeometry
+}
