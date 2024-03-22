@@ -1,0 +1,629 @@
+\section{Feedforward Neural Networks}
+
+\subsection{Understanding Feedforward Neural Networks}
+
+Feedforward neural networks represent one of the fundamental pillars of the field of deep learning. To fully understand how they work, it is essential to have a clear understanding of their components and their role in the broader context of data modeling.
+
+% NEURAL NETWORK with coefficients, uniform arrows
+\newcommand\setAngles[3]{
+  \pgfmathanglebetweenpoints{\pgfpointanchor{#2}{center}}{\pgfpointanchor{#1}{center}}
+  \pgfmathsetmacro\angmin{\pgfmathresult}
+  \pgfmathanglebetweenpoints{\pgfpointanchor{#2}{center}}{\pgfpointanchor{#3}{center}}
+  \pgfmathsetmacro\angmax{\pgfmathresult}
+  \pgfmathsetmacro\dang{\angmax-\angmin}
+  \pgfmathsetmacro\dang{\dang<0?\dang+360:\dang}
+}
+
+\begin{figure}[h]
+\centering
+\resizebox{0.85\textwidth}{!}{
+\begin{tikzpicture}[x=2.2cm,y=1.4cm]
+  % \message{^^JNeural network with uniform arrows}
+  \readlist\Nnod{4,3,3,3,2} % array of number of nodes per layer
+  
+  \foreachitem \N \in \Nnod{ % loop over layers
+    \def\lay{\Ncnt} % alias of index of current layer
+    \pgfmathsetmacro\prev{int(\Ncnt-1)} % number of previous layer
+    \message{^^J Layer \lay, N=\N, prev=\prev ->}
+    
+    % NODES
+    \foreach \i [evaluate={\y=\N/2-\i; \x=\lay; \n=\nstyle;}] in {1,...,\N}{ % loop over nodes
+      \message{N\lay-\i, }
+      \node[node \n] (N\lay-\i) at (\x,\y) {};
+      % \node[node \n] (N\lay-\i) at (\x,\y) {$a_\i^{(\prev)}$};
+    }
+    
+    % CONNECTIONS
+    \foreach \i in {1,...,\N}{ % loop over nodes
+      \ifnum\lay>1 % connect to previous layer
+        \setAngles{N\prev-1}{N\lay-\i}{N\prev-\Nnod[\prev]} % angles in current node
+        %\draw[red,thick] (N\lay-\i)++(\angmin:0.2) --++ (\angmin:-0.5) node[right,scale=0.5] {\dang};
+        %\draw[blue,thick] (N\lay-\i)++(\angmax:0.2) --++ (\angmax:-0.5) node[right,scale=0.5] {\angmin, \angmax};
+        \foreach \j [evaluate={\ang=\angmin+\dang*(\j-1)/(\Nnod[\prev]-1);}] %-180+(\angmax-\angmin)*\j/\Nnod[\prev]
+                    in {1,...,\Nnod[\prev]}{ % loop over nodes in previous layer
+          \setAngles{N\lay-1}{N\prev-\j}{N\lay-\N} % angles out from previous node
+          \pgfmathsetmacro\angout{\angmin+(\dang-360)*(\i-1)/(\N-1)} % number of previous layer
+          %\draw[connect arrow,white,line width=1.1] (N\prev-\j.{\angout}) -- (N\lay-\i.{\ang});
+          \draw[connect arrow] (N\prev-\j.{\angout}) -- (N\lay-\i.{\ang}); % connect arrows uniformly
+        }
+      \fi % else: nothing to connect first layer
+    }
+  }
+  
+  % LABELS
+  \node[above=0.3,align=center,mygreen,font=\bfseries] at (N1-1.90) {\inconsolatafontfamily Input Layer};
+  \node[above=0.5,align=center,myblue!80!black,font=\bfseries] at (N3-1.90) {\inconsolatafontfamily Hidden Layers};
+  \node[above=0.8,align=center,myred,font=\bfseries] at (N\Nnodlen-1.90) {\inconsolatafontfamily Output Layer};
+  
+\end{tikzpicture}
+}
+    \caption{Example of a Feedforward Neural Network}
+    \label{fig:enter-label}
+\end{figure}
+
+A feedforward neural network can be thought of as a sequence of features, each of which represents a layer of the network. This structure is based on the composition of these functions to form an overall representation of the input data. Formally, we can represent a feedforward network as a composition of several functions:
+$$ f(\mathbf{x}) = f^{(i)}(f^{(i-1)}(\dots f^{(2)}(f^{(1)}(\mathbf{x})) \dots )) $$  
+Where \( f^{(1)} \) is the first layer (or input layer), \( f^{(i)} \) represents the output of the \(i\)-th layer, and so on. The depth of the network is defined by the number of layers, that is, the number of functions \( f^{(i)} \) involved.
+
+In evaluating the functions of a feedforward network, the flow of information proceeds in a single direction, from input to output. This flow passes through intermediate computations in the various layers of the network. 
+
+In the initial layer, also called \textbf{\color{green!60!black}{\inconsolatafontfamily Input Layer}}, each node corresponds to an input feature or variable, indeed there are no calculations or transformations applied to the data here.
+
+Instead, neurons in the \textbf{\color{myblue!80!black}{\inconsolatafontfamily Hidden Layers}} perform nonlinear computations on the input data through the application of weights and activation functions.
+The number of hidden layers and the number of neurons in each layer may vary depending on the architecture of the network and the complexity of the problem.
+The main function of the hidden layers is to capture and represent complex and abstract features of the input data.
+
+Finally in the \textbf{\color{red!80!black}{\inconsolatafontfamily Output Layer}} we obtain the desired output.
+The number of nodes in this layer depends on the nature of the problem, for example, in a binary classification problem there will be only one node, while in a multiclass classification problem there will be one node for each class.
+Also the type of activation function used in the output layer depends on the type of problem the network is addressing! For example, for binary classification problems, the sigmoid activation function can be used, while for multiclass we use the softmax.
+
+\subsection{Overcoming the limitations of linear models}
+
+Linear models have long been used for their simplicity and convex optimization, but they have significant limitations in their ability to capture complex interactions between input variables. This limitation is particularly evident when dealing with complex problems such as nonlinear classification.
+
+In the context of linear models, such as support vector machines, the choice of function \( \phi \) (\textbf{Nonlinear mapping of input data in feature space}) is crucial to satisfactory performance. However, there are limitations in engineering this function, which can make it difficult to capture complex information in the data. Below, we review three common options for addressing these challenges:
+\begin{enumerate}
+    \item \textbf{Use of generic \( \phi \)}: A first option is to use a generic \( \phi \) function. For example, in kernel machines with RBF (Radial Basis Function) kernels, \( \phi \) has implicit infinite dimensionality. This provides sufficient capacity to fit the training data. However, this approach may suffer from poor generalization for highly variable objective functions.
+    \item \textbf{Engineer \( \phi \)}: Here, efforts are devoted to manually engineering a function that can capture the relevant information in the input data. However, this approach may be limited by the complexity of the data and the difficulty in correctly identifying key relationships.
+    \item \textbf{Learning \( \phi \) from the data}: Finally, an option is to learn the \( \phi \) function directly from the data. This approach renounces convexity but offers significant advantages by combining the strengths of the first two options. \( \phi \) can be modeled very generically, and engineering can focus on designing neural network architectures capable of learning complex and informative representations from input data.
+\end{enumerate}
+
+Thanks to Feedforward Neural Networks we can overcome the limitations of traditional linear models because they are able to learn complex, nonlinear functions from data, thus overcoming the inherent limitations of linear models in capturing complex relationships between input variables.
+
+The training of a neural network shares many similarities with that of other machine learning models. However, it has unique features that deserve to be explored. While it is essential to provide only the output of the final layers during training, the hidden layers do not require specific analysis during this phase, which contributes to the complexity and overall effectiveness of the network.
+
+The main difference from linear models lies in the loss functions. While in linear models the loss is convex and guarantee convergence, in neural networks it become nonconvex, leading to greater complexity and not guaranteeing convergence to a global optimum.
+
+To train a neural network, it is essential to apply gradient descent, an iterative approach to minimizing the cost function. It is essential to specify an appropriate \textbf{cost function} that accurately represents the error between the predicted output and the desired output. In addition, modeling choices may vary, including the selection of \textbf{output representation}, \textbf{activation functions}, and \textbf{network architecture} (e.g., number of layers), significantly affecting network performance.
+
+Beyond that, there are other aspects of modeling that can be adapted to improve network performance, such as the choice of \textbf{optimizer} and the use of \textbf{regularization} techniques to avoid overfitting and improve generalization.
+
+\section{Cost Functions}
+
+Cost (or Loss) functions play a key role in the training of deep learning models. They measure the \textbf{discrepancy between model predictions and actual target values} during the training process. An accurate choice of loss function is essential for optimal model performance.
+
+For \textbf{Classification} problems, two commonly used loss functions are Categorical Cross-Entropy and Binary Cross-Entropy. These functions are designed to work with class probabilities and are particularly well suited for models that produce probability distributions.
+
+{\Large
+% $$
+\begin{equation*}
+\text{Categorical Cross-Entropy} = -\sum_{i=1}^{n} \tikzmarkk{Y}\textcolor{myred}{y_i} \log(\tikzmarkk{YC}\textcolor{myblue!80!black}{\hat{y}_i})
+\end{equation*}
+% $$
+\begin{tikzpicture}[overlay,remember picture]
+    \node (Ye) [below of = Y, node distance = 3 em, anchor=west] {\footnotesize \textsf{\textcolor{myred}{true probability of class $i$}}};
+    \draw[<-, in=180, out=-90] (Y.south)++(.25em,-.5ex) to (Ye.west);
+
+    \node (YCe) [below of = YC, node distance = 2 em, anchor=west] {\footnotesize \textsf{\textcolor{myblue!80!black}{predicted probability of class $i$}}};
+    \draw[<-, in=180, out=-90] (YC.south)++(.25em,-.5ex) to (YCe.west);
+\end{tikzpicture}
+}
+
+{\Large
+% $$
+\begin{equation*}
+\text{Binary Cross-Entropy} = -\left(\tikzmarkk{Y}\textcolor{myred}{y}\log(\tikzmarkk{YC}\textcolor{myblue!80!black}{\hat{y}}) + (1 - y) \log(1 - \hat{y})\right)
+\end{equation*}
+% $$
+\begin{tikzpicture}[overlay,remember picture]
+    \node (Ye) [below of = Y, node distance = 3 em, anchor=west] {\footnotesize \textsf{\textcolor{myred}{true label (0 or 1)}}};
+    \draw[<-, in=180, out=-90] (Y.south)++(.25em,-.5ex) to (Ye.west);
+
+    \node (YCe) [below of = YC, node distance = 2 em, anchor=west] {\footnotesize \textsf{\textcolor{myblue!80!black}{predicted probability of class 1}}};
+    \draw[<-, in=180, out=-90] (YC.south)++(.25em,-.5ex) to (YCe.west);
+\end{tikzpicture}
+}
+\vspace{1cm}
+
+In the case of \textbf{Regression}, different loss functions are used, including:
+
+{\Large
+% $$
+\begin{equation*}
+\text{Mean Squared Error} = \frac{1}{n} \sum_{i=1}^{n} (\tikzmarkk{Y}\textcolor{myred}{y_i} - \tikzmarkk{YC}\textcolor{myblue!80!black}{\hat{y}_i})^2
+\end{equation*}
+% $$
+\begin{tikzpicture}[overlay,remember picture]
+    \node (Ye) [below of = Y, node distance = 3 em, anchor=west] {\footnotesize \textsf{\textcolor{myred}{actual (or true) target value for the example \( i \)}}};
+    \draw[<-, in=180, out=-90] (Y.south)++(.25em,-.5ex) to (Ye.west);
+
+    \node (YCe) [below of = YC, node distance = 2 em, anchor=west] {\footnotesize \textsf{\textcolor{myblue!80!black}{model prediction for the example \( i \)}}};
+    \draw[<-, in=180, out=-90] (YC.south)++(.25em,-.5ex) to (YCe.west);
+\end{tikzpicture}
+}
+\vspace{1cm}
+
+Mean Squared Error (MSE) calculates the mean squares of the differences between model predictions and actual values. It is commonly used and strongly penalizes significant errors. However, it is sensitive to outliers.
+
+{\Large
+% $$
+\begin{equation*}
+\text{Mean Absolute Error} = \frac{1}{n} \sum_{i=1}^{n} |\tikzmarkk{Y}\textcolor{myred}{y_i} - \tikzmarkk{YC}\textcolor{myblue!80!black}{\hat{y}_i}|
+\end{equation*}
+% $$
+\begin{tikzpicture}[overlay,remember picture]
+    \node (Ye) [below of = Y, node distance = 3 em, anchor=west] {\footnotesize \textsf{\textcolor{myred}{actual (or true) target value for the example \( i \)}}};
+    \draw[<-, in=180, out=-90] (Y.south)++(.25em,-.5ex) to (Ye.west);
+
+    \node (YCe) [below of = YC, node distance = 2 em, anchor=west] {\footnotesize \textsf{\textcolor{myblue!80!black}{model prediction for the example \( i \)}}};
+    \draw[<-, in=180, out=-90] (YC.south)++(.25em,-.5ex) to (YCe.west);
+\end{tikzpicture}
+}
+\vspace{1cm}
+
+Mean Absolute Error (MAE), or only Absolute Error (AE), calculates the mean of the absolute differences between predictions and actual values. It is less sensitive to outliers than MSE, but its derivative is undefined in zero.
+
+\newpage
+{\Large
+% $$
+\begin{equation*}
+\text{Huber Loss} = \frac{1}{n} \sum_{i=1}^{n} \left\{
+\begin{array}{ll}
+    \frac{1}{2} (y_i - \hat{y}_i)^2 & \text{se } |y_i - \hat{y}_i| \leq \textcolor{mygreen}{\delta} \\
+    \tikzmarkk{D}\textcolor{mygreen}{\delta} (|y_i - \hat{y}_i| - \frac{1}{2} \textcolor{mygreen}{\delta}) & \text{otherwise}
+\end{array}
+\right.
+\end{equation*}
+% $$
+\begin{tikzpicture}[overlay,remember picture]
+    \node (De) [below of = D, node distance = 2.5 em, anchor=west] 
+    % {\footnotesize \textsf{\textcolor{mygreen}{hyperparameter controlling the transition between the quadratic and linear regions of the loss function}}};
+    {\parbox{\widthof{hyperparameter controlling the transition between}}{
+    \ \\
+    \footnotesize \textsf{\textcolor{mygreen}{hyperparameter controlling the transition between}} \\ 
+    \footnotesize \textsf{\textcolor{mygreen}{the quadratic and linear regions of the loss function}}}};
+    \draw[<-, in=180, out=-90] (D.south)++(.25em,-.5ex) to (De.west);
+\end{tikzpicture}
+}
+\vspace{1cm}
+
+Huber Loss combines the best features of MSE and MAE. For small errors, it behaves similar to MSE, while for larger errors, it behaves like AE. This avoids problems such as overfitting and steep slope of the MSE curve.
+
+\textit{\textbf{Please Note}}: There are numerous other loss functions besides those mentioned above, which can be used depending on the specific problem to be addressed and the characteristics of the data. The choice of loss function depends on the goal of model training, the nature of the data, and the needs of the application. For example, in special contexts such as outlier detection or handling noisy data, specialized loss functions might be preferred. Moreover, as deep learning research advances, new loss functions are constantly being developed and existing ones adapted to meet emerging challenges in different application scenarios. 
+
+\section{Unit Types}
+
+\subsection{Linear Units}
+
+Linear Units play a key role in the intermediate and output layers of neural networks. These units apply a \textbf{linear transformation to the inputs} by combining the weights associated with the inputs with the input values themselves. The output produced by Linear Units is a linear combination of the inputs.
+
+The formula for calculating the output of Linear Units is:
+{\Large
+\begin{ceqn}
+\begin{equation*}
+\hat{y} = W^T h + b
+\end{equation*}
+\end{ceqn}
+}
+\vspace{-0.6cm}
+
+Where \( \hat{y} \) represents the predicted output, \( W \) are the weights associated with the inputs, \( h \) represents the features from the previous layer, and \( b \) is the bias term.
+
+\subsection{Softmax Units}
+
+Softmax Units are commonly used in the output layers of neural networks, especially in cases of Multiclass Classification (with Cross-Entropy Loss). These units transform the un-normalized scores from the last linear layer into a \textbf{normalized probability distribution}, allowing the model to assign a probability to each membership class for a given input.
+
+The softmax formula used to calculate the probabilities is as follows:
+{\Large
+\begin{ceqn}
+\begin{equation*}
+\text{Softmax}(z_i) = \frac{e^{z_i}}{\sum_{j} e^{z_j}}
+\end{equation*}
+\end{ceqn}
+}
+\vspace{-0.6cm}
+
+Where \( z_i \) represents the non-normalized score associated with the class \( i \), and \( \sum_{j} e^{z_j} \) is the sum of all the exponents of the non-normalized scores.
+
+Log Softmax is a variant of the Softmax function that is used to \textbf{improve numerical stability} when computing probabilities. The formula for calculating the Log Softmax is as follows:
+{\Large
+\begin{ceqn}
+\begin{equation*}
+\text{log Softmax}(z_i) = z_i - \log\left(\sum_{j} e^{z_j}\right)
+\end{equation*}
+\end{ceqn}
+}
+\vspace{-0.6cm}
+
+Here are some advantages:
+\begin{itemize}
+    \item \textbf{The term \( z_i \) never saturates}: This means that the scale of values \( z_i \) is not compressed or restricted in any way. This is beneficial because it allows the model to continue to learn from more relevant information without limitations imposed by value saturation.
+    
+    \item \textbf{Maximizing the log-likelihood encourages \( z_i \) to be increased, while encouraging all other \( z \) to be decreased}: When we maximize the log-likelihood, we are trying to make the model's prediction as close to reality as possible.   Thus, we encourage \( z_i \) to increase, since it represents the probability associated with the correct class. At the same time, we encourage the other \( z \) to decrease to reduce the probability associated with the wrong classes.
+    
+    \item \textbf{The log-likelihood cost function heavily penalizes the most active incorrect prediction}: The log-likelihood cost function significantly penalizes the most active incorrect prediction. This means that if the model is very sure of an incorrect prediction (for example, it has a very high probability for an incorrect class), the cost function will increase significantly, encouraging the model to correct that error.
+\end{itemize}
+
+This analysis prompts us to consider a fundamental question: \textit{How can we select the activation function $h$ most suitable for our neural network?}
+
+In the next section, we try to answer this crucial question! We have decided to be quite descriptive, as we believe that more details about these functions can facilitate a deeper understanding.
+
+\section{Activation Functions}
+
+\subsection{Sigmoid}
+
+\begin{table}[h]
+\begin{tabularx}{\linewidth}{>{\parskip1ex}X@{\kern4\tabcolsep}>{\parskip1ex}X}
+\toprule
+\hfil\bfseries \color{myblue!80!black}{Pros}
+&
+\hfil\bfseries \color{myblue!80!black}{Cons}
+\\\cmidrule(r{3\tabcolsep}){1-1}\cmidrule(l{-\tabcolsep}){2-2}
+
+%% PROS
+The sigmoid function offers a valuable advantage because it acts as a type of \textbf{\textcolor{myblue!80!black}{squashing non-linearity}} that "squeezes" outputs within the range of [$0$, $1$]. This feature is particularly advantageous in scenarios such as binary classification tasks, where the model must generate outputs that can be interpreted as probabilities.
+
+Moreover, the sigmoid function has a property of \textbf{\textcolor{myblue!80!black}{differentiability and smoothness}} over its entire domain. This property facilitates seamless integration with gradient-based optimization techniques, ensuring stable convergence during the training process.
+&
+
+%% CONS
+However, it \textbf{\textcolor{myblue!80!black}{tends to saturate}} in most of its domain. This saturation phenomenon causes the gradient to tend toward zero, posing challenges during the learning phase. Consequently, this saturation can obstruct the effective propagation of gradients through the network during back-propagation.
+
+In addition, the sigmoid function shows strong sensitivity mainly when the input is near zero. In contrast, its \textbf{\textcolor{myblue!80!black}{sensitivity decreases}} for both large and small input values. This characteristic negatively affects the model's ability to learn from datasets that have a wide range of input values.
+\\\bottomrule
+\end{tabularx}
+\caption{Benefits and Limitations of Sigmoid Activation}
+\end{table}
+
+\begin{figure}[!htbp]
+\begin{minipage}{0.12\textwidth}
+\
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines=middle,
+    xmax=10,
+    xmin=-10,
+    ymin=0,
+    ymax=1.05,
+    xtick={-10,0,10},
+    ytick={0,0.5,1},
+    xticklabels={$-1$, $0$, $1$},
+    yticklabels={$0$, $0.5$,$1$},
+    extra x ticks = {0},
+    axis line style={-},
+    axis line style ={very thick},
+    tick style={draw=none}, 
+    label style={font=\scriptsize}, 
+    every axis x label/.style={at={(current axis.right of origin)},anchor=north west},
+    every axis y label/.style={at={(current axis.above origin)},anchor=north east},    
+    legend pos=north west, 
+    legend style={font=\footnotesize}, 
+    legend cell align={left}, 
+]
+\addplot [line width=3pt, domain=-9.9:9.9, samples=100, myblue!80!black] {1/(1+exp(-x)};
+\addplot [line width=2pt, dashed, domain=-10:10, samples=100, gray!80!black] {1/(1+exp(-x))*(1 - (1/(1+exp(-x))))};
+\addlegendentry{Sigmoid}
+\addlegendentry{Derivative}
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+{\begin{center}
+\Large{\inconsolatafontfamily \textbf{\textcolor{myblue!80!black}{Sigmoid }}}\end{center}}
+{\Large
+\begin{ceqn}
+\begin{equation*}
+\textcolor{myblue!80!black}{\frac{1}{1+e^{-z}}}
+\end{equation*}
+\end{ceqn}
+}
+\end{minipage}
+\caption{Sigmoid Activation Function Graph}
+\end{figure}
+
+\subsection{Hyperbolic Tangent}
+
+\begin{table}[h]
+\begin{tabularx}{\linewidth}{>{\parskip1ex}X@{\kern4\tabcolsep}>{\parskip1ex}X}
+\toprule
+\hfil\bfseries \color{myred}{Pros}
+&
+\hfil\bfseries \color{myred}{Cons}
+\\\cmidrule(r{3\tabcolsep}){1-1}\cmidrule(l{-\tabcolsep}){2-2}
+
+%% PROS
+First, it is \textbf{\textcolor{myred}{differentiable and continuous}}, ensuring compatibility with gradient-based optimization techniques. 
+
+In addition, the hyperbolic tangent function is \textbf{\textcolor{myred}{similar to sigmoid}}, but provides a more favorable output range. By squashing the outputs in the interval [$-1$, $1$], it ensures that the outputs are centered in zero. This feature can improve the model's ability to learn and adapt to data distributions, especially in scenarios where centered data is advantageous.
+&
+
+%% CONS
+However, the hyperbolic tangent function also has limitations. Like the sigmoid, it tends to \textbf{\textcolor{myred}{saturate}} throughout much of its domain. This saturation phenomenon can hinder effective gradient propagation during back-propagation, impeding the learning process and potentially leading to slower convergence.
+\\\bottomrule
+\end{tabularx}
+\caption{Benefits and Limitations of Hyperbolic Tangent Activation}
+\end{table}
+
+\begin{figure}[!htbp]
+\begin{minipage}{0.06\textwidth}
+\
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines=middle,
+    xmax=4,
+    xmin=-4,
+    ymin=-1.05,
+    ymax=1.05,
+    xtick={-4,0.5,4},
+    ytick={-1,0,1},
+    xticklabels={$-1$, $0$, $1$},
+    yticklabels={$-1$, $0$,$1$},
+    axis line style={-},
+    axis line style ={very thick},
+    tick style={draw=none}, 
+    label style={font=\scriptsize}, 
+    every axis x label/.style={at={(current axis.right of origin)},anchor=north west},
+    every axis y label/.style={at={(current axis.above origin)},anchor=north east},
+    legend pos=north west, 
+    legend style={font=\footnotesize}, 
+    legend cell align={left}, 
+]
+\addplot [line width=3pt, domain=-9.9:9.9, samples=100, myred] {(exp(x) - exp(-x))/(exp(x) + exp(-x))};
+\addplot [line width=2pt, dashed, domain=-10:10, samples=100, gray!80!black] {{(1 - tanh(x)^2)/(1 + tanh(x)^2)}};
+\addlegendentry{Tanh}
+\addlegendentry{Derivative}
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.04\textwidth}
+\
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+{\begin{center}
+\Large{\inconsolatafontfamily \textbf{\textcolor{myred}{Hyperbolic Tangent}}}\end{center}}
+{\Large
+\begin{ceqn}
+\begin{equation*}
+\textcolor{myred}{\tanh{z} = \frac{e^{z}-e^{-z}}{e^{z}+e^{-z}}}
+\end{equation*}
+\end{ceqn}
+}
+\end{minipage}
+\caption{Hyperbolic Tangent Activation Function Graph}
+\end{figure}
+
+\newpage
+\subsection{Rectified Linear Unit (ReLU)}
+\begin{table}[h]
+\begin{tabularx}{\linewidth}{>{\parskip1ex}X@{\kern4\tabcolsep}>{\parskip1ex}X}
+\toprule
+\hfil\bfseries \color{mygreen!80!black}{Pros}
+&
+\hfil\bfseries \color{mygreen!80!black}{Cons}
+\\\cmidrule(r{3\tabcolsep}){1-1}\cmidrule(l{-\tabcolsep}){2-2}
+
+%% PROS
+The ReLU function has several advantages. First, it provides \textbf{\textcolor{mygreen!80!black}{wide and consistent gradients}} when it is active. This means that the ReLU function does not saturate when it is active, which greatly accelerates the convergence of gradient-based optimization.
+In addition, the \textbf{\textcolor{mygreen!80!black}{non-positive limitation}} accelerates the convergence of gradient descent, allowing for faster learning.
+The ReLU function may have a limitation in its \textbf{\textcolor{mygreen!80!black}{differentiability}}. However, in practice, this is not necessarily a problem since the one-sided derivative is returned when \( z = 0 \). Moreover, gradient-based optimization is subject to numerical errors anyway, so this differentiability limitation is often overlooked.
+A good practice is to \textbf{\textcolor{mygreen!80!black}{initialize bias}} with small positive values. This ensures that units are initially active for most inputs and that derivatives can propagate through.
+&
+
+%% CONS
+However, the ReLU function also has some disadvantages. First of all, its outputs are not \textbf{\textcolor{mygreen!80!black}{centered on zero}}, which could cause problems in some machine learning contexts.
+In addition, ReLU neurons may suffer from a phenomenon called \textbf{\textcolor{mygreen!80!black}{"dying ReLU"}}. This occurs when most of the inputs to ReLU neurons are in the negative range. When this occurs, the ReLU neurons return an output of $0$ and the gradients do not flow during back-propagation, preventing the weights from updating. However, this problem does not always occur and can be mitigated by properly adjusting the learning rate or using Stochastic Gradient Descent (SDG).
+The ReLU function can also be sensitive to the \textbf{\textcolor{mygreen!80!black}{large learning rate}}. If the learning rate is too high, the new weights are likely to end up in the highly negative range, negatively affecting the convergence of the model.
+\\\bottomrule
+\end{tabularx}
+\caption{Benefits and Limitations of ReLU Activation}
+\end{table}
+
+\begin{figure}[!htbp]
+\begin{minipage}{0.06\textwidth}
+\
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines=middle,
+    xmax=1,
+    xmin=-1,
+    ymin=-0.6,
+    ymax=1.05,
+    xtick={-1,0.1,1}, 
+    ytick={0,1},   
+    xticklabels={$-1$, $0$, $1$},
+    axis line style={-},
+    axis line style ={very thick},
+    tick style={draw=none}, 
+    label style={font=\scriptsize}, 
+    every axis x label/.style={at={(current axis.right of origin)},anchor=north west},
+    every axis y label/.style={at={(current axis.above origin)},anchor=north east},
+    legend pos=north west, 
+    legend style={font=\footnotesize}, 
+    legend cell align={left}, 
+]
+\addplot [line width=3pt, domain=-1:1.3, samples=100, mygreen!80!black] 
+{max(0, x)}; 
+\addplot [line width=3pt, dashed, domain=-1:1, samples=100, gray!80!black] 
+coordinates {(0,0) (0,1)};
+\addplot [line width=3pt, dashed, domain=-1:1, samples=100, gray!80!black] 
+coordinates {(-1,0) (0,0)}; 
+\addplot [line width=3pt, dashed, domain=-1:1, samples=100, gray!80!black] 
+coordinates {(0,1) (0.8,1)}; 
+\addlegendentry{ReLU}
+\addlegendentry{Derivative}
+\end{axis}
+\end{tikzpicture}
+
+\end{minipage}
+\begin{minipage}{0.04\textwidth}
+\
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+{\begin{center}
+\Large{\inconsolatafontfamily \textbf{\textcolor{mygreen}{ReLU}}}\end{center}}
+{\Large
+\begin{ceqn}
+\begin{equation*}
+\textcolor{mygreen}{\max(0,z)}
+\end{equation*}
+\end{ceqn}
+}
+\end{minipage}
+\caption{ReLU  Activation Function Graph}
+\end{figure}
+
+
+\subsection{Generalized Rectified Linear Units}
+
+The \textbf{generalized rectified linear units} were introduced to address some limitations of the ReLU function. The main objective is to obtain a non-zero slope when \( z_i < 0 \). The generalized form of the ReLU is defined as follows:
+$$ h(z, a_i) = \max(0, z_i) + a_i \min(0, z_i) $$
+However, generalized rectified linear units are not universally better than ReLU and may lead to other problems, such as additional computational complexity. Some of the improvements that have been made include:
+
+- \textbf{Leaky ReLU}: This variation solves the problem of neuron death by setting \( a_i \) to a small value, such as $0.01$, to maintain a gradient flow even when the input is negative.
+
+- \textbf{Parametric ReLU}: This variant allows the parameter \( a_i \) to be learned, allowing the network to adapt the gradient of the activation function based on the data.
+
+- \textbf{ReLU Randomized}: This variant samples the parameter \( a_i \) from a fixed interval during training and keeps it constant during testing, introducing randomness into the model.
+
+In addition, other activation functions have been proposed as alternatives to ReLU, including:
+
+- \textbf{Exponential Linear Units (ELU)}: This activation function retains all the advantages of ReLU but avoids the problem of neuron death. However, it requires exponentiation during computation, slightly increasing the computational complexity.
+
+- \textbf{Swish}: This function is a smooth, non-monotonic function that has been shown to perform better than ReLU on deeper models, improving performance on datasets such as ImageNet.
+
+- \textbf{Linear Units with Gaussian Error (GELU)}: This activation function has been used in state-of-the-art algorithms such as GPT-3 and BERT, combining dropout, zone-out and ReLU elements to achieve a smoother version of ReLU. The \textbf{dropout} is a regularization technique of randomly ignoring some neurons during the training process. This helps prevent overtraining and improves model generalization. The \textbf{zone-out} technique, on the other hand, is to randomly keep the previous value of some neurons during updating, similar to dropout but on a temporal rather than spatial pattern. This can help improve the stability of the model during training.
+
+These improvements and generalizations of activation functions have helped make neural networks more efficient and adaptable to a wide range of machine learning problems. Below, we show graphs of the Leaky ReLU and ELU activation functions for a better understanding of their properties.
+
+\vspace{0.7cm}
+\begin{minipage}{0.5\textwidth}
+\vspace{-0.3cm}
+{\begin{center}
+\Large{\inconsolatafontfamily \textbf{\textcolor{mygreen!60!black}{Leaky ReLU}}}\end{center}}
+\vspace{-0.7cm}
+{\Large
+\begin{ceqn}
+\begin{equation*}
+\textcolor{mygreen!60!black}{\max(a*z,z)}
+\end{equation*}
+\end{ceqn}
+}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+{\begin{center}
+\Large{\inconsolatafontfamily \textbf{\textcolor{mygreen!60!black}{ELU}}}\end{center}}
+\vspace{-0.7cm}
+{\Large
+\begin{ceqn}
+\begin{equation*}
+\textcolor{mygreen!60!black}{\begin{cases}
+\alpha \cdot \exp(z) - 1 & \text{if } z \leq 0 \\
+z & \text{otherwise}
+\end{cases}}
+\end{equation*}
+\end{ceqn}
+}
+\end{minipage}
+
+\begin{figure}[!htbp]
+\begin{minipage}{0.5\textwidth}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines=middle,
+    xmax=1,
+    xmin=-1,
+    ymin=-0.6,
+    ymax=1.05,
+    xtick={-1,0.1,1}, 
+    ytick={0,1},   
+    xticklabels={$-1$, $0$, $1$},
+    axis line style={-},
+    axis line style ={very thick},
+    tick style={draw=none}, 
+    label style={font=\scriptsize}, 
+    every axis x label/.style={at={(current axis.right of origin)},anchor=north west},
+    every axis y label/.style={at={(current axis.above origin)},anchor=north east},
+    legend pos=north west, 
+    legend style={font=\footnotesize}, 
+    legend cell align={left}, 
+]
+\addplot [line width=3pt, domain=-1:1.3, samples=100, mygreen!60!black] 
+{max(0.22 * x, x)}; 
+\addplot [line width=3pt, dashed, domain=-1:1, samples=100, gray!80!black] 
+coordinates {(0,0.22) (0,1)};
+\addplot [line width=3pt, dashed, domain=-1:1, samples=100, gray!80!black] 
+coordinates {(-1,0.22) (0,0.22)}; 
+\addplot [line width=3pt, dashed, domain=-1:1, samples=100, gray!80!black] 
+coordinates {(0,1) (0.8,1)}; 
+\addlegendentry{Leaky ReLU}
+\addlegendentry{Derivative}
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines=middle,
+    xmax=2,
+    xmin=-2,
+    ymin=-0.6,
+    ymax=1.05,
+    xtick={-10, -2, 0.1, 2, 10}, 
+    ytick={1},   
+    xticklabels={$-2$, $-1$, $0$, $1$, $2$},
+    yticklabels={$1$},
+    axis line style={-},
+    axis line style ={very thick},
+    tick style={draw=none}, 
+    label style={font=\scriptsize}, 
+    every axis x label/.style={at={(current axis.right of origin)},anchor=north west},
+    every axis y label/.style={at={(current axis.above origin)},anchor=north east},
+    legend pos=north west, 
+    legend style={font=\footnotesize}, 
+    legend cell align={left}, 
+]
+\addplot [line width=3pt, domain=-2:0, samples=100, mygreen!60!black] 
+{exp(0.35*x)-1}; 
+\addplot [line width=3pt, domain=0:2, samples=100, mygreen!60!black,forget plot] 
+{0.5*x}; 
+\addplot [line width=3pt, dashed, domain=-1:1, samples=100, gray!80!black] 
+coordinates {(0,0.35) (0,1)};
+\addplot [line width=3pt, dashed, domain=-2:0, samples=100, gray!80!black] 
+{0.35*exp(0.35*x)}; 
+\addplot [line width=3pt, dashed, domain=-1:1, samples=100, gray!80!black] 
+coordinates {(0,1) (1.6,1)}; 
+\addlegendentry{ELU}
+\addlegendentry{Derivative}
+\end{axis}
+\end{tikzpicture}
+\end{minipage}
+\caption{Leaky ReLU and ELU Activation Functions Graphs}
+\end{figure}
+
+
+\section{Architecture design}
+\textit{How do we decide depth and width?} Choosing the depth and width of a neural network depends on several factors, including the complexity of the problem to be solved, the availability of training data, and the computational resources available. In principle, how many hidden layer units are sufficient? Theory offers us some answers.
+
+\begin{remark}
+Cybenko's Theorem (1989), also known as the universal approximation theorem, states that \textbf{a two-layer neural network with linear output can approximate any continuous function} over a compact domain with arbitrary precision, provided there are enough hidden units. This theorem has important implications for the design of neural architectures.
+\end{remark}
+
+\textbf{Implications}: Regardless of the function we are trying to learn, we know that a large multilayer neural network can represent this function. However, there is no guarantee that our training algorithm will be able to learn that function, due to optimization or data overlap issues. Also, the theorem gives no indication of how large the network will be.
+
+\textit{So is depth or width more important?} There are trade-offs between depth and width of neural networks. For example, deeper networks generally generalize better: imagine a neural network as a set of tools to solve a problem. The more tools you have, the more complex problems you can solve. Then, by adding more "layers" to the network (making it deeper), we could give the network the ability to tackle more difficult problems or capture finer details in the data. In addition, architecture design has a significant impact on performance, for example between convolutional and feedforward neural networks.

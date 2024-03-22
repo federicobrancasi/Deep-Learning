@@ -1,6 +1,45 @@
+% This work is licensed under the GNU aGPL v3 by apehex
+% https://github.com/apehex/
+
+\documentclass[11pt,fleqn,oneside]{book} % Default font size and left-justified equations
+
+\usepackage{listofitems} % for \readlist to create arrays
+% =======================================================================================
+% Global settings
+\newcommand{\AUTHOR}{Federico Brancasi}
+\newcommand{\CLIENT}{Client Name}
+\newcommand{\DATE}{\today}
+\newcommand{\VERSION}{0.2.1}
+\newcommand{\TITLE}{Deep Learning}
+\newcommand{\SUBTITLE}{University of Trento}
+\newcommand{\SUBJECT}{Demo}
+\newcommand{\URL}{https://github.com/federicobrancasi}
+
+\renewcommand{\SUBJECT}{\href{https://forta.org}{\color{white}Forta.org}}
+\input{template/forta/main} % Commands and style of the template
+
+% =======================================================================================
+\togglethemedl
+
 \usepackage{lipsum}
+\input{tikz}
+\usepackage{nccmath}
+
+\DeclareSymbolFont{letters}{OML}{ztmcm}{m}{it}
+
+\usepackage{tabularx}
+
+\usepackage{pgfplots}
+% \usepgfplotslibrary{patterns}
+\pgfplotsset{compat=1.17}
+
+
+\tikzfading[name=fade down,
+    top color=transparent!30,
+    bottom color=transparent!0]
 
 \begin{document}
+
 
 % =======================================================================================
 %\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
@@ -14,47 +53,23 @@
 \tableofcontents
 
 % =======================================================================================
-%                                   PART I
+%                                   CHAPTERS
 % =======================================================================================
-% \part{Lorem ipsum}
-%----------------------------------------------------------------------------------------
 \newpage
-\chapter{Lorem} \label{ch:lorem}
-\input{sections/part1/phasellus}
-%----------------------------------------------------------------------------------------
-\newpage
-\chapter{Ipsum}\label{ch:ipsum}
-\input{sections/part1/quam}
+\chapter{Feedforward Neural Networks} \label{ch:feedforward}
+\input{chapters/chapter1 - Feedforward Neural Networks}
 
-% =======================================================================================
-%                                   PART II
-% =======================================================================================
-% \part{Dolor sit amet}
-%----------------------------------------------------------------------------------------
-\newpage
-\chapter{Hendrerit sapien} \label{ch:hendrerit}
-\input{sections/part2/dolor}
-\newpage
-\input{sections/part2/accumsan}
+% \newpage
+% \chapter{Lorem} \label{ch:lorem}
+% \input{chapters/chapterX - Template}
 
-% =======================================================================================
-%                                   APPENDICES
-% =======================================================================================
-% \part{Appendices}
-%----------------------------------------------------------------------------------------
-% \newpage
-% \chapter{Vestibulum commodo} \label{ch:commodo}
-% \input{sections/appendices/consectetur}
-%----------------------------------------------------------------------------------------
-% \newpage
-% \chapter{Etiam facilisis} \label{ch:etiam}
-% \input{sections/appendices/adipiscing}
-%----------------------------------------------------------------------------------------
+\newpage
+\
 \newpage
 \listoffigures
 \listoftables
 %----------------------------------------------------------------------------------------
-\newpage
-\printbibliography[title = {Aliquam}]
+% \newpage
+% \printbibliography[title = {Aliquam}]
 
 \end{document}

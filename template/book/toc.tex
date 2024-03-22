@@ -1,4 +1,8 @@
 \usepackage{titletoc} % Required for manipulating the table of contents
+\usepackage{csquotes}
+\usepackage{silence}
+\WarningsOff[everypage]
+\WarningsOff[caption]
 
 \makeatletter
 
@@ -14,7 +18,18 @@
 
 {
 \setlength{\parskip}{0pt}
-\hypersetup{hidelinks,backref=true,pagebackref=true,hyperindex=true,colorlinks=true,breaklinks=true,urlcolor=accent,bookmarks=true,bookmarksopen=false,pdftitle={\TITLE},pdfauthor={\AUTHOR},pdfsubject={\SUBJECT}}
+\hypersetup{hidelinks,
+% backref=true,
+% pagebackref=true,
+% hyperindex=true,
+% colorlinks=true,
+breaklinks=true,
+urlcolor=accent,
+% bookmarks=true,
+bookmarksopen=false,
+pdftitle={\TITLE},
+pdfauthor={\AUTHOR},
+pdfsubject={\texorpdfstring{\SUBJECT}{}}}
 \@starttoc{toc}
 }
 
