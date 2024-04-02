@@ -1,0 +1,66 @@
+\documentclass[tikz,border=3mm]{standalone}
+
+\usetikzlibrary{decorations.pathreplacing}
+\tikzset{arrowed/.style={decorate,
+decoration={show path construction, 
+moveto code={},
+lineto code={
+\draw[#1] (\tikzinputsegmentfirst) --  (\tikzinputsegmentlast);
+},
+curveto code={},
+closepath code={},
+}},arrowed/.default={-stealth}}
+\usepackage{pgfplots}
+\pgfplotsset{gradient function/.initial=f,
+dx/.initial=0.01,dy/.initial=0.01}
+\pgfmathdeclarefunction{xgrad}{2}{%
+\begingroup%
+\pgfkeys{/pgf/fpu,/pgf/fpu/output format=fixed}%
+\edef\myfun{\pgfkeysvalueof{/pgfplots/gradient function}}%
+\pgfmathparse{(\myfun(#1+\pgfkeysvalueof{/pgfplots/dx},#2)%
+-\myfun(#1,#2))/\pgfkeysvalueof{/pgfplots/dx}}%
+ % \pgfmathsetmacro{\mysum}{\mysum+\myfun(\value{isum},#2)}%
+\pgfmathsmuggle\pgfmathresult\endgroup%
+}%
+\pgfmathdeclarefunction{ygrad}{2}{%
+\begingroup%
+\pgfkeys{/pgf/fpu,/pgf/fpu/output format=fixed}%
+\edef\myfun{\pgfkeysvalueof{/pgfplots/gradient function}}%
+\pgfmathparse{(\myfun(#1,#2+\pgfkeysvalueof{/pgfplots/dy})%
+-\myfun(#1,#2))/\pgfkeysvalueof{/pgfplots/dy}}%
+ % \pgfmathsetmacro{\mysum}{\mysum+\myfun(\value{isum},#2)}%
+\pgfmathsmuggle\pgfmathresult\endgroup%
+}%
+
+\pgfplotsset{compat=1.17}
+
+\begin{document}
+\begin{tikzpicture}
+  \begin{axis}[width=12cm,%
+      samples=44,
+      yticklabel=\empty,
+      xticklabel=\empty,
+      zticklabel=\empty,
+      axis line style ={very thick},
+      declare function={f(\x,\y)=cos(deg(\x)*0.8)*cos(deg(\y)*0.6)*exp(0.1*\x);}]
+    \addplot3[surf,opacity=0.6, domain=-4:3,%samples=81
+    ]{f(x,y)};
+    \edef\myx{1} % first x coordinate
+    \edef\myy{0.25} % first y coordinate
+    \edef\mystep{-0.25}% negative values mean descending
+    \pgfmathsetmacro{\myf}{f(\myx,\myy)}
+    \edef\lstCoords{(\myx,\myy,\myf)}
+    \pgfplotsforeachungrouped\X in{0,...,5}
+      {
+        \pgfmathsetmacro{\mydx}{xgrad(\myx,\myy)}
+        \pgfmathsetmacro{\mydy}{ygrad(\myx,\myy)}
+        \pgfmathsetmacro{\myscale}{\mystep/sqrt(\mydx*\mydx+\mydy*\mydy)}
+        \pgfmathsetmacro{\myx}{\myx+\myscale*\mydx}
+        \pgfmathsetmacro{\myy}{\myy+\myscale*\mydy}
+        \pgfmathsetmacro{\myf}{f(\myx,\myy)}
+        \edef\lstCoords{\lstCoords\space (\myx,\myy,\myf)}
+      }
+    \addplot3[samples y=0, samples=20,arrowed, line width=1.5pt] coordinates \lstCoords;
+  \end{axis}
+\end{tikzpicture}
+\end{document}

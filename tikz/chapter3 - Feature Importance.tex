@@ -1,0 +1,27 @@
+\documentclass[tikz, border=5mm]{standalone}
+
+\definecolor{ovalcolor}{RGB}{180,180,180}
+\definecolor{arrowcolor}{RGB}{0,0,0}
+
+\begin{document}
+\begin{tikzpicture}[>=stealth, scale=0.75]
+
+\begin{scope}[shift={(-6,0)}]
+    \foreach \r in {1, 2, 3, 4, 5, 6}{
+        \draw[ovalcolor, ultra thick, rotate=0] (0,0) circle ({\r});
+    }
+\end{scope}
+
+\begin{scope}[shift={(12,0)}]
+    \foreach \r in {1, 2, 3, 4, 5, 6}{
+        \draw[ovalcolor, ultra thick, rotate=0] (0,0) ellipse ({\r*1.5} and {\r*0.5});
+    }
+\end{scope}
+
+\node at (-6,-7.9) {\huge\textbf{All Features are Relevant}};
+\node at (-6,-8.9) {\huge\textbf{for the Network}};
+\node at (12,-8) {\huge\textbf{Features possess Distinct}};
+\node at (12,-9) {\huge\textbf{Levels of Significance}};
+
+\end{tikzpicture}
+\end{document}

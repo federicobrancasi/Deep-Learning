@@ -1,74 +1,73 @@
-% This work is licensed under the GNU aGPL v3 by apehex
-% https://github.com/apehex/
-
 \documentclass[11pt,fleqn,oneside]{book} % Default font size and left-justified equations
 
-\usepackage{listofitems} % for \readlist to create arrays
-% =======================================================================================
+% COMPILES THE COVER IF 1 
+% DOESN'T COMPILE THE COVER IF 0
+\newcommand{\showCover}{0} 
+
+\usepackage{fontawesome5}
+
+% =========================================================
 % Global settings
 \newcommand{\AUTHOR}{Federico Brancasi}
 \newcommand{\CLIENT}{Client Name}
 \newcommand{\DATE}{\today}
-\newcommand{\VERSION}{0.2.1}
+% \newcommand{\VERSION}{1.0.0}
 \newcommand{\TITLE}{Deep Learning}
 \newcommand{\SUBTITLE}{University of Trento}
 \newcommand{\SUBJECT}{Demo}
-\newcommand{\URL}{https://github.com/federicobrancasi}
+% \newcommand{\URL}{https://github.com/federicobrancasi}
 
-\renewcommand{\SUBJECT}{\href{https://forta.org}{\color{white}Forta.org}}
-\input{template/forta/main} % Commands and style of the template
+\input{template/forta/main} % Commands of the template
+% =========================================================
 
-% =======================================================================================
-\togglethemedl
+% COMPILES THE COVER IF 1 
+% DOESN'T COMPILE THE COVER IF 0
+\ifnum\showCover=0
+    \renewcommand{\coverpage}[5]{{\Huge\textbf{Cover Hidden}}
+    \textcolor{white}{#1, #2, #3, #4, #5}}
+\else
+    % show it
+\fi
 
-\usepackage{lipsum}
-\input{tikz}
-\usepackage{nccmath}
+% Set Theme
+\togglethemedl 
 
-\DeclareSymbolFont{letters}{OML}{ztmcm}{m}{it}
-
-\usepackage{tabularx}
-
-\usepackage{pgfplots}
-% \usepgfplotslibrary{patterns}
-\pgfplotsset{compat=1.17}
-
-
-\tikzfading[name=fade down,
-    top color=transparent!30,
-    bottom color=transparent!0]
+% \usepackage[autostyle=false, style=english]{csquotes}
+% \MakeOuterQuote{"}
 
 \begin{document}
 
+% =========================================================
+% \cleardoublepage 
+% Forces the first chapter to start 
+% on an odd page so it's on the right
 
-% =======================================================================================
-%\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
-
-% =======================================================================================
-%                                   PREAMBLE
-% =======================================================================================
 \coverpage{\TITLE}{\SUBTITLE}{\AUTHOR}{\DATE}{\SUBJECT}
-%----------------------------------------------------------------------------------------
+
 \newpage
 \tableofcontents
 
-% =======================================================================================
+% =========================================================
 %                                   CHAPTERS
-% =======================================================================================
+% =========================================================
+
 \newpage
-\chapter{Feedforward Neural Networks} \label{ch:feedforward}
+\chapter{Feedforward Neural Networks} 
 \input{chapters/chapter1 - Feedforward Neural Networks}
 
-% \newpage
-% \chapter{Lorem} \label{ch:lorem}
-% \input{chapters/chapterX - Template}
+\newpage
+\chapter{Backpropagation} 
+\input{chapters/chapter2 - Backpropagation}
 
 \newpage
-\
-\newpage
+\chapter{Optimization}
+\input{chapters/chapter3 - Optimization}
+
+\newpage \ \newpage
+
 \listoffigures
 \listoftables
-%----------------------------------------------------------------------------------------
+
 % \newpage
 % \printbibliography[title = {Aliquam}]
 

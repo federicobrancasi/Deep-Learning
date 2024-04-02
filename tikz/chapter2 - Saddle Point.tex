@@ -1,0 +1,25 @@
+\documentclass[tikz,border=3mm]{standalone}
+
+\usepackage{pgfplots}
+
+\pgfplotsset{compat=1.17}
+
+\begin{document}
+
+\begin{tikzpicture}[scale=1.3]
+  \begin{axis}
+    [
+      % width=12cm,%
+      samples=40,
+      yticklabel=\empty,
+      xticklabel=\empty,
+      zticklabel=\empty,
+      axis line style ={thick}
+    ]
+    \addplot3 [surf, opacity=0.6] {x^2-y^2};
+    % \fill (0,0,0)  circle[radius=2pt];
+    \filldraw[ball color=black] (axis cs:0,0,0) circle [radius=0.09cm];
+  \end{axis}
+\end{tikzpicture}
+
+\end{document}

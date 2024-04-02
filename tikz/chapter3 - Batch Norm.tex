@@ -1,0 +1,26 @@
+\documentclass[tikz,border=3mm]{standalone}
+
+\usepackage{xcolor}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+
+\begin{document}
+\begin{tikzpicture}
+
+  % Grid with yslant=-0.5
+  \fill[mybluee!70, yslant=-0.5] (5,0) rectangle (6,6);
+  \draw[very thick,yslant=-0.5] (0,0) grid (6,6);
+  
+  % Grid with yslant=0.5
+  \fill[mybluee!70, yslant=0.5] (6,-6) rectangle (12,0);
+  \draw[very thick,yslant=0.5] (6,-6) grid (12,0);
+
+  % Grid with yslant=0.5 and xslant=-1
+  \fill[mybluee!70, yslant=0.5, xslant=-1] (6,0) rectangle (12,1);
+  \draw[very thick,yslant=0.5,xslant=-1] (6,0) grid (12,6);
+
+  \node at (-1.2,2.7) {\huge\textbf{H,W}};
+  \node at (9.7,-2) {\huge\textbf{N}};
+  \node at (2.1,-2) {\huge\textbf{C}};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,57 @@
+\documentclass[border=3pt, tikz]{standalone}
+
+\input{chapter1 - Plots Configurations}
+
+\begin{document}
+\begin{figure}[!htbp]
+  \resizebox{.75\textwidth}{!}{
+    \begin{minipage}{0.5\textwidth}
+      \begin{tikzpicture}
+        \begin{axis}[
+            axis lines=middle,
+            xmax=1,
+            xmin=-1,
+            ymin=-0.6,
+            ymax=1.05,
+            xtick={-1,0.1,1},
+            ytick={0,1},
+            xticklabels={$-1$, $0$, $1$},
+            axis line style={-},
+            axis line style ={very thick},
+            tick style={draw=none},
+            label style={font=\scriptsize},
+            every axis x label/.style={at={(current axis.right of origin)},anchor=north west},
+            every axis y label/.style={at={(current axis.above origin)},anchor=north east},
+            legend pos=north west,
+            legend style={font=\footnotesize},
+            legend cell align={left},
+          ]
+          \addplot [line width=3pt, domain=-1:1.3, samples=100, mygreen!80!black]
+          {max(0, x)};
+          \addplot [line width=3pt, dashed, domain=-1:1, samples=100, gray!80!black]
+          coordinates {(0,0) (0,1)};
+          \addplot [line width=3pt, dashed, domain=-1:1, samples=100, gray!80!black]
+          coordinates {(-1,0) (0,0)};
+          \addplot [line width=3pt, dashed, domain=-1:1, samples=100, gray!80!black]
+          coordinates {(0,1) (0.8,1)};
+          \addlegendentry{ReLU}
+          \addlegendentry{Derivative}
+        \end{axis}
+      \end{tikzpicture}
+
+    \end{minipage}
+    \begin{minipage}{0.35\textwidth}
+      {\begin{center}
+          \Large{\textbf{\textcolor{mygreen}{ReLU}}}\end{center}}
+      {\Large
+        \begin{equation*}
+          \textcolor{mygreen}{\max(0,z)}
+        \end{equation*}
+      }
+    \end{minipage}
+    \begin{minipage}{0.15\textwidth}
+      \
+    \end{minipage}
+  }
+\end{figure}
+\end{document}

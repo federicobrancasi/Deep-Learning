@@ -1,0 +1,100 @@
+\documentclass[border=3pt,tikz]{standalone}
+\usepackage{amsmath} % for aligned
+\usepackage{listofitems} % for \readlist to create arrays
+\usetikzlibrary{arrows.meta} % for arrow size
+\usepackage[outline]{contour} % glow around text
+\contourlength{1.4pt}
+\usepackage{tikz-3dplot}
+
+%%%%%
+\usepackage[cmintegrals,cmbraces]{newtxmath}
+\usepackage{ebgaramond-maths}
+% \usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\newcommand{\tikzmarkk}[1]{\tikz[baseline,remember picture] \coordinate (#1) {};}
+%%%%%
+
+% COLORS
+\usepackage{xcolor}
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!30!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!30!black}
+
+% STYLES
+\tikzset{
+  >=latex, % for default LaTeX arrow head
+  node/.style={thick,circle,draw=myblue,minimum size=22,inner sep=0.5,outer sep=0.6},
+  node in/.style={node,green!20!black,draw=mygreen!30!black,fill=mygreen!25},
+  node hidden/.style={node,blue!20!black,draw=myblue!30!black,fill=myblue!20},
+  node convol/.style={node,orange!20!black,draw=myorange!30!black,fill=myorange!20},
+  node out/.style={node,red!20!black,draw=myred!30!black,fill=myred!20},
+  connect/.style={thick,mydarkblue}, %,line cap=round
+  connect arrow/.style={-{Latex[length=4,width=3.5]},thick,mydarkblue,shorten <=0.5,shorten >=1},
+  node 1/.style={node in}, % node styles, numbered for easy mapping with \nstyle
+  node 2/.style={node hidden},
+  node 3/.style={node out}
+}
+\def\nstyle{int(\lay<\Nnodlen?min(2,\lay):3)} % map layer number onto 1, 2, or 3
+
+\begin{document}
+
+
+% NEURAL NETWORK with coefficients, uniform arrows
+\newcommand\setAngles[3]{
+  \pgfmathanglebetweenpoints{\pgfpointanchor{#2}{center}}{\pgfpointanchor{#1}{center}}
+  \pgfmathsetmacro\angmin{\pgfmathresult}
+  \pgfmathanglebetweenpoints{\pgfpointanchor{#2}{center}}{\pgfpointanchor{#3}{center}}
+  \pgfmathsetmacro\angmax{\pgfmathresult}
+  \pgfmathsetmacro\dang{\angmax-\angmin}
+  \pgfmathsetmacro\dang{\dang<0?\dang+360:\dang}
+}
+
+\begin{tikzpicture}[x=2.2cm,y=1.4cm]
+  % \message{^^JNeural network with uniform arrows}
+  \readlist\Nnod{4,3,3,3,2} % array of number of nodes per layer
+
+  \foreachitem \N \in \Nnod{ % loop over layers
+    \def\lay{\Ncnt} % alias of index of current layer
+    \pgfmathsetmacro\prev{int(\Ncnt-1)} % number of previous layer
+    \message{^^J Layer \lay, N=\N, prev=\prev ->}
+
+    % NODES
+    \foreach \i [evaluate={\y=\N/2-\i; \x=\lay; \n=\nstyle;}] in {1,...,\N}{ % loop over nodes
+        \message{N\lay-\i, }
+        \node[node \n] (N\lay-\i) at (\x,\y) {};
+        % \node[node \n] (N\lay-\i) at (\x,\y) {$a_\i^{(\prev)}$};
+      }
+
+    % CONNECTIONS
+    \foreach \i in {1,...,\N}{ % loop over nodes
+        \ifnum\lay>1 % connect to previous layer
+          \setAngles{N\prev-1}{N\lay-\i}{N\prev-\Nnod[\prev]} % angles in current node
+          %\draw[red,thick] (N\lay-\i)++(\angmin:0.2) --++ (\angmin:-0.5) node[right,scale=0.5] {\dang};
+          %\draw[blue,thick] (N\lay-\i)++(\angmax:0.2) --++ (\angmax:-0.5) node[right,scale=0.5] {\angmin, \angmax};
+          \foreach \j [evaluate={\ang=\angmin+\dang*(\j-1)/(\Nnod[\prev]-1);}] %-180+(\angmax-\angmin)*\j/\Nnod[\prev]
+          in {1,...,\Nnod[\prev]}{ % loop over nodes in previous layer
+              \setAngles{N\lay-1}{N\prev-\j}{N\lay-\N} % angles out from previous node
+              \pgfmathsetmacro\angout{\angmin+(\dang-360)*(\i-1)/(\N-1)} % number of previous layer
+              %\draw[connect arrow,white,line width=1.1] (N\prev-\j.{\angout}) -- (N\lay-\i.{\ang});
+              \draw[connect arrow] (N\prev-\j.{\angout}) -- (N\lay-\i.{\ang}); % connect arrows uniformly
+            }
+        \fi % else: nothing to connect first layer
+      }
+  }
+
+  % LABELS
+  \node[above=0.3,align=center,mygreen,font=\bfseries] at (N1-1.90) {Input Layer};
+  \node[above=0.5,align=center,mybluee,font=\bfseries] at (N3-1.90) {Hidden Layers};
+  \node[above=0.8,align=center,myred,font=\bfseries] at (N\Nnodlen-1.90) {Output Layer};
+
+\end{tikzpicture}
+
+\end{document}
