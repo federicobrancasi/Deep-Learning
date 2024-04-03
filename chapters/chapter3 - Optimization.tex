@@ -326,3 +326,5 @@ Now, each pixel in each colour channel of each spatial position in the image is 
 The pixel values at each spatial position (HxW) of \textbf{each colour channel in each image} would be normalised to the corresponding pixel values at the same positions in the other images in the batch.
 
 \textbf{N.B.} A more modern technique is \textbf{Group Normalisation (GN)}, which can be considered as a mix between Layer Normalisation and Instance Normalisation. With GN, the data channels are considered separately, as in Layer Normalisation, but instead of operating on an entire layer, the \textbf{channels are divided into groups} and the normalisation statistics within each group are calculated independently. This approach is reminiscent of the idea of instance-based normalisation, where each instance is considered separately, but instead of normalising individual instances, GN normalises groups of channels. This makes it useful in scenarios where the dimensionality of the data is high and normalisation on entire layers may be excessive.
+
+

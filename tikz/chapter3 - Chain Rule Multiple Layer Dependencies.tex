@@ -1,0 +1,84 @@
+\documentclass[border=1pt, tikz]{standalone}
+
+\usetikzlibrary{graphs,graphdrawing,quotes}
+\usegdlibrary{trees,layered}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myyellow}{yellow!88!black}
+\colorlet{myorange}{orange!90!black}
+\colorlet{mydarkred}{red!30!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!30!black}
+
+\begin{document}
+  \begin{tikzpicture}
+    \graph [grow down, layered layout] { 
+      wl1/[as=$w^{(l-1)}$, mybluee] ->[myyellow, style = very thick] zl1/[as=$z^{(l-1)}$, mygreen],
+      al2/[as=$a^{(l-2)}$] -- zl1/[as=$z^{(l-1)}$, mygreen],
+      bl1/[as=$b^{(l-1)}$, myorange] -- zl1/[as=$z^{(l-1)}$, mygreen],
+      
+      zl1/[as=$z^{(l-1)}$, mygreen] ->[myyellow, style = very thick] al1/[as=$a^{(l-1)}$],
+
+      w/[as=$w^{(l)}$, mybluee] -- z/[as=$z^{(l)}$, mygreen],
+      al1/[as=$a^{(l-1)}$] ->[myyellow, style = very thick] z/[as=$z^{(l)}$, mygreen],
+      b/[as=$b^{(l)}$, myorange] -- z/[as=$z^{(l)}$, mygreen],
+      
+      z/[as=$z^{(l)}$, mygreen] ->[myyellow, style = very thick] al/[as=$a^{(l)}$],
+      
+      al/[as=$a^{(l)}$] ->[myyellow, style = very thick] L/[as=$L$, red],
+      
+      L/[as=$L$, red] -- {y/[as=$y$]},
+      
+      {[same layer] y, L};
+    };
+  \end{tikzpicture}
+\end{document}
+
+% \documentclass[border=1pt, tikz]{standalone}
+
+% \usetikzlibrary{graphs,graphdrawing,quotes}
+% \usegdlibrary{trees,layered}
+
+% \colorlet{myred}{red!80!black}
+% \colorlet{myblue}{blue!80!black}
+% \colorlet{mybluee}{myblue!80!black}
+% \colorlet{mygreen}{green!60!black}
+% \colorlet{myyellow}{yellow!88!black}
+% \colorlet{myorange}{orange!90!black}
+% \colorlet{mydarkred}{red!30!black}
+% \colorlet{mydarkblue}{blue!40!black}
+% \colorlet{mydarkgreen}{green!30!black}
+
+% \begin{document}
+%   \begin{tikzpicture}
+%     \graph [grow down, layered layout] { 
+%       bl1/[as=$b^{(l-1)}$, myorange] -- zl1/[as=$z^{(l-1)}$, mygreen],
+%       bl1/[as=$b^{(l-1)}$, myorange] --[white] al2/[as=$a^{(l-2)}$],
+
+%       b/[as=$b^{(l)}$, myorange] -- z/[as=$z^{(l)}$, mygreen],
+%       b/[as=$b^{(l)}$, myorange] --[white] al1/[as=$a^{(l-1)}$],
+      
+%       wl1/[as=$w^{(l-1)}$, mybluee] ->[myyellow, style = very thick] zl1/[as=$z^{(l-1)}$, mygreen],
+%       wl1/[as=$w^{(l-1)}$, mybluee] --[white] al2/[as=$a^{(l-2)}$],
+%       al2/[as=$a^{(l-2)}$] -- zl1/[as=$z^{(l-1)}$, mygreen],
+      
+%       zl1/[as=$z^{(l-1)}$, mygreen] ->[myyellow, style = very thick] al1/[as=$a^{(l-1)}$],
+
+%       w/[as=$w^{(l)}$, mybluee] -- z/[as=$z^{(l)}$, mygreen],
+%       w/[as=$w^{(l)}$, mybluee] --[white] al1/[as=$a^{(l-1)}$],
+%       al1/[as=$a^{(l-1)}$] ->[myyellow, style = very thick] z/[as=$z^{(l)}$, mygreen],
+      
+%       z/[as=$z^{(l)}$, mygreen] ->[myyellow, style = very thick] al/[as=$a^{(l)}$],
+      
+%       al/[as=$a^{(l)}$] ->[myyellow, style = very thick] L/[as=$L$, red],
+      
+%       L/[as=$L$, red] -- {y/[as=$y$]},
+      
+%       {[same layer] y, w, wl1};
+%       {[same layer] L, al1, z, al, zl1, al2};
+%     };
+%   \end{tikzpicture}
+% \end{document}

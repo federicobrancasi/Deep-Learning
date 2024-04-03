@@ -10,9 +10,9 @@ Gradient Descent is a fundamental optimization algorithm used to minimize the lo
 
 Mathematically, the update rule for the parameters \( w \) in Gradient Descent can be expressed as:
 $$
-\Delta_w L = \left[ \frac{dL}{dw_1}, \frac{dL}{dw_2}, \ldots , \frac{dL}{dw_N}\right]
+\Delta_w L = \left[ \frac{\partial L}{\partial w_1}, \frac{\partial L}{\partial w_2}, \ldots , \frac{\partial L}{\partial w_N}\right]
 $$
-where \( \Delta_w L \) represents the change in the loss function \( L \) with respect to the parameters \( w \), and \( \frac{dL}{dw_i} \) denotes the partial derivative of the loss function with respect to the \( i \)-th parameter \( w_i \).
+where \( \Delta_w L \) represents the change in the loss function \( L \) with respect to the parameters \( w \), and \( \frac{\partial L}{\partial w_i} \) denotes the partial derivative of the loss function with respect to the \( i \)-th parameter \( w_i \).
 
 Below we show a figure illustrating the partial derivatives of a function. The figure is represented in two ways: in a 3D graph and in the two-dimensional projection of the same graph (top view). The surface of the graph represents the function, where the lowest point is colored blue and the highest point is colored red. The black arrows extending from the surface indicate the direction and intensity of the gradient change of the function at each point in space. This visualization is crucial for understanding how Gradient Descent finds the fastest direction to reduce loss and update model weights during neural network training.
 
@@ -43,14 +43,14 @@ In neural networks, the optimization problem is non-convex, leading to the exist
     \caption{Local and Global Minima}
 \end{figure}
 
-\subsection{The Problem of Saddle Points}
+\subsection{The Problem of Sad\partial Le Points}
 
-Another optimization challenge arises from saddle points, where some directions curve upwards and others downwards. At a saddle point, the \textbf{gradient is zero}, even if the point is not a minimum. Saddle points are common in high-dimensional spaces. However, they only become problematic if the optimization algorithm becomes stuck exactly at the saddle point.
+Another optimization challenge arises from sad\partial Le points, where some directions curve upwards and others downwards. At a sad\partial Le point, the \textbf{gradient is zero}, even if the point is not a minimum. Sad\partial Le points are common in high-dimensional spaces. However, they only become problematic if the optimization algorithm becomes stuck exactly at the sad\partial Le point.
 
 \begin{figure}[!htbp]
     \centering
     \includegraphics[scale=0.88]{tikz/chapter2 - Saddle Point.pdf}
-    \caption{Saddle Point Illustration}
+    \caption{Saddle Le Point Illustration}
 \end{figure}
 
 In the figure, there is a saddle point depicted within the neural network optimization scenario, represented by the black dot. 
@@ -86,61 +86,150 @@ Using the derivatives of the error with respect to the hidden activities, we are
 
 Once we have calculated the derivatives of the error with respect to the hidden activities, we gain valuable information to update the weights associated with each connection in the network. This allows us to adjust the weights in a way that minimizes the overall error in the network, moving us closer and closer to the optimal solution for the learning problem.
 
-\section{Exploring Backpropagation: Step by Step (TODO)}
+\section{Exploring Backpropagation: Step by Step}
 
-Let us now describe in detail the error propagation through the neural network, starting from the output layer and proceeding to the input layer. Let's consider this neural network:
+In this section, we will explore backpropagation of the error through a neural network in detail, starting with the output layer and proceeding to the input layer. We begin with a neural network composed of \textbf{one neuron per layer}.
+
+\begin{minipage}{0.45\textwidth}
+\includegraphics[width=\textwidth]{tikz/chapter3 - Chain Rule One Layer.pdf}
+\captionof{figure}{Conceptualisation of Calculations}
+\end{minipage}
+\begin{minipage}{0.55\textwidth}
+After performing the forward step, we will get an output from the last activation \( a^{(l)} \), which will allow us to calculate the loss \( \textcolor{myred}{L} \) using the desired output \( y \). The latter activation \( a^{(l)} \) is calculated using three elements: a weight \( \textcolor{myblue}{w^{(l)}} \), a bias \( \textcolor{myorange}{b^{(l)}} \), and the activation of the preceding neuron \( a^{(l-1)} \). The resulting equations are as follows:
+
+$$ \textcolor{mygreen}{z^{(l)}} = \textcolor{myblue}{w^{(l)}} a^{(l-1)} + \textcolor{myorange}{b^{(l)}} $$
+$$ a^{(l)} = \sigma(\textcolor{mygreen}{z^{(l)}}) $$
+Where \textcolor{mygreen}{$z^{(l)}$} is the input of a non-linear function $\sigma$, such as a sigmoid or a ReLU. \\
+
+A way you might conceptualize this is that the weight \( \textcolor{myblue}{w^{(l)}} \), the prior activation \( a^{(l-1)} \), and the bias \( \textcolor{myorange}{b^{(l)}} \) together \textbf{\textcolor{myyellow!85!black}{allow us to calculate}} \( \textcolor{mygreen}{z^{(l)}} \), which in turn \textbf{\textcolor{myyellow!85!black}{allow us to calculate}} \( a^{(l)} \), which together with the desired output \( y \) \textbf{\textcolor{myyellow!85!black}{allows us to calculate the loss}} \( \textcolor{myred}{L} \). This concept is illustrated in the diagram on the left.
+\end{minipage}
+
+Our initial goal during the backward step is to understand how sensitive the loss \( \textcolor{myred}{L} \) is to small changes in the weight \( \textcolor{myblue}{w^{(l)}} \), that is, calculate the derivative\( \frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(l)}}} \). 
+Conceptually, when you see this kind of formula, we need to think of it as saying to us "\textbf{how much does \( \textcolor{myred}{L} \) (numerator) change if we make a small change at \( \textcolor{myblue}{w^{(l)}} \) (denominator)?}"
+
+When we calculate this derivative, we note that a small change in weight \( \textcolor{myblue}{w^{(l)}}\) \textbf{\textcolor{myyellow!85!black}{causes a change in}} \( \textcolor{mygreen}{z^{(l)}} \), which in turn \textbf{\textcolor{myyellow!85!black}{causes a change in}} \( a^{(l)} \), \textbf{\textcolor{myyellow!85!black}{directly affecting}} the loss \( \textcolor{myred}{L} \). And so this is where the chain of derivatives rule comes into play! 
+
+As can be seen below we can now "chunk" the previous derivative:
+
+\vspace{-0.8cm}
+{\Large
+% $$
+\begin{equation*}
+\hspace*{1cm}
+\frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(l)}}} = \frac{\textcolor{mygreen}{\partial z^{(l)}}}{\textcolor{myblue}{\partial \tikzmarkk{Z}w^{(l)}}}  
+\frac{\partial a^{(l)}}{\textcolor{mygreen}{\partial \tikzmarkk{Y}z^{(l)}}} \frac{\textcolor{myred}{\partial L}}{\partial \tikzmarkk{YC}a^{(l)}}
+\end{equation*}
+% $$
+\begin{tikzpicture}[overlay,remember picture]
+    \node (Ze) [below of = Z, node distance = 4 em, anchor=west] {\footnotesize How much does a little variation to \( \textcolor{myblue}{w^{(l)}} \) changes \( \textcolor{mygreen}{z^{(l)}} \)?};
+    \draw[<-, in=180, out=-90] (Z.south)++(.25em,-1ex) to (Ze.west);
+
+    \node (Ye) [below of = Y, node distance = 3 em, anchor=west] {\footnotesize How much does a little variation to \( \textcolor{mygreen}{z^{(l)}} \) changes \( a^{(l)} \)?};
+    \draw[<-, in=180, out=-90] (Y.south)++(.25em,-1ex) to (Ye.west);
+
+    \node (YCe) [below of = YC, node distance = 2 em, anchor=west] {\footnotesize How much does a little variation to \( a^{(l)} \) changes \( \textcolor{myred}{L} \)?};
+    \draw[<-, in=180, out=-90] (YC.south)++(.25em,-1ex) to (YCe.west);
+\end{tikzpicture}
+}
+\vspace{1.8cm}
+
+\textit{What about the bias term? Easy peasy!} We use the same method as for the weight term:
+
+\vspace{-0.3cm}
+$$\frac{\textcolor{myred}{\partial L}}{\textcolor{myorange}{\partial b^{(l)}}} = \frac{\textcolor{mygreen}{\partial z^{(l)}}}{\textcolor{myorange}{\partial b^{(l)}}}  \frac{\partial a^{(l)}}{\textcolor{mygreen}{\partial z^{(l)}}} \frac{\textcolor{myred}{\partial L}}{\partial a^{(l)}}$$
+
+\textit{Now what? For the other layers?} Let's go back to our scheme for a moment and extend it:
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.8\textwidth]{tikz/chapter3 - Backpropagation.jpg}
-\caption{\color{red}\colorbox{pink}{Tikz TODO}}
+\includegraphics[width=\textwidth]{tikz/chapter3 - Chain Rule Multiple Layer.pdf}
+\caption{Conceptualisation of Calculations (Extended)}
 \end{figure}
 
-\textbf{Output Layer}: In the output layer, after the forward pass and loss computation, we calculate the rate of change of the error with respect to the output of each node in the output layer. This is given by:
-\[ \frac{d L}{d y_i} \]
-Now this error is propagated backwards to the first hidden layer.
+All other weights and biases are in the earlier layers of the network, which means that their influence on cost is less direct. The way we han\partial Le them is to first consider how sensitive the cost is to the value of that activation in the penultimate layer, \( a^{(l-1)} \), and then consider how sensitive that value is to all the previous weights and biases.
 
-\textbf{First Hidden Layer}:
-The change in the error with respect to the input (\( z_j \)) of the j-th node in the first hidden layer is given by the sum of the contributions of all nodes in the output layer multiplied by the derivative of the activation function with respect to the input of the hidden layer:
-\[ \frac{d L}{d z_j} = \sum_{i=1}^{N} \left( \frac{d L}{d y_i} \cdot \frac{d y_i}{d z_j} \right) \]
+The derivative of cost with respect to that activation looks a lot like what we have already seen:
 
-Dove:
-\begin{itemize}
-    \item \( \frac{d L}{d y_i} \) represents the partial error with respect to the output of the output layer. (\textcolor{myred}{This was backpropagated from the output layer})
-    \item \( \frac{d y_i}{d z_j} \) is the derivative of the activation function with respect to the input of the hidden layer.
-\end{itemize}
+\vspace{-0.5cm}
+$$\frac{\textcolor{myred}{\partial L}}{\partial a^{(l-1)}} = \frac{\textcolor{mygreen}{\partial z^{(l)}}}{\partial a^{(l-1)}}  \frac{\partial a^{(l)}}{\textcolor{mygreen}{\partial z^{(l)}}} \frac{\textcolor{myred}{\partial L}}{\partial a^{(l)}}$$
 
-\textbf{Secondo Hidden Layer}:
-Once we obtain the error for the first hidden layer, we continue to propagate the error to the second hidden layer. For each node \( z_j \) in this layer, we calculate the change in the error with respect to the input (\( z_k \)) of the k-th node in the second hidden layer:
-\[ \frac{d L}{d z_k} = \sum_{j=1}^{M} \left( \frac{d L}{d z_j} \cdot \frac{d z_j}{d z_k} \right) \]
+The trick here is to remember that the activation in the previous layer is determined by its set of weights and biases. For example, there is a long chain of dependencies between the weight \( w^{(l-1)} \) and the cost \( \textcolor{myred}{L} \). The way this presents itself mathematically is that the partial derivative of the cost with respect to that weight appears as a long chain of partial derivatives for each intermediate step, see the image below to visualize the concept graphically.
 
-Where:
-\begin{itemize}
-    \item \( \frac{d L}{d z_j} \) represents the change in the error from the input of the first hidden layer. (\textcolor{myred}{This was backpropagated from the first hidden layer})
-    \item \( \frac{d z_j}{d z_k} \) is the derivative of the activation function with respect to the input of the next hidden layer.
-\end{itemize}
+\begin{minipage}{0.55\textwidth}
 
+Here is how you can decompose the derivative:
 
-\textbf{Terzo Hidden Layer}:
-Proseguiamo la propagazione dell'errore al terzo hidden layer. Per ogni nodo \( z_k \) in questo strato, calcoliamo il cambiamento nell'errore rispetto all'input netto (\( z_m \)) del m-esimo nodo nel terzo hidden layer:
-\[ \frac{d L}{d z_m} = \sum_{k=1}^{M} \left( \frac{d L}{d z_k} \cdot \frac{d z_k}{d z_m} \right) \]
+\vspace{-0.3cm}
+$$\frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(l-1)}}} = 
+\frac{\textcolor{mygreen}{\partial z^{(l-1)}}}{\textcolor{myblue}{\partial w^{(l-1)}}}  
+\frac{\partial a^{(l-1)}}{\textcolor{mygreen}{\partial z^{(l-1)}}} 
+\underbrace{
+\frac{\textcolor{mygreen}{\partial z^{(l)}}}{\textcolor{myblue}{\partial w^{(l)}}}  
+\frac{\partial a^{(l)}}{\textcolor{mygreen}{\partial z^{(l)}}} 
+\frac{\textcolor{myred}{\partial L}}{\partial a^{(l)}}}_\textrm{\Large$\frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(l)}}}$}$$
+\vspace{-0.3cm}
+\ \\
+By following the dependencies through our tree and multiplying together a long series of partial derivatives, we now \textbf{can calculate the derivative of the cost with respect to any weight or bias of the entire network}. \textit{We are simply applying the same idea of the chain rule that we have always used!} \\
 
-Dove:
-\begin{itemize}
-    \item \( \frac{d L}{d z_k} \) rappresenta il cambiamento nell'errore rispetto all'input netto del secondo hidden layer. (\textcolor{myred}{This was backpropagated from the second hidden layer})
-    \item \( \frac{d z_k}{d z_m} \) è la derivata della funzione di attivazione rispetto all'input netto dell'hidden layer successivo.
-\end{itemize}
+And since we can get any derivative, we can calculate the entire gradient vector:
+\vspace{-0.1cm}
+$$
+\Delta_w L = \left[ \frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(1)}}}, \frac{\textcolor{myred}{\partial L}}{\textcolor{myorange}{\partial b^{(1)}}}, \ldots , \frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(l)}}}, \frac{\textcolor{myred}{\partial L}}{\textcolor{myorange}{\partial b^{(l)}}},\right] 
+$$
+\vspace{-0.3cm}
+\ \\
+The job is done! At least for this network, now we must add more neurons for each layer. \textit{I know, you are crying inside, but actually, not much changes when we give the layers more neurons: it's just a few more indexes to keep track of \emoji{smile}}.
 
-\textbf{E così via}:
-Proseguiamo la propagazione dell'errore fino all'output layer in questo modo.
+\vspace{1cm}
 
-\textbf{Pesi}:
-Infine, calcoliamo il cambiamento nell'errore rispetto ai pesi tra l'input layer e il primo hidden layer:
-\[ \frac{d L}{d w_{ij}} = \frac{d L}{d z_j} \cdot \frac{d z_j}{d w_{ij}} \]
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\includegraphics[width=\textwidth]{tikz/chapter3 - Chain Rule Multiple Layer Dependencies.pdf}
+\captionof{figure}{Calculations with 3 Layers}
+\end{minipage}
 
-Dove:
-\begin{itemize}
-    \item \( \frac{d z_j}{d w_{ij}} \) rappresenta l'input \( x_i \) del nodo moltiplicato per il peso associato.
-\end{itemize}
+\begin{minipage}{0.4\textwidth}
+\includegraphics[width=\textwidth]{tikz/b.pdf}
+\captionof{figure}{Neural Network Indexing}
+\vspace{0.8cm}
+\includegraphics[width=\textwidth]{tikz/a.pdf}
+\captionof{figure}{Example of Indexing}
+\end{minipage}
+\begin{minipage}{0.05\textwidth}
+\
+\end{minipage}
+\begin{minipage}{0.55\textwidth}
+When dealing with neural networks with multiple neurons per layer, we have to change the notations a bit.\\
 
-Questi passaggi costituiscono l'essenza della backpropagation attraverso una rete neurale con quattro hidden layer. Ogni strato riceve l'errore dallo strato successivo e lo propaga all'indietro attraverso la rete, consentendo il calcolo del gradiente dell'errore rispetto ai pesi e agli altri parametri della rete.
+The activation of each neuron will be denoted with a subscript indicating its position within the layer. Thus, \textbf{the superscript of each neuron indicates which layer it is in, while the subscript indicates the specific neuron}.\\
+
+The weights also need a refresh: additional indices are required to specify their location. In addition to the superscript representing the layer, \textbf{two subscripts indicate the edge weight connecting the neuron in layer $i$ to the neuron in layer $j$}.\\
+
+\textit{I know, these "$ji$" indices, being backwards, might seem strange or unconventional at first, but they align with the way the weight matrix is usually indexed.}\\
+
+On the left are two images: one formally represents how the nodes and edges of the network are represented, while the other provides an example with two dummy layers, named $0$ and $1$, with $n$ and $m$ nodes, respectively.
+\end{minipage}
+
+\newpage
+The weighted sum \textcolor{mygreen}{$z_{j}^{(l)}$} then takes the following form:
+$$
+\textcolor{mygreen}{z_{j}^{(l)}} = \sum_{i} \textcolor{myblue}{w_{ji}^{(l)}} \cdot a_i^{(l-1)} + \textcolor{myorange}{b_{j}^{(l)}}
+$$
+The new equations turn out to be esentially the same with respect to the case of only one neuron per layer:
+
+\vspace{-0.4cm}
+$$
+\frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w_{ji}^{(l)}}} = \frac{\textcolor{mygreen}{\partial z_{j}^{(l)}}}{\textcolor{myblue}{\partial w_{ji}^{(l)}}}  
+\frac{\partial a_{j}^{(l)}}{\textcolor{mygreen}{\partial z_{j}^{(l)}}} \frac{\textcolor{myred}{\partial L}}{\partial a_{j}^{(l)}}
+$$
+
+Indeed, the expression of the derivative of the chain rule describing the sensitivity of cost with respect to a particular weight is the same as in the previous case. The only difference is that we now have multiple indices, $i$ and $j$, indicating which weight we are considering.
+
+What changes, however, is the derivative of the cost with respect to one of the activations in the preceding layers, because \textbf{the preceding neurons influence the cost function through multiple pathways}.
+
+To understand the sensitivity of the cost function with respect to a certain neuron, it is necessary to sum the influences along each of these different pathways. So, we \textbf{sum multiple expressions of different chain rules corresponding to each pathway of influence}.
+
+\vspace{-0.5cm}
+$$\frac{\textcolor{myred}{\partial L}}{\partial a_{i}^{(l-1)}} = \underbrace{\sum_{j}\frac{\textcolor{mygreen}{\partial z_{j}^{(l)}}}{\partial a_{i}^{(l-1)}}  \frac{\partial a_{j}^{(l)}}{\textcolor{mygreen}{\partial z_{j}^{(l)}}} \frac{\textcolor{myred}{\partial L}}{\partial a_{j}^{(l)}}}_\textrm{Sum over layer $l$}$$
+
+This reasoning is carried out using traditional numerical values, but it is evident that in order to efficiently handle the weights and biases of the neural network, it is necessary to use the \textbf{matrix approach}, since it allows simultaneous operations to be performed on all the parameters of the network, greatly optimizing the computational process.

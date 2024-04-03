@@ -1,0 +1,32 @@
+\documentclass[border=1pt, tikz]{standalone}
+
+\usetikzlibrary{graphs,graphdrawing,quotes}
+\usegdlibrary{trees,layered}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myyellow}{yellow!88!black}
+\colorlet{myorange}{orange!90!black}
+\colorlet{mydarkred}{red!30!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!30!black}
+
+\begin{document}
+  \begin{tikzpicture}
+    \graph [grow down, layered layout] { 
+      w/[as=$w^{(l)}$, mybluee] ->[myyellow, style = very thick] z/[as=$z^{(l)}$, mygreen],
+      al1/[as=$a^{(l-1)}$] -- z/[as=$z^{(l)}$, mygreen],
+      b/[as=$b^{(l)}$, myorange] -- z/[as=$z^{(l)}$, mygreen],
+      
+      z/[as=$z^{(l)}$, mygreen] ->[myyellow, style = very thick] al/[as=$a^{(l)}$],
+      
+      al/[as=$a^{(l)}$] ->[myyellow, style = very thick] L/[as=$L$, red],
+      
+      L/[as=$L$, red] -- {y/[as=$y$]},
+      
+      {[same layer] y, L};
+    };
+  \end{tikzpicture}
+\end{document}
