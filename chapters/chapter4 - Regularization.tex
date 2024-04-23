@@ -149,7 +149,7 @@ Multi-Task Learning often compares with self-supervised learning. While in Multi
 In Multi-Task Learning, it is possible to apply \textbf{soft constraints on model parameters}. This means that we can enforce some parameters to be similar to others (this is called \textbf{"Paramaters Tying"}). For example, if we have multiple models performing the same type of classification but with slightly different data, we can force the parameters to be similar to ensure consistency across models.
 
 \section{Parameters Sharing}
-
+\label{c4:parameterSharing}
 Parameter Sharing is a technique used in neural networks to enforce that \textbf{certain parameters within the network are exactly the same}. This is done for several reasons, including reducing model complexity and sharing relevant information between different parts of the network.
 
 Sharing parameters within the network offers an advantage over "Paramaters Tying", since only a subset of the parameters need to be stored in memory.

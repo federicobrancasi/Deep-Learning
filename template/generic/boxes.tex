@@ -18,15 +18,15 @@
 %   REMARK ENVIRONMENT
 %----------------------------------------------------------------------------------------
 
-\newtcolorbox{remark}{
-  colback=bg,
-  colframe=accent,
-  coltext=fg,
-  boxrule=0pt,
-  leftrule=2pt,
-  boxsep=4pt,
-  arc=0pt,
-  outer arc=0pt,
+\newtcolorbox{remark}[2]{
+  colback=#2,    % Colore dello sfondo del box passato come parametro
+  colframe=#1,   % Colore del colframe passato come parametro
+  coltext=black, % Colore del testo
+  boxrule=0pt,   % Spessore del bordo del box
+  leftrule=2pt,  % Spessore del bordo sinistro
+  boxsep=4pt,    % Spazio interno del box
+  arc=0pt,       % Arrotondamento degli angoli
+  outer arc=0pt, % Arrotondamento degli angoli esterni
 }
 
 %----------------------------------------------------------------------------------------

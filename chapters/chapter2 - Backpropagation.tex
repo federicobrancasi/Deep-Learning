@@ -43,14 +43,14 @@ In neural networks, the optimization problem is non-convex, leading to the exist
     \caption{Local and Global Minima}
 \end{figure}
 
-\subsection{The Problem of Sad\partial Le Points}
+\subsection{The Problem of Saddle Points}
 
-Another optimization challenge arises from sad\partial Le points, where some directions curve upwards and others downwards. At a sad\partial Le point, the \textbf{gradient is zero}, even if the point is not a minimum. Sad\partial Le points are common in high-dimensional spaces. However, they only become problematic if the optimization algorithm becomes stuck exactly at the sad\partial Le point.
+Another optimization challenge arises from saddle points, where some directions curve upwards and others downwards. At a saddle point, the \textbf{gradient is zero}, even if the point is not a minimum. saddle points are common in high-dimensional spaces. However, they only become problematic if the optimization algorithm becomes stuck exactly at the saddle point.
 
 \begin{figure}[!htbp]
     \centering
     \includegraphics[scale=0.88]{tikz/chapter2 - Saddle Point.pdf}
-    \caption{Saddle Le Point Illustration}
+    \caption{Saddle Point Illustration}
 \end{figure}
 
 In the figure, there is a saddle point depicted within the neural network optimization scenario, represented by the black dot. 
@@ -68,7 +68,7 @@ Subsequently, a more efficient idea was proposed: to \textbf{perturb only the ac
 
 \textit{Therefore, how can we achieve more efficient learning?} This is where backpropagation comes in.
 
-\begin{remark}
+\begin{remark}{black}{white}
 Backpropagation is a widely used learning algorithm in neural networks, which consists of three main steps:
 
 \begin{enumerate}
