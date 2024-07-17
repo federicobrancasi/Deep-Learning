@@ -62,6 +62,8 @@ To mitigate the problem of noise or fluctuations associated with SGD, we can ado
 The advantages of this approach are many. First of all, the computation time does not depend on the total size of the $N$ dataset, which makes it \textbf{suitable even for large datasets}. Furthermore, the method allows \textbf{parallel processing}, making it suitable for implementations on parallel hardware such as GPUs. However, this method has still a problem related to the optimization surface: along flat direction the gradient step is small so the algorithm achieves very slow progress, whereas if the surface is steep the may be jittery movements.  To solve this problem, \textit{momentum} have been developed.
 
 \subsection{Stochastic Gradient Descent with Momentum}
+When the gradient points in a direction where the surface is almost flat, SGD moves very slowly because the updates are small and in regions where the gradient changes rapidly (steep gradients) SGD can fluctuate a lot. To solve these problems, we introduce Momentum!
+
 Stochastic Gradient Descent with Momentum is a variant of the gradient descent algorithm that introduces a new variable, called \textit{velocity} (\(v\)), which represents an \textbf{exponentially decaying moving average} of negative gradients (in simple words, it tracks the progress history of the algorithm). The velocity accumulates the gradient over iterations, and it acts as a kind of "inertia" in the movement of the model parameters during learning, adding an acceleration component to the optimisation process.
 
 \begin{algorithm}
@@ -190,8 +192,10 @@ Thanks to this strategy, RMSProp \textbf{avoids an excessive decrease in the lea
 
 
 \subsection{ADAM (ADAptive Moments)}
-Adam is an optimisation algorithm that combines concepts derived from RMSProp and Momentum.  However, Adam introduces a fundamental innovation: \textbf{bias correction terms} for first and second moments. These terms and they are crucial since the first and second moments are initialised at zero and require time to "warm up" (i.e. to adapt to the data).
+Adam is an optimisation algorithm that combines concepts derived from RMSProp and Momentum.  However, Adam introduces a fundamental innovation: \textbf{bias correction terms} for first and second moments. These terms are crucial since the first and second moments are initialised at zero and require time to "warm up" (i.e. to adapt to the data).
 
+Adam automatically adapts the learning rates for each parameter based on momentum and past momentum estimation, helping to improve the effectiveness of optimisation during the learning process. In Adam, we combine several concepts seen in this section: the \textbf{use of the stochastic} in the SGD, the \textbf{idea of using momentum}, the \textbf{adaptation of the learning rate based on the second moment} and the \textbf{use of a bias correction} for both moments.
+\newpage
 \begin{algorithm}
 \renewcommand\thealgorithm{}
 \caption{\textbf{\textcolor{mygreen}{Adam}}}
@@ -218,9 +222,7 @@ $\textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} - \varepsilon \frac{\hat{\
 \end{algorithmic}
 \end{algorithm}
 
-Adam automatically adapts the learning rates for each parameter based on momentum and past momentum estimation, helping to improve the effectiveness of optimisation during the learning process. In Adam, we combine several concepts seen in this section: the \textbf{use of the stochastic} in the SGD, the \textbf{idea of using momentum}, the \textbf{adaptation of the learning rate based on the second moment} and the \textbf{use of a bias correction} for both moments.
-
-
+\vspace{-0.5cm}
 \section{Normalization}
 
 \vspace{-0.4cm}
@@ -229,7 +231,7 @@ In the world of neural networks, optimization is crucial to model success. Howev
 
 \subsection{The Problem of Covariate Shift}
 
-When training a neural network, it is important to keep the distribution of input data stable throughout the training process. If the distribution changes significantly during training, the model may have difficulty generalising well to new data, as patterns learned during training may no longer be relevant or representative.
+When training a neural network, it is important to keep the distribution of input data stable throughout the training process. If the distribution changes significantly during training, the model may have difficulty generalizing well to new data, as patterns learned during training may no longer be relevant or representative.
 
 The main problem arising from the covariate shift is that it can lead to a situation where \textbf{most of the input data falls into non-linear regions} of the neural network's activation function. This can significantly \textbf{slow down the learning process} as the network may require multiple iterations to adapt its weights effectively to the new input distributions.
 
@@ -260,7 +262,7 @@ There are two famous variants of Batch Normalization: \textbf{Layer Normalizatio
 To explain the various concepts, we will use a tuple \textbf{(N,C,H,W)}, which is commonly used to represent multidimensional data such as images (\textit{which will be the focus of our example to give us a better understanding}). This representation is nothing more than a tensor and is common in frameworks such as TensorFlow and PyTorch to handle input data in neural networks. Here is what each dimension represents:
 \begin{itemize}
     \item \textbf{N}: Represents the \textbf{batch size}, i.e. the number of instances (or samples) within the batch. For example, if N=32, this means we are working with a batch of 32 images.
-    \item \textbf{C}: Indicates the \textbf{number of channels} (feature maps) in the data. In a colour image, we will typically have 3 channels for the colours red, green and blue (RGB). In general, in the input data, the channel can represent not only the colour, but various aspects or features of the input, such as depth, features extracted from convolutional layers, etc.
+    \item \textbf{C}: Indicates the \textbf{number of channels} (feature maps) in the data. In a color image, we will typically have 3 channels for the colors red, green and blue (RGB). In general, in the input data, the channel can represent not only the color, but various aspects or features of the input, such as depth, features extracted from convolutional layers, etc.
     \item \textbf{H}: Represents the \textbf{height of the data}. In an image, it corresponds to the number of rows of pixels present.
     \item \textbf{W}: Represents the \textbf{width of the data}. In an image, it corresponds to the number of columns of pixels present.
 \end{itemize}
@@ -283,10 +285,10 @@ Consider the entire batch of size N. Each example in the batch has C channels, e
 
 Taking our example, we would have a tensor of size (10, 3, 100), where:
 10 represents the batch size (N), i.e. the number of images in the batch,
-3 represents the number of channels (C), such as the three colour channels: red, green and blue,
+3 represents the number of channels (C), such as the three color channels: red, green and blue,
 100 represents the height (H) of the image and
 100 represents the width (W) of the image.
-For each colour channel in each image, the mean and standard deviation on all pixels corresponding to that colour channel in all images in the batch would be calculated. The pixel values for each colour channel \textbf{in each image} would then be normalised against these calculated mean and standard deviations.
+For each color channel in each image, the mean and standard deviation on all pixels corresponding to that color channel in all images in the batch would be calculated. The pixel values for each color channel \textbf{in each image} would then be normalised against these calculated mean and standard deviations.
 
 
 
@@ -304,7 +306,7 @@ Here, we consider each example in the batch separately. Each example has C chann
 \end{minipage}
 
 Once again, we would have a tensor of size (10, 3, 100).
-However, each image in the batch is considered separately. For each image, the pixel values in each colour channel would be normalised with respect to the distribution of pixel values within the same image.
+However, each image in the batch is considered separately. For each image, the pixel values in each color channel would be normalised with respect to the distribution of pixel values within the same image.
 Thus, the pixel values in each image would be normalised to the distribution of pixel values within the image itself, \textbf{completely ignoring the other images in the batch}.
 
 
@@ -322,8 +324,8 @@ We consider each spatial position (HxW) separately for each example in the batch
 \end{minipage}
 
 Here again, we have the same size tensor (10, 3, 100).
-Now, each pixel in each colour channel of each spatial position in the image is considered separately for each image in the batch.
-The pixel values at each spatial position (HxW) of \textbf{each colour channel in each image} would be normalised to the corresponding pixel values at the same positions in the other images in the batch.
+Now, each pixel in each color channel of each spatial position in the image is considered separately for each image in the batch.
+The pixel values at each spatial position (HxW) of \textbf{each color channel in each image} would be normalised to the corresponding pixel values at the same positions in the other images in the batch.
 
 \textbf{N.B.} A more modern technique is \textbf{Group Normalisation (GN)}, which can be considered as a mix between Layer Normalisation and Instance Normalisation. With GN, the data channels are considered separately, as in Layer Normalisation, but instead of operating on an entire layer, the \textbf{channels are divided into groups} and the normalisation statistics within each group are calculated independently. This approach is reminiscent of the idea of instance-based normalisation, where each instance is considered separately, but instead of normalising individual instances, GN normalises groups of channels. This makes it useful in scenarios where the dimensionality of the data is high and normalisation on entire layers may be excessive.
 

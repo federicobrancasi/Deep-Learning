@@ -74,7 +74,7 @@ $$
 Where:
 \begin{itemize}
     \item $\sum_{i=1}^{n} L(f(x_i, \mathbf{W}), y_i)$ represents the sum of losses on all training data $(x_i, y_i)$.
-    \item $\lambda \sum_{l} |\mathbf{w}_l|$ represents the L1 regularization term, where $||\mathbf{w}_l|$ is the absolute norm of the model weights and $\lambda$ is the regularization parameter.
+    \item $\lambda \sum_{l} |\mathbf{w}_l|$ represents the L1 regularization term, where $|\mathbf{w}_l|$ is the absolute norm of the model weights and $\lambda$ is the regularization parameter.
     \item The sum over $l$ represents the sum over all the weights of the model.
 \end{itemize}
 
@@ -127,7 +127,7 @@ This contributes additively to the quadratic error, causing the model to minimiz
 
 In \textbf{autoencoder models for denoising}, noise injection is a common practice. The goal is to teach the neural network to reconstruct the original input from the noisy input. This technique is often used in unsupervised learning algorithms.
 
-\textit{But can noise only be added to inputs? Absolutely not! It can also be added to weights and labels in neural models!} Adding noise to the inputs makes the learned function smoother, while \textbf{adding noise to the weights encourages the network to be more robust to random variations in the training data} (we get a kind of "flexibility" in the model's weights). This can be especially useful when the model is in regions of the weight space where variations in individual weights do not significantly affect the model output. \textbf{Adding noise to labels can discourage overconfident model behavior}, such as during cross-entropy loss learning, thus preventing overestimation of class probabilities (cross-entropy assigns very large values for the for the correct class and very small values for the wrong classes). A common practice in this case is the application of "\textbf{label smoothing}", which is the random modification of labels.
+\textit{But can noise only be added to inputs? Absolutely not! It can also be added to weights and labels in neural models!} Adding noise to the inputs makes the learned function smoother, while \textbf{adding noise to the weights encourages the network to be more robust to random variations in the training data} (we get a kind of "flexibility" in the model's weights). This can be especially useful when the model is in regions of the weight space where variations in individual weights do not significantly affect the model output. \textbf{Adding noise to labels can discourage overconfident model behavior}, such as during cross-entropy loss learning, thus preventing overestimation of class probabilities (cross-entropy assigns very large values for the correct class and very small values for the wrong classes). A common practice in this case is the application of "\textbf{label smoothing}", which is the random modification of labels.
 
 \section{Early Stopping}
 
@@ -143,6 +143,12 @@ However, it is \textbf{important to select the stopping point correctly}, since 
 Multi-Task Learning is a learning technique where the model is trained to do \textbf{more than one task at the same time}. For example, we might want to train a model to recognize objects in an image and simultaneously identify their location. This means that the model learns to perform more than one "task" during the same training process.
 
 In Multi-Task Learning, several tasks \textbf{share the same set of input data and some intermediate layers of the neural network}, but may have \textbf{separate final layers for each task}. In this case, the parameters can be of two types: \textbf{task-specific} or \textbf{generic} (shared among all tasks). The former are designed to perform a specific task and learn only from data related to that task (typically found in the upper layers of the network), while the latter are shared across all tasks and can benefit from the combined data of all tasks (typically found in the lower layer of the network).
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width = 0.6\linewidth]{tikz/chapter4 - Multi Task Learning.pdf.pdf} 
+    \caption{Visualization of Multi-Task Learning}
+\end{figure}
 
 Multi-Task Learning often compares with self-supervised learning. While in Multi-Task Learning multiple tasks are taught at the same time, \textbf{in self-supervised learning the model learns to represent data in such a way that some information is "hidden"} and must be predicted. For example, it might train a model to predict missing parts of a picture.
 
@@ -171,7 +177,7 @@ However, this method requires more computational resources and can be more compl
 
 \section{Dropout}
 
-The basic idea of Dropout is to \textbf{randomly turn off some neurons} during the forward pass (forward pass) of the network. This process is \textbf{stochastic}, since the choice of neurons to be eliminated is random. By forcing the network to work with redundant representations, Dropout prevents hidden neurons from fitting too closely to each other and \textbf{forces them to focus on extracting more useful features} for the task.
+The basic idea of Dropout is to \textbf{randomly turn off some neurons} during the forward pass of the network. This process is \textbf{stochastic}, since the choice of neurons to be eliminated is random. By forcing the network to work with redundant representations, Dropout prevents hidden neurons from fitting too closely to each other and \textbf{forces them to focus on extracting more useful features} for the task.
 
 Dropout can be viewed as training a large set of models, each of which shares network parameters. Each binary Dropout mask leads to a different model, and for each example, the network is trained using a different Dropout mask. \textit{Each value in the mask represents whether the corresponding neuron is active (1) or deactivated (0) during the forward pass of the network.}
 

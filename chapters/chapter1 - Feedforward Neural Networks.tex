@@ -14,7 +14,7 @@ A feedforward neural network can be thought of as a sequence of features, each o
 $$ f(\mathbf{x}) = f^{(i)}(f^{(i-1)}(\dots f^{(2)}(f^{(1)}(\mathbf{x})) \dots )) $$  
 Where \( f^{(1)} \) is the first layer (or input layer), \( f^{(i)} \) represents the output of the \(i\)-th layer, and so on. The depth of the network is defined by the number of layers, that is, the number of functions \( f^{(i)} \) involved.
 
-In evaluating the functions of a feedforward network, which is acyclic graph, the flow of information proceeds in a single direction, from input to output. This flow passes through intermediate computations in the various layers of the network. 
+In evaluating the functions of a feedforward network, which is directed acyclic graph (DAG), the flow of information proceeds in a single direction, from input to output. This flow passes through intermediate computations in the various layers of the network. 
 
 In the initial layer, also called \textbf{\color{green!60!black}{Input Layer}}, each node corresponds to an input feature or variable, indeed there are no calculations or transformations applied to the data here.
 
@@ -26,7 +26,7 @@ Finally in the \textbf{\color{red!80!black}{Output Layer}} we obtain the desired
 The number of nodes in this layer depends on the nature of the problem, for example, in a binary classification problem there will be only one node, while in a multiclass classification problem there will be one node for each class.
 Also the type of activation function used in the output layer depends on the type of problem the network is addressing! For example, for binary classification problems, the sigmoid activation function can be used, while for multiclass we use the softmax.
 
-\subsection{Overcoming the limitations of linear models}
+\subsection{Overcoming the Limitations of Linear Models}
 
 Linear models have long been used for their simplicity and convex optimization, but they have significant limitations in their ability to capture complex interactions between input variables. This limitation is particularly evident when dealing with complex problems such as nonlinear classification.
 
@@ -130,7 +130,7 @@ Mean Absolute Error (MAE), or only Absolute Error (AE), calculates the mean of t
 \begin{equation*}
 \text{\textbf{Huber Loss}} = \frac{1}{N} \sum_{i=1}^{N} \left\{
 \begin{array}{ll}
-    \frac{1}{2} (y_i - \hat{y}_i)^2 & \text{se } |y_i - \hat{y}_i| \leq \textcolor{mygreen}{\delta} \\
+    \frac{1}{2} (y_i - \hat{y}_i)^2 & \text{if } |y_i - \hat{y}_i| \leq \textcolor{mygreen}{\delta} \\
     \tikzmarkk{D}\textcolor{mygreen}{\delta} (|y_i - \hat{y}_i| - \frac{1}{2} \textcolor{mygreen}{\delta}) & \text{otherwise}
 \end{array}
 \right.

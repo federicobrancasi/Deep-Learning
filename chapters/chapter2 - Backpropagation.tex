@@ -22,7 +22,9 @@ Below we show a figure illustrating the partial derivatives of a function. The f
     \caption{Visualization of Partial Derivatives in Two Distinct Ways}
 \end{figure}
 
-Having understood partial derivatives and the role of the gradient in the optimization process, let's now look at a visual representation of how the Gradient Descent algorithm works. In the image below, we see a three-dimensional surface representing the loss function. As before, the lowest point of the surface is colored blue and represents the minimum of the loss function. The black arrows extending from the surface indicate the \textbf{path} that Gradient Descent follows \textbf{to reach the minimum}. Each arrow represents the direction and intensity of the change in the loss function at a given point in space.
+\textbf{Each partial derivative measures how fast the loss changes in one direction}. When the gradient is zero, the loss is not changing in any direction.
+
+Having understood partial derivatives and the role of the gradient in the optimization process, let's now look at a visual representation of how the Gradient Descent algorithm works. In the image below, the black arrows extending from the surface indicate the \textbf{path} that Gradient Descent follows \textbf{to reach the minimum}. Each arrow represents the direction and intensity of the change in the loss function at a given point in space.
 
 \begin{figure}[!htbp]
     \centering
@@ -146,7 +148,7 @@ $$\frac{\textcolor{myred}{\partial L}}{\textcolor{myorange}{\partial b^{(l)}}} =
 \caption{Conceptualisation of Calculations (Extended)}
 \end{figure}
 
-All other weights and biases are in the earlier layers of the network, which means that their influence on cost is less direct. The way we han\partial Le them is to first consider how sensitive the cost is to the value of that activation in the penultimate layer, \( a^{(l-1)} \), and then consider how sensitive that value is to all the previous weights and biases.
+All other weights and biases are in the earlier layers of the network, which means that their influence on cost is less direct. The way we handle them is to first consider how sensitive the cost is to the value of that activation in the penultimate layer, \( a^{(l-1)} \), and then consider how sensitive that value is to all the previous weights and biases.
 
 The derivative of cost with respect to that activation looks a lot like what we have already seen:
 
@@ -164,9 +166,9 @@ $$\frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(l-1)}}} =
 \frac{\textcolor{mygreen}{\partial z^{(l-1)}}}{\textcolor{myblue}{\partial w^{(l-1)}}}  
 \frac{\partial a^{(l-1)}}{\textcolor{mygreen}{\partial z^{(l-1)}}} 
 \underbrace{
-\frac{\textcolor{mygreen}{\partial z^{(l)}}}{\textcolor{myblue}{\partial w^{(l)}}}  
+\frac{\textcolor{mygreen}{\partial z^{(l)}}}{\partial a^{(l-1)}}  
 \frac{\partial a^{(l)}}{\textcolor{mygreen}{\partial z^{(l)}}} 
-\frac{\textcolor{myred}{\partial L}}{\partial a^{(l)}}}_\textrm{\Large$\frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(l)}}}$}$$
+\frac{\textcolor{myred}{\partial L}}{\partial a^{(l)}}}_\textrm{\Large$\frac{\textcolor{myred}{\partial L}}{\partial a^{(l-1)}}$}$$
 \vspace{-0.3cm}
 \ \\
 By following the dependencies through our tree and multiplying together a long series of partial derivatives, we now \textbf{can calculate the derivative of the cost with respect to any weight or bias of the entire network}. \textit{We are simply applying the same idea of the chain rule that we have always used!} \\
@@ -174,7 +176,7 @@ By following the dependencies through our tree and multiplying together a long s
 And since we can get any derivative, we can calculate the entire gradient vector:
 \vspace{-0.1cm}
 $$
-\Delta_w L = \left[ \frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(1)}}}, \frac{\textcolor{myred}{\partial L}}{\textcolor{myorange}{\partial b^{(1)}}}, \ldots , \frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(l)}}}, \frac{\textcolor{myred}{\partial L}}{\textcolor{myorange}{\partial b^{(l)}}},\right] 
+\Delta_w L = \left[ \frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(1)}}}, \frac{\textcolor{myred}{\partial L}}{\textcolor{myorange}{\partial b^{(1)}}}, \ldots , \frac{\textcolor{myred}{\partial L}}{\textcolor{myblue}{\partial w^{(l)}}}, \frac{\textcolor{myred}{\partial L}}{\textcolor{myorange}{\partial b^{(l)}}}\right] 
 $$
 \vspace{-0.3cm}
 \ \\
@@ -213,7 +215,7 @@ On the left are two images: one formally represents how the nodes and edges of t
 \newpage
 The weighted sum \textcolor{mygreen}{$z_{j}^{(l)}$} then takes the following form:
 $$
-\textcolor{mygreen}{z_{j}^{(l)}} = \sum_{i} \textcolor{myblue}{w_{ji}^{(l)}} \cdot a_i^{(l-1)} + \textcolor{myorange}{b_{j}^{(l)}}
+\textcolor{mygreen}{z_{j}^{(l)}} = \sum_{i} \textcolor{myblue}{w_{ji}^{(l)}} a_i^{(l-1)} + \textcolor{myorange}{b_{j}^{(l)}}
 $$
 The new equations turn out to be esentially the same with respect to the case of only one neuron per layer:
 
