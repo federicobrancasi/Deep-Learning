@@ -106,13 +106,26 @@ pdfsubject={\texorpdfstring{\SUBJECT}{}}}
 
 \hypersetup{linkcolor=fg}
 
-\renewcommand\listfigurename{\paragraph{List of Figures}}
+% \usepackage{tocloft}
+% \usepackage{titlesec}
+% \usepackage{graphicx}
 
+
+\renewcommand{\listfigurename}{\paragraph{List of Figures}}
+
+% Set up the format for the List of Figures
 \titlecontents{figure}[2em]
 {}
 {\contentslabel{3em}}
 {\hspace*{-3em}}
 {\titlerule*{\ }\contentspage}
+
+% Define a command to print chapter titles in bold in the List of Figures
+% \newcommand{\listoffigureschapter}[1]{%
+%   \addtocontents{lof}{\protect\contentsline{chapter}{\headingfontfamily\color{fg}\MakeUppercase #1}{}{}}%
+%   % \addtocontents{lof}{\protect\contentsline{chapter}{\bfseries Chapter #1}{}{}}%
+%   \addtocontents{lof}{\protect\vspace{1em}}%
+% }
 
 \pretocmd{\listoffigures}{\begin{outline}[4em]}{}{}
 \apptocmd{\listoffigures}{\end{outline}}{}{}

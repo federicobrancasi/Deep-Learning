@@ -1,0 +1,66 @@
+% Generative adversarial network (GAN) architecture.
+% Adapted from https://github.com/PetarV-/TikZ/tree/master/Generative%20adversarial%20network.
+% A GAN has two parts. The discriminator $D$ acts as a classifier that learns to distinguish fake data produced by the generator $G$ from real data. $G$ incurs a penalty when $D$ detects implausible results. This signal is backpropagated through the generator weights such that $G$ learns to produce more realistic samples over time, eventually fooling the discriminator if training succeeds.
+
+\documentclass[tikz]{standalone}
+
+\usepackage{mathtools}
+
+\usetikzlibrary{calc,positioning}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!30!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!30!black}
+
+
+
+\begin{document}
+\begin{tikzpicture}[
+    ->, thick,
+    % node/.style={circle, fill=teal!60},
+    node/.style={circle, blue!20!black,draw=myblue!30!black,fill=myblue!20},
+    label/.style={below, font=\footnotesize},
+  ]
+
+  \node[node] (zin) {$z$};
+  \node[node, right=7em of zin] (fake) {$x_\text{fake}$};
+  \draw (zin) -- node[above, xshift=0.17cm] {$G(x)$} node[label, xshift=0.17cm] {Generator} (fake);
+
+  \draw[<-] (zin) -- ++(-1,0);
+  
+  \draw[-] (-1,0) -- node[above] {$p_z$} node[label] {Random Noise} ++(-2,0);
+  \node[node, above=of fake] (real) {$x_\text{real}$};
+
+  \node[node, above=1em of real] (reallabel) {$y_\text{real}$};
+  \node[node, below=1em of fake] (fakelabel) {$y_\text{fake}$};
+
+  \draw[-] (-1,-1.4) -- node[above, xshift=0.77cm] {$y_\text{\textbf{fake}}$} node[label, xshift=0.77cm, align=center] {Label for \\ Fake Samples} ++(-1,0);
+  \node[node, above=of fake] (real) {$x_\text{real}$};
+  \draw[->] (0.6,-0.6) -- (0.6, 0);
+  \draw[-] (0.6,-0.6) -- (0.6,-1.4);
+  \draw[->] (-1,-1.4) -- (fakelabel);
+
+  \draw[<-] (reallabel) -- node[above] {$y_\text{\textbf{real}}$} node[label, align=center] {Label for \\ Real Samples} ++(-3,0);
+    
+  \draw[<-] (real) -- node[below] {$p_\text{\textbf{data}}(x)$} ++(-3,0);
+  \node[node, right=6em of fake] (D) at ($(fake)!0.5!(real)$) {$x$};
+  \node[right=7em of D] (out) {\textbf{Real?}};
+  \draw (D) -- node[above] {$D(x)$} node[label] {Discriminator} (out);
+
+  \coordinate[right=2.5em of fake, circle, fill, inner sep=0.15em] (pt1);
+  \coordinate[right=2.5em of real, circle, fill, inner sep=0.15em] (pt2);
+
+  \draw[-, dashed] (pt1) edge[bend left] coordinate[circle, fill=mybluee!60, inner sep=1mm] (pt3) (pt2);
+  \draw (fake) -- (pt1) (real) -- (pt2) (pt3) -- (D);
+
+  \draw[-] (pt2) -- (reallabel);
+  \draw[-] (pt1) -- (fakelabel);
+  
+
+\end{tikzpicture}
+\end{document}

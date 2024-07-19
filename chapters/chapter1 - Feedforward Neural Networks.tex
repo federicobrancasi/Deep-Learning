@@ -56,7 +56,6 @@ Cost (or Loss) functions play a key role in the training of deep learning models
 For \textbf{Classification} problems, two commonly used loss functions are Categorical Cross-Entropy and Binary Cross-Entropy. These functions are designed to work with class probabilities and are particularly well suited for models that produce probability distributions.
 
 {\Large
-% $$
 \begin{equation*}
 \text{\textbf{Categorical Cross-Entropy}} = -\sum_{i=1}^{N} \tikzmarkk{Y}\textcolor{myred}{y_i} \log(\tikzmarkk{YC}\textcolor{mybluee}{\hat{y}_i})
 \end{equation*}
@@ -70,11 +69,11 @@ For \textbf{Classification} problems, two commonly used loss functions are Categ
 }
 
 {\Large
-% $$
+
 \begin{equation*}
 \text{\textbf{Binary Cross-Entropy}} = -\left(\tikzmarkk{Y}\textcolor{myred}{y}\log(\tikzmarkk{YC}\textcolor{mybluee}{\hat{y}}) + (1 - y) \log(1 - \hat{y})\right)
 \end{equation*}
-% $$
+
 \begin{tikzpicture}[overlay,remember picture]
     \node (Ye) [below of = Y, node distance = 3 em, anchor=west] {\footnotesize \textsf{\textcolor{myred}{true label (0 or 1)}}};
     \draw[<-, in=180, out=-90] (Y.south)++(.25em,-1ex) to (Ye.west);
@@ -88,11 +87,11 @@ For \textbf{Classification} problems, two commonly used loss functions are Categ
 In the case of \textbf{Regression}, different loss functions are used, including:
 
 {\Large
-% $$
+
 \begin{equation*}
 \text{\textbf{Mean Squared Error}} = \frac{1}{N} \sum_{i=1}^{N} (\tikzmarkk{Y}\textcolor{myred}{y_i} - \tikzmarkk{YC}\textcolor{mybluee}{\hat{y}_i})^2
 \end{equation*}
-% $$
+
 \begin{tikzpicture}[overlay,remember picture]
     \node (Ye) [below of = Y, node distance = 3 em, anchor=west] {\footnotesize \textsf{\textcolor{myred}{actual (or true) target value for the example \( i \)}}};
     \draw[<-, in=180, out=-90] (Y.south)++(.25em,-1ex) to (Ye.west);
@@ -108,11 +107,11 @@ Mean Squared Error (MSE) calculates the mean squares of the differences between 
 % \newpage
 
 {\Large
-% $$
+
 \begin{equation*}
 \text{\textbf{Mean Absolute Error}} = \frac{1}{N} \sum_{i=1}^{N} |\tikzmarkk{Y}\textcolor{myred}{y_i} - \tikzmarkk{YC}\textcolor{mybluee}{\hat{y}_i}|
 \end{equation*}
-% $$
+
 \begin{tikzpicture}[overlay,remember picture]
     \node (Ye) [below of = Y, node distance = 3 em, anchor=west] {\footnotesize \textsf{\textcolor{myred}{actual (or true) target value for the example \( i \)}}};
     \draw[<-, in=180, out=-90] (Y.south)++(.25em,-1ex) to (Ye.west);
@@ -126,7 +125,7 @@ Mean Squared Error (MSE) calculates the mean squares of the differences between 
 Mean Absolute Error (MAE), or only Absolute Error (AE), calculates the mean of the absolute differences between predictions and actual values. It is less sensitive to outliers than MSE, but its derivative is undefined in zero.
 
 {\Large
-% $$
+
 \begin{equation*}
 \text{\textbf{Huber Loss}} = \frac{1}{N} \sum_{i=1}^{N} \left\{
 \begin{array}{ll}
@@ -135,7 +134,7 @@ Mean Absolute Error (MAE), or only Absolute Error (AE), calculates the mean of t
 \end{array}
 \right.
 \end{equation*}
-% $$
+
 \begin{tikzpicture}[overlay,remember picture]
     \node (De) [below of = D, node distance = 2.5 em, anchor=west]     {\parbox{\widthof{hyperparameter controlling the transition between}}{
     \ \\
