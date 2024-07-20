@@ -384,7 +384,7 @@ $$p_{\theta}(z|x)= \frac{p_{\theta}(x|z)p_{\theta}(z)}{p(x)}$$
 
 In this context, $p_{\theta}(z|x)$ represents the \textbf{latent space distribution extracted from the given input}.
 
-\textbf{The solution to this problem is the Encoder}, which is trained to map the input image to the latent space, $q_{\phi}(z|x)$. In this way, the encoder approximates the a posteriori distribution $p_{\theta}(z|x)$. \textbf{\textcolor{myred}{Beware that the encoder does not provide a global solution to the optimization problem, only an approximation: it provides a lower bound on the likelihood of the data!}}
+\textbf{As usual in machine learning, the solution is VERY simple: we throw in a neural network.} In this case, the network is the \textbf{Encoder}, which is trained to map the input image to the latent space, $q_{\phi}(z|x)$. In this way, the encoder approximates the a posteriori distribution $p_{\theta}(z|x)$. \textbf{\textcolor{myred}{Beware that the encoder does not provide a global solution to the optimization problem, only an approximation: it provides a lower bound on the likelihood of the data!}}
 
 Since we are modeling probabilistic data generation, both the encoder and the decoder are probabilistic models and are described by their own parameters, $\phi$ and $\theta$, respectively. The Encoder learns the mean and variance associated with the Gaussian distribution of the latent space $z$. The Decoder learns the mean and variance of the generating distribution, which should be as similar as possible to the dataset data.  \textbf{Then, the Variational Autoencoder can be seen as an Autoencoder with a probabilistic component}.
 
