@@ -14,6 +14,31 @@
 %   CONFIGURE LEFT BAR
 %----------------------------------------------------------------------------------------
 
+% \backgroundsetup{
+%   scale=1,
+%   color=bgacc,
+%   opacity=1,
+%   angle=0,
+%   position=current page.south west,
+%   vshift=0mm,
+%   hshift=16mm, % Adjust the distance from the left edge of the page
+%   contents={%
+%     \tikz{
+%       % \fill[bgacc] (0,0) rectangle (6mm,16mm); % bottom bar, 6mm wide, 16mm tall
+%       \ifbackgroundbarvisible
+%         \fill[bgacc] (0,\paperheight) rectangle (8mm,-\paperheight); % bar width 6mm
+%       \fi
+%       \ifbackgroundtitlevisible
+%         \node[rotate=90, fgacc, font=\huge\bfseries\headingfontfamily, anchor=west] at (4mm, 16mm) {\currentparttitle};
+%       \fi
+%     }
+%   }
+% }
+
+
+\newcommand{\setbackgroundchapter}[1]{\def\backgroundchaptername{#1}}
+\newcommand{\backgroundchaptername}{}
+
 \backgroundsetup{
   scale=1,
   color=bgacc,
@@ -21,15 +46,15 @@
   angle=0,
   position=current page.south west,
   vshift=0mm,
-  hshift=16mm, % Adjust the distance from the left edge of the page
+  hshift=16mm,
   contents={%
     \tikz{
-      % \fill[bgacc] (0,0) rectangle (6mm,16mm); % bottom bar, 6mm wide, 16mm tall
       \ifbackgroundbarvisible
-        \fill[bgacc] (0,\paperheight) rectangle (8mm,-\paperheight); % bar width 6mm
+        \fill[bgacc] (0,\paperheight) rectangle (8mm,-\paperheight);
       \fi
       \ifbackgroundtitlevisible
-        \node[rotate=90, fgacc, font=\huge\bfseries\headingfontfamily, anchor=west] at (4mm, 16mm) {\currentparttitle};
+        \node[rotate=90, fgacc, font=\huge\bfseries\headingfontfamily, anchor=west] 
+             at (4mm, 16mm) {\MakeUppercase{\backgroundchaptername}};
       \fi
     }
   }

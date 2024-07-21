@@ -171,7 +171,6 @@ Self-attention is a mechanism for constructing \textbf{learnable long-range sema
     \centering
     \includegraphics[width=\linewidth]{tikz/chapter8 - Vision Transformer.png}
     \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} ViT architecture}
-    \label{fig:ViT}
 \end{figure}
 
 The input (as a patch) is embedded in a smaller size to reduce complexity. In addition, ViT adds an additional learnable embedding called \textbf{class token}, colored gray in the figure above, which is a randomly initialized embedding vector learned during the training process. This is used to collect global information from the image through the Transformer's self-attention mechanism. At the end of the process, the MLP head \textbf{only looks at the data from the class token of the last layer} and no other information.
