@@ -50,7 +50,7 @@ The architecture differs significantly from standard CNNs because the output of 
 \section{Convolutional Seq2Seq learning}
 In \href{https://arxiv.org/pdf/1705.03122}{"Convolutional Sequence to Sequence Learning" (Auli et al.)} Google's Seq2Seq learning model is adopted and CNN-based approach is introduced. In this work, the task is to translate a sentence from German to English.
 
-In Google's original architecture, the encoder consists of a bidirectional LSTM. The output of this bidirectional LSTM is concatenated to form the input for subsequent layers. This concatenated output is then used to construct a soft attention mechanism, which captures important relationships within the input sequence. Next, the decoder provides English translation using the latent representations associated with the concatenated output and the attention mechanism.
+In the original architecture (RNN with Attention), the encoder consists of a bidirectional LSTM. The output of this bidirectional LSTM is concatenated to form the input for subsequent layers. This concatenated output is then used to construct a soft attention mechanism, which captures important relationships within the input sequence. Next, the decoder provides English translation using the latent representations associated with the concatenated output and the attention mechanism.
 
 In this work, researchers replaced the bidirectional LSTM in the encoder with a Temporal Convolutional Neural Network (TCN), which produces latent representations used for attention computation. In addition, the decoder was also transformed to a CNN-based architecture. In both cases, encoder and decoder, Gated Linear Units and residual connections are used.
 
@@ -105,7 +105,7 @@ One thing that is important is that soft attention is differentiable, making it 
 
 
 \subsection{Multi-Head Attention}
-In transformers, we use \textbf{multi-head attention} to improve the model's ability to focus on different positions in the sentence and provide the attention level with more "subspaces of representation".
+In transformers, we use \textbf{multi-head attention} to improve the model's ability to focus on different positions in the sentence and provide the attention level with more "subspaces of representation". For example, some heads may focus on words nearby, while others may focus on words far away in the text. This allows the model to capture a wider range of information.
 
 But how does it work? In multi-head attention, vectors of input embeddings are divided into \textbf{several separate "heads"}. Usually in the classical Transformer, this number is 8. Each head of multi-head attention operates on the linear projections we have already seen: query, key and value. After calculating the attention for each head, the results are \textbf{concatenated and multiplied by an additional weight matrix} to produce the final attention level output.
 
@@ -158,9 +158,6 @@ After the advent of transformers, the community began exploring models that util
 \section{Vision Transformer (ViT)}
 
 
-
-The previous CNN were limited by the notion of the \textbf{receptive field}, which is strictly dependent on the kernel size of the given convolutional layer, hence it limits its power.
-
 In the context of convolutional neural networks, a significant limitation has been the concept of \textbf{receptive field}, which is related to the size of the convolutional kernel. This limitation has affected the ability of CNNs to capture complex, long-range relationships within images.
 
 Visual Transformer, introduced in \href{https://arxiv.org/pdf/2010.11929}{"An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale" (Dosovitskiy et al.)}, marked a fundamental step in the evolution of neural networks for computer vision. ViT extended the capability of convolutions by applying the concept of self-attention to images as well, thus transferring the Transformer model from the field of natural language processing (NLP) to the field of computer vision, dealing with three-dimensional rather than two-dimensional data.
@@ -173,7 +170,7 @@ Self-attention is a mechanism for constructing \textbf{learnable long-range sema
     \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} ViT architecture}
 \end{figure}
 
-The input (as a patch) is embedded in a smaller size to reduce complexity. In addition, ViT adds an additional learnable embedding called \textbf{class token}, colored gray in the figure above, which is a randomly initialized embedding vector learned during the training process. This is used to collect global information from the image through the Transformer's self-attention mechanism. At the end of the process, the MLP head \textbf{only looks at the data from the class token of the last layer} and no other information.
+The input (as a patch) is embedded in a smaller size to reduce complexity. In addition, ViT adds an additional learnable embedding called \textbf{class token}, colored gray in the figure above, which is a randomly initialized embedding vector learned during the training process. This is used to collect global information from the image through the Transformer's self-attention mechanism. At the end of the process, the MLP (Multilayer Perceptron) head \textbf{only looks at the data from the class token of the last layer} and no other information.
 
 When trained on medium-sized datasets such as ImageNet, such models show modest accuracies (a few points below ResNets of comparable size). Transformers lack some of the inductive biases present in CNNs, such as translation equivalence and locality, and thus \textbf{do not generalize well when trained on insufficient amounts of data}. However, the situation changes if the models are trained on larger datasets (14M-300M images).
 

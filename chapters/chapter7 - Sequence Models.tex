@@ -1,16 +1,16 @@
-\section{Introduction}
+As the scientific community began to address problems involving sequentially structured data, RNNs returned to the forefront, leading to the development of new designs such as GRUs. However, it became apparent that RNNs had difficulty handling very long sequences. To address this problem, the Attention model was introduced as an auxiliary module, significantly improving performance in complex tasks such as image captioning and neural machine translation. 
 
-As the scientific community began to address problems involving sequentially structured data, RNNs returned to the forefront, leading to the development of new designs such as GRUs. However, it became apparent that RNNs had difficulty handling very long sequences. To address this problem, the Attention model was introduced as an auxiliary module, significantly improving performance in complex tasks such as image captioning and neural machine translation.
+The concept of Attention model initially found application in models that combined CNN and RNN, and then was incorporated into Transformers, the model underlying tools such as ChatGPT. This led to the emergence of an inevitable question, "\textit{Do we really need RNN and Attention models together for sequencing tasks, or can one Attention model suffice on its own?}" This question prompted the exploration of sequence models without the use of RNNs, \textit{but we'll see this in the next chapter}.
 
-The concept of the Attention model initially found application in models that combined CNN and RNN, and then was incorporated into Transformers, the model underlying tools such as ChatGPT. This led to the emergence of an inevitable question, "\textit{Do we really need RNN and Attention models together for sequencing tasks, or can one Attention model suffice on its own?}" This question prompted the exploration of sequence models without the use of RNNs.
-
-In this section, we will explore how this change came about through innovations implemented in the \textbf{Image Captioning} and \textbf{Machine Translation} tasks.
+In this chapter, instead, we will explore how this change came about through innovations implemented in the \textbf{Image Captioning} and \textbf{Machine Translation} tasks.
 
 
-\section{Caption Model}
+\section{Captioning Models}
+
+Image captioning is the process of generating a textual description for given images. It can be seen as a Sequence to Sequence problem from beginning to end, where images, considered as sequences of pixels, are transformed into sequences of words. This task requires processing both textual and image statements. For the textual part, we use recurrent neural networks (RNNs) and for the visual part, we use convolutional neural networks (CNNs) to obtain feature vectors.
 
 \subsection{Show and Tell}
-Image captioning is the process of generating a textual description for given images. It can be seen as a Sequence to Sequence problem from beginning to end, where images, considered as sequences of pixels, are transformed into sequences of words. This task requires processing both textual and image statements. For the textual part, we use recurrent neural networks (RNNs) and for the visual part, we use convolutional neural networks (CNNs) to obtain feature vectors. Specifically, the architecture developed by Google in 2014 in the paper \href{https://arxiv.org/pdf/1411.4555}{"Show and Tell: A Neural Image Caption Generator" (Bengio et al.)} uses both GoogleNet and LSTM.
+Specifically, the architecture developed by Google in 2014 in the paper \href{https://arxiv.org/pdf/1411.4555}{"Show and Tell: A Neural Image Caption Generator" (Bengio et al.)} uses both GoogleNet and LSTM.
 
 The procedure begins with feature extraction of the image using GoogleNet, which produces a feature vector, denoted as $I$. This vector is then inserted into the LSTM sequence at time $t=-1$, only once. Next, starting at $t=0$, a sequence of word vectors is inserted. Each word is represented as a one-hot vector $S_t$ with dimensions equal to the size of the vocabulary.
 
@@ -47,7 +47,7 @@ In the image above you can see an example of Beam Search with a width of 2, usin
 \begin{itemize}
     \item \textbf{First Position}: The model starts with the token "<START>" and calculates the probabilities for each possible word. It selects the two characters with the highest probability, for example "A" and "C". 
     \item \textbf{Second position}: The model generates the probabilities for the second position twice, holding the first position ("A" or "C") constant. It then chooses the two best pairs of characters based on the combined probability, such as "AB" and "AE."
-    \item \textbf{Third position}: This process is repeated. The model calculates the probabilities for the third position, limiting the first two positions to "AB" or "AE," and selects the best three combinations of characters based on the combined probability of the first three characters. This continues until a token "<END>" is selected, marking the end of that branch of the sequence. Simple, isn't it? \faSmile[regular]
+    \item \textbf{Third position}: This process is repeated. The model calculates the probabilities for the third position, limiting the first two positions to "AB" or "AE," and selects the best three combinations of characters based on the combined probability of the first three characters. This continues until a token "<END>" is selected, marking the end of that branch of the sequence. Simple, isn't it? \emoji{smile}
 \end{itemize}
 
 In order to test the performance of the model, we face the challenge of comparing the output of the model with the \textbf{captions of human annotators}. Of course, the annotations of different individuals may vary, presenting inherent discrepancies. To address this problem, the Bilingual Evaluation Understudy (BLEU) score was used.
@@ -70,7 +70,7 @@ Example:
  
 The BLEU score is low because the candidate repeats "Transformers" without providing full context, while the reference has a meaningful sentence. 
 
-\section{Captioning with Attention}
+\section{Captioning Models (with Attention)}
 
 \subsection{Show, Attend and Tell}
 
@@ -82,7 +82,7 @@ The main innovations introduced by this approach are as follows:
 
 \begin{itemize}
     \item \textbf{Feature Extractor}: A CNN is used to extract a set of feature vectors, each of which represents a part of the image. So, here we maintain the spatial information.
-    \item \textbf{RNN with Attention}: The extracted feature maps are not only used for initializing the RNN, but are passed to each cell of the RNN during caption generation. This approach allows the network to focus attention on specific parts of the image as it generates each caption word. Each RNN cell produces both the probability of the predicted word ($p(y_t)$) and an attention map ($\alpha_t$) indicating the relevant parts of the image.
+    \item \textbf{RNN with Attention}: The extracted feature maps are not only used for initializing the RNN, but are passed to each cell of the RNN during caption generation. This approach allows the network to focus attention on specific parts of the image as it generates each caption word. \textbf{Each RNN cell produces both the probability of the predicted word ($p(y_t)$) and an attention map }($\alpha_t$) indicating the relevant parts of the ima ge.
 \end{itemize}
 
 \begin{figure}[!htbp]
@@ -91,7 +91,7 @@ The main innovations introduced by this approach are as follows:
     \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}}  Flow of Show, Attend and Tell}
 \end{figure}
 
-In the image above, each LSTM cell receives \textbf{three} main inputs: the previous latent space $h_{t-1}$, the predicted word in the current sequence $ y_{t-1} $ and a context vector $ z_{t} $ (obtained from the dot product between the feature map produced by the CNN and the previous attention map $\alpha_{t-1}$). 
+In the image above, each LSTM cell receives \textbf{three main inputs}: the previous latent space $h_{t-1}$, the predicted word in the current sequence $ y_{t-1} $ and a context vector $ z_{t} $ (obtained from the dot product between the feature map produced by the CNN and the previous attention map $\alpha_{t-1}$). 
 
 \subsection{Types of Attention}
 
@@ -213,7 +213,7 @@ Instead of using a global view of all input tokens, local attention utilizes a \
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=\linewidth]{tikz/chapter7 - Local Attention Comparison.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Global Attention vs. Local Attention}
+    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Local Attention vs. Global Attention}
 \end{figure}
 
 The image above shows a comparison between a global attention module (right) and a local attention module (left), illustrating the difference in focus areas for the input sequence during output generation.
@@ -270,9 +270,9 @@ Having discussed the significant milestones in the field of Machine Translation,
     \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} GNMT Architecture}
 \end{figure}
 
-\textbf{Encoder Architecture}: The encoder is composed of several layers of LSTMs. It starts with bidirectional lower layers of LSTMs, followed by stacked unidirectional LSTMs. Jump connections are incorporated during stacking to facilitate training. The model is distributed over 8 GPUs, with the model divided into 8 parts, each on a different GPU. The bidirectional lower layers of the encoder compute in parallel first. Once both are finished, the unidirectional layers of the encoder can begin computation, each on a separate GPU. This approach uses stacked LSTMs with residual connections.
+\textbf{Encoder Architecture}: The encoder is composed of several layers of LSTMs. It starts with bidirectional lower layers of LSTMs, followed by stacked unidirectional LSTMs. Jump connections are incorporated during stacking to facilitate training. \textbf{The model is distributed over 8 GPUs, with the model divided into 8 parts, each on a different GPU}. The bidirectional lower layers of the encoder compute in parallel first. Once both are finished, the unidirectional layers of the encoder can begin computation, each on a separate GPU. This approach uses stacked LSTMs with residual connections.
 
-\textbf{Decoder Architecture}: As far as the decoder is concerned, only the output of the lower layer is used to derive the attention context, which is then directly fed to all the upper layers of the decoder. Training is optimized using a loss function that improves the BLEU score, thus ensuring better quality of machine translation.
+\textbf{Decoder Architecture}: As far as the decoder is concerned, \textbf{only the output of the lower layer is used to derive the attention context}, which is then directly fed to all the upper layers of the decoder. Training is optimized using a loss function that improves the BLEU score, thus ensuring better quality of machine translation.
 
 
 \section{Appendix - Word Embeddings}
@@ -314,7 +314,7 @@ However, as is evident, this representation is not effective in showing semantic
         \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Word Embeddings Example}
 \end{figure}
 
-The image shows hypothetical features (weights) in word embeddings learned by the neural network. Consider a classic example: "king," "queen," "man," "girl," "prince." In a hypothetical world, vectors could then define the weight of each criterion (e.g., nobility, masculinity, femininity, age, etc.) for each of the words provided in our vocabulary. For example, "king," "queen," and "prince" have similar scores for "nobility," while "girl" and "queen" have similar scores for "femininity".
+The image shows hypothetical features (weights) in word embeddings learned by the neural network. Consider a classic example: "king," "queen," "man," "women," "prince." In a hypothetical world, vectors could then define the weight of each criterion (e.g., nobility, masculinity, femininity, age, etc.) for each of the words provided in our vocabulary. For example, "king," "queen," and "prince" have similar scores for "nobility," while "women" and "queen" have similar scores for "femininity".
 
 The architecture of Word2Vec is essentially a \textbf{two-layer surface neural network} trained to represent words in a document or text context. During training, the input consists of all the documents or texts in the training set, each of which is represented using a \textbf{one-hot encoding of the words} present. This means that each word is represented by a vector in which a single dimension is set to 1 and all others to 0, indicating the presence of the word in the document.
 
