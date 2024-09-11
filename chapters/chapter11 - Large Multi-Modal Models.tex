@@ -4,8 +4,8 @@ We will look at \textbf{multimodal architectures}, which are computational model
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.75\linewidth]{tikz/chapter11 - Large Vision-Language Models.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Large Vision-Language Models Idea}
+    \includegraphics[width=0.9\linewidth]{tikz/chapter11 - Large Vision-Language Models.pdf}
+    \caption{Large Vision-Language Models Idea}
 \end{figure}
 
 As you can see, the goal is to create an encoder that learns a representation of our data (pairs of images and text), and then use an LLM as a frontend for generation.
@@ -17,7 +17,7 @@ Currently, all methods for training an encoder share the same goal: to \textbf{b
     
     \item \textbf{Image-Only (Non-) Contrastive Learning}: This approach exploits methods such as the DINO (DIstillation with NO labels) model, which allows encoders to be trained using images only, without the need for labels. Through contrastive learning techniques, the model learns to distinguish between similar and different representations.
     
-    \item \textbf{Masked Image Modeling}: Inspired by the invention of the BERT model for language, this method applies a similar concept to images. Some parts of the image are "masked" and the model's task is to predict the missing parts. This process forces the encoder to understand the visual context and develop a robust internal representation.
+    \item \textbf{Masked Image Modelling}: Inspired by the invention of the BERT model for language, this method applies a similar concept to images. Some parts of the image are "masked" and the model's task is to predict the missing parts. This process forces the encoder to understand the visual context and develop a robust internal representation.
     
     \item \textbf{Contrastive Language-Image Pre-Training}: Using the CLIP (Contrastive Language-Image Pre-Training) model developed by OpenAI and its variants, this approach involves training an encoder that can understand both language and images. The model is trained to correlate images and corresponding text descriptions, allowing it to create visual representations that are semantically aligned with the text. This method has shown outstanding results in a variety of multimodal tasks and has opened up new possibilities for the integration of different data modalities.
 \end{itemize}
@@ -67,13 +67,13 @@ The gradient is propagated only through the student network, allowing centering 
 Thus, clustering tends to solve the batch size problem of SimCLR \textbf{learning a powerful visual encoder through self-supervised loss}.
 
 
-\section{Masked Image Modeling}
+\section{Masked Image Modelling}
 
 In this learning class, models are trained to predict a missing part of the input (masked) given the other (unmasked) information.
 
 \subsection{BEiT}
 
-Following the BERT model developed in the area of natural language processing, Microsoft proposed a masked image modeling task to pre-train Vision Transformers in the article \href{https://arxiv.org/pdf/2106.08254}{"BEiT: BERT Pre-Training of Image Transformers" (Dong et al.)}.
+Following the BERT model developed in the area of natural language processing, Microsoft proposed a masked image modelling task to pre-train Vision Transformers in the article \href{https://arxiv.org/pdf/2106.08254}{"BEiT: BERT Pre-Training of Image Transformers" (Dong et al.)}.
 
 The model works by taking an image and dividing it into patches. Next, \textbf{some of these patches are masked and all patches are flattened into a vector}. This vector becomes the input (plus positional embedding) of the \textbf{encoder BEiT}, which is pre-trained similarly to the BERT model in natural language processing. Only embeddings related to the masked tokens are then retrieved. The chosen embeddings are then passed as input to an additional encoder, the \textbf{Masked Image Modelling Head}. This represents what we ultimately want to learn. To do this, we employ supervised help.
 
@@ -95,8 +95,8 @@ The model works rather well with fine-tuning rather than pre-training. Of course
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter11 - MAE.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} MAE Architecture}
+    \includegraphics[width=\linewidth]{tikz/chapter11 - MAE.pdf}
+    \caption{MAE Architecture}
 \end{figure}
 
 
@@ -105,8 +105,6 @@ The model works rather well with fine-tuning rather than pre-training. Of course
 \textit{We have come to the most fascinating and juicy part of this chapter.} These types of models represent the current state of the art. 
 
 \subsection{CLIP}
-
-Introduced in \href{https://arxiv.org/pdf/2103.00020}{"Learning Transferable Visual Models From Natural Language Supervision" (Kim et al.)}, CLIP is a multimodal model developed by OpenAI, designed to integrate and understand both textual and visual information. CLIP represents a significant breakthrough in the field of multimodal models because of its ability to correlate images and text in a highly efficient and scalable manner.
 
 CLIP combines two main neural networks:
 \begin{itemize}
@@ -142,9 +140,6 @@ In the next subsections we will explore in detail the various improvements propo
 
 \subsection{Data Scaling Improvement}
 
- This paper used pre-trained open CLIP with LAION-2B across various scales, namely model, data, ecc..
-The take home message is that scale matter.
-
 \href{https://arxiv.org/pdf/2212.07143}{"Reproducible scaling laws for contrastive language-image learning" (Jitsev et al.)} studied the use of pre-trained CLIP with the LAION-2B dataset at different scales, including models and data. The main message is that \textbf{scale of dataset is crucial}.
 
 \textit{But how can we scale further?} One possible solution is to search for next-generation image-text datasets. However, in \href{https://arxiv.org/pdf/2304.14108}{"DataComp: In search of the next generation of multimodal datasets" (Ilharco et al.)}, researchers found that \textbf{filtering the data} provided to the model leads to better results even with smaller datasets.
@@ -162,8 +157,8 @@ Results have shown that this approach not only does not compromise performance, 
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\linewidth]{tikz/chapter11 - FLIP.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO: only the left}} FLIP Architecture}
+    \includegraphics[width=0.8\linewidth]{tikz/chapter11 - FLIP.pdf}
+    \caption{FLIP Architecture}
 \end{figure}
 
 \subsection{Language Model Design Improvement: K-LITE}
@@ -182,7 +177,7 @@ In this case, improvement is achieved by adding more modes than just the traditi
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.6\linewidth]{tikz/chapter11 - ImageBind.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} ImageBind Idea of Shared Embedding Space}
+    \caption{ImageBind Idea of Shared Embedding Space}
 \end{figure}
 
 The model employs pairs of modalities (I,M), where I signifies images and M is another modality, to learn a \textbf{single joint embedding}. Each modality’s embedding is aligned with image embeddings, for instance, text is aligned with images using web data. The embeddings and encoders are optimized using an \textbf{InfoNCE loss}.
@@ -232,8 +227,8 @@ FILIP is designed to learn detailed alignment between words and image patches, i
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\linewidth]{tikz/chapter11 - FILIP vs CLIP.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} An example of word-patch visualization with FILIP}
+    \includegraphics[width=0.8\linewidth]{tikz/chapter11 - FILIP vs CLIP.pdf}
+    \caption{An Example of Word-patch Visualization with FILIP}
 \end{figure}
 
 
@@ -294,8 +289,6 @@ This model consists of three main components: a \textbf{visual encoder} (NF-ResN
     \includegraphics[width=0.8\linewidth]{tikz/chapter11 - Frozen LM.png}
     \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Frozen Architecture}
 \end{figure}
-
-Subsequently, finetune the image encoder to improve the quality of its representations. Still, its outputs are directly used as soft prompts for the LLM, which means they are used to guide the behavior of the language model without directly modifying its weights. It is like giving a suggestion or a guide to the model on what it should focus on. Here's some examples:
 
 Next, \textbf{fine-tuning of the image encoder is performed} to improve the quality of its representations. However, its outputs are directly used as \textbf{soft prompts} for the LLM, which means they are \textbf{used to guide the behavior of the language model without directly changing its weights}. It is like giving a hint or guidance to the model on what it should focus on. Here are some examples:
 

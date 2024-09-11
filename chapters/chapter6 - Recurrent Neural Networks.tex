@@ -6,8 +6,8 @@ Recurrent Neural Networks (RNNs) are flexible tools that can perform many differ
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{tikz/chapter6 - Types of RNN Models.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO: the second before the first one}} Diagrams of RNN Models}
+    \includegraphics[width=\textwidth]{tikz/chapter6 - Types of RNN Models.pdf}
+    \caption{Diagrams of RNN Models}
 \end{figure}
 
 \subsection{Multiple2Single: Sentiment Analysis}
@@ -33,7 +33,7 @@ There are two types of representations for an RNN: the \textbf{Folded} represent
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width = 0.9\linewidth]{tikz/chapter6 - RNN Architecture.pdf}
-    \caption{{\color{red}\colorbox{pink}{Tikz To Refine}} RNN Architecture}
+    \caption{RNN Architecture}
 \end{figure}
 
 The structure of an RNN cell, as shown in the figure above, has two inputs ($x_t$ and $h_{t-1}$) and can be represented mathematically as follows:
@@ -144,7 +144,7 @@ $$
 \end{remark}
 
 \begin{remark}{accent}{accent!5}
-To \textbf{Calculate the Output} of the cell, a tanh layer is used on the state of the memory cell to shrink values between -1 and 1, which are then multiplied by the output of the sigmoid gate:
+To \textbf{Calculate the Output} of the cell, a tanh layer is used on the state of the memory cell to shrink values between -1 and 1, which are then multiplied by the output of the output gate:
 $$h_t = \textcolor{mygreen}{o_t} \odot \text{tanh}(c_t) $$
 \end{remark}
 

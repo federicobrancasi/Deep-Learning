@@ -11,8 +11,8 @@ To understand how a Convolutional Neural Network extracts context from an input 
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.85\linewidth]{tikz/chapter8 - Dilation.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Example of Three Different Dilation Rate}
+    \includegraphics[width=0.85\linewidth]{tikz/chapter8 - Dilation.pdf}
+    \caption{Example of Three Different Dilation Rate}
 \end{figure}
 
 In Chapter 5, we introduced CNN architecture, focusing on the traditional convolutions, which have a dilation rate of 1, meaning that the kernel considers adjacent pixels. 
@@ -40,8 +40,8 @@ For a better understanding see this explanatory diagram:
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.95\linewidth]{tikz/chapter8 - Temporal Convolutional Network.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO (on the right, but merge the one on the left)}} A global overview of Dilated Causal Convolution.}
+    \includegraphics[width=0.55\linewidth]{tikz/chapter8 - Temporal Convolutional Network.png}
+    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} A global overview of Dilated Causal Convolution.}
 \end{figure}
 
 The architecture differs significantly from standard CNNs because the output of each hidden layer is obtained using dilation (1, 2, 4) and kernels of size 3. The most notable change is the causal effect: the CNN has been adapted to predict tokens sequentially. For example, the output $y_t$ is predicted after $y_{t-1}$ using only a "shifted" number of features from the previous level, i.e. $x_t, x_{t-4}, x_{t-8}$.
@@ -133,7 +133,8 @@ The architecture includes all the elements explained so far. Before moving to th
 
 The Encoder consists mainly of two modules: the \textbf{Multi-Head Attention} and the \textbf{Feed-Forward Network}, which processes the output vectors of the multi-head attention. This layer is independent along different paths, enabling parallel execution.
 
-The Decoder, in contrast, consists of three separate modules: the \textbf{Multi-Head Attention}, the \textbf{Masked Multi-Head Attention}, and the \textbf{Feed-Forward Network}. The Masked Multi-Head Attention is used because it is critical to \textbf{prevent future positions in the sequence from affecting subsequent ones}, thus allowing the Decoder to examine only earlier information. The additional module of Attention Multi-Head is used to operate on the outputs of the Encoder stack, allowing the Decoder to focus on different parts of the Encoder input, improving the model's ability to capture information relevant to output generation.
+The Decoder, in contrast, consists of three separate modules: the \textbf{Multi-Head Attention}, the \textbf{Masked Multi-Head Attention}, and the \textbf{Feed-Forward Network}.
+The Masked Multi-Head Attention is used to ensure that \textbf{each position in the sequence can only attend to previous positions}, and not future ones, thereby allowing the Decoder to generate the sequence step-by-step without peeking ahead. The additional module of Attention Multi-Head is used to operate on the outputs of the Encoder stack, allowing the Decoder to focus on different parts of the Encoder input, improving the model's ability to capture information relevant to output generation.
 
 \begin{figure}[!htbp]
     \centering
@@ -180,8 +181,8 @@ Unlike ViT, which is not optimized for dense recognition tasks, the Swin Transfo
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.85\linewidth]{tikz/chapter8 - Swin Transformer.png}
-    \caption{{\color{red}{\colorbox{pink}{Tikz TO-DO}}} Comparison of Swin and ViT}
+    \includegraphics[width=0.85\linewidth]{tikz/chapter8 - Swin Transformer.pdf}
+    \caption{Comparison of Swin and ViT}
 \end{figure}
 
 The image shows the comparison between Swin Transformer and ViT when calculating self-attention. The Swin calculates self-attention in sub-areas of the image. At each level, the Swin Transformer partitions the image into regular windows and calculates the self-attention within each window. When moving to the next level, the window layout is updated, creating \textbf{new windows that may partially or completely overlap the previous windows}. This approach allows the model to manage and integrate information from different parts of the image effectively, improving its ability to capture complex, long-range relationships.

@@ -1,0 +1,46 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.misc,calc}
+
+% COLORS
+\usepackage{xcolor}
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!30!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!30!black}
+
+\begin{document}
+\begin{tikzpicture}[
+    >=Stealth,
+    block/.style={rectangle, rounded corners, draw, minimum width=2cm, minimum height=1cm, align=center},
+]
+
+% Input block
+\node[draw=mygreen, rounded corners, thick, minimum width=3.8cm, minimum height=3cm] (input) at (5.9,-3.7) {
+    \begin{tabular}{c}
+        \includegraphics[width=3cm,height=2cm]{tikz/chapter11 - Large Vision-Language Models.png} \\
+        a dog is running \\
+        through the grass
+    \end{tabular}
+};
+
+% Main components on the same line
+\node[block, green!20!black, draw=green!30!black,fill=green!20] (encoder) at (0,0) {Image\\Encoder};
+\node[block, blue!20!black,draw=myblue!30!black,fill=myblue!20, right=2cm of encoder] (llm) {LLM for Language \\ Understanding and \\ Generation};
+\node[block, red!20!black, draw=red!30!black,fill=red!20, right=2cm of llm] (generator) {Image\\Generation};
+
+% Arrows and labels
+\draw[->] (encoder) -- node[above, align=center] {} (llm);
+\draw[->] (llm) -- node[above, align=center] {} (generator);
+
+% Additional text
+\node[text width=3cm, below=0.2cm of generator, align=center] {Produce \\ Visual Data};
+\node[text width=3cm, below=0.2cm of encoder, align=center] {Consume \\ Visual Data};
+\node[text width=3cm, left=0.25cm of input, align=center] {Example of Input Data:\\ (Image + Text)};
+
+\end{tikzpicture}
+\end{document}

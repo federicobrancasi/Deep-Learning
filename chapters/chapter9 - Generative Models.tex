@@ -70,16 +70,16 @@ The function to be optimized is complex, so the training is \textbf{unstable}. I
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.7\linewidth]{tikz/chapter9 - SGD GAN Plot 1.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO (only the BLUE one)}} SGD Plot for Generator during Training}
+    \includegraphics[width=0.7\linewidth]{tikz/chapter9 - SGD GAN Plot 1.pdf}
+    \caption{SGD Plot for Generator during Training}
 \end{figure}
 
 In the figure, the line represents the gradient for the generator and the left part is when the generated sample is probably false. In this area, the gradient is quite \textbf{flat} and corresponds to the region where the model should learn more to improve its generating ability. In contrast, in the right part, the gradient signal dominates, which means that the sample is already good and not useful for learning purposes. Conceptually, \textbf{we waste a lot of resources in our area of interest, making learning more difficult}.
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.7\linewidth]{tikz/chapter9 - SGD GAN Plot 1.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO (only the GREEN one)}} SGD Plot (Inverted) for Generator during Training}
+    \includegraphics[width=0.7\linewidth]{tikz/chapter9 - SGD GAN Plot 2.pdf}
+    \caption{SGD Plot (Inverted) for Generator during Training}
 \end{figure}
 
 Therefore, one way to improve training is to modify this part of the objective function and turn it into a \textbf{maximization problem}. This means that instead of minimizing the probability that the discriminator is correct, the model now \textbf{maximizes the probability that the discriminator is wrong}. As shown by the curve above, now the flat area has been inverted in the region outside our interest. Thus, the new training procedure requires alternating between two \textbf{ascending gradient} procedures:
@@ -115,20 +115,27 @@ Another serious problem is the \textbf{Mode collapse}. This phenomenon occurs wh
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\linewidth]{tikz/chapter9 - Mode Collapse MNIST.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Mode Collapse Example}
+    \includegraphics[width=0.8\linewidth]{tikz/chapter9 - Mode Collapse MNIST.pdf}
+    \caption{Mode Collapse Example}
 \end{figure}
 
 The figure shows an example of mode collapse with the MNIST dataset: instead of learning to generate all the numbers, the Generator focuses only on one area of the overall distribution. As a result, after many iterations, it generates only number one.
 
-The following figure, on the other hand, shows the heatmap of the generator's distribution after an increasing number of training steps. It can be seen that the model never converges to a fixed distribution, but always assigns a significant probability mass to only one data mode at a time.
+Again, the figure below shows two rows of heatmaps representing the generator's distribution at different stages of training, from the initial phase (Step 0) up to 25K steps, along with the target distribution.
+
+Both rows display the same sequence, but the crucial difference lies in how the model behaves in these two scenarios:
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter9 - Mode Collapse HeatMap.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Mode Collapse HeatMap}
+    \includegraphics[width=\linewidth]{tikz/chapter9 - Mode Collapse HeatMap.pdf}
+    \caption{Mode Collapse HeatMap}
 \end{figure}
 
+The top row illustrates the ideal behavior of the model, where the generator's distribution gradually converges towards the target distribution. In this case, we observe how the model successfully captures all data modes in a balanced manner.
+    
+The bottom row demonstrates the phenomenon of mode collapse. Here, despite the training steps being the same, we see that the model focuses on only one data mode at a time. At each step, the generator assigns a significant probability mass to a single mode, ignoring the others. This behavior persists throughout all training steps, and the model never achieves a distribution similar to the target.
+
+This visual representation effectively highlights the problem of mode collapse: while the desired behavior is to model all data modes in a balanced way (as shown in the top row), in the case of mode collapse (bottom row), the model fixates on a single mode at a time, failing to capture the diversity of the target distribution.
 
 \section{DCGANs}
 
@@ -150,8 +157,8 @@ Also, the article showed that, to compute the output image, the generator perfor
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\linewidth]{tikz/chapter9 - Arithmetics of GAN.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Example of Vector Arithmetic in GANs.}
+    \includegraphics[width=0.8\linewidth]{tikz/chapter9 - Arithmetics of GAN.pdf}
+    \caption{Example of Vector Arithmetic in GANs.}
 \end{figure}
 
 In this case, arithmetic is performed on the points in latent space corresponding to each resulting face. The results showed that the Generator has some interpolation capabilities (interpolation means that the vectors in latent space can be combined to obtain a sample whose features are a combination of the two).
@@ -181,7 +188,7 @@ However, this metric has an overfitting problem: with this method, a GAN that si
 Therefore, a better approach is to use the Fréchet Inception Distance (FID).
 
 \begin{remark}{mybluee}{mybluee!20}
-Using FID, the generated samples are passed through a classification network and for a chosen layer the activations are calculated. The metric then takes the embeddings of that layer and treats them as \textbf{multivariate normal distributions}. The mean and covariance are calculated for both the generated samples and the actual data and compared using Multivariate Normal Fréchet Distance. However, \textbf{the overfitting problem is not completely avoided}.
+Using FID, both the real and the generated samples are passed through a classification network and for a chosen layer the activations are calculated. The metric then takes the embeddings of that layer and treats them as \textbf{multivariate normal distributions}. The mean and covariance are calculated for both the generated samples and the actual data and compared using Multivariate Normal Fréchet Distance. However, \textbf{the overfitting problem is not completely avoided}.
 \end{remark}
 
 \section{Different GAN Losses}
@@ -208,8 +215,8 @@ This leads to better quality generated images (better IS and FID) and more robus
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter9 - LSGAN.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Results Comparison between LSGAN and regular GAN}
+    \includegraphics[width=\linewidth]{tikz/chapter9 - LSGAN.pdf}
+    \caption{Results Comparison between LSGAN and Regular GAN}
 \end{figure}
 
 On the other hand, the work \href{https://arxiv.org/pdf/1701.07875}{"Wasserstein GAN" (Arjovsky et al.)} introduced the Wasserstein GAN with the idea of modifying the loss using a new method to better align the distributions of the dataset and the generated samples.
@@ -222,6 +229,7 @@ The most important result was that by implementing the Wasserstein GAN with the 
 
 However, the more complex the distance, the more difficult the training becomes.
 
+\newpage
 \section{GANs Training Tricks}
 
 In this section, we explore the tricks suggested in this paper: \href{https://arxiv.org/pdf/1606.03498}{"Improved Techniques for Training GANs" (Goodfellow et al.)}.
@@ -245,7 +253,7 @@ Since their advent in 2014, GANs have gone through numerous iterations and impro
 
 Introduced in \href{https://arxiv.org/pdf/1411.1784}{"Conditional Generative Adversarial Nets" (Mirza et al.)},a Conditional GAN (cGAN) \textbf{links an input with its corresponding label}, enabling the use of supervised information. For example, a photo of a lion paired with the label "\textit{lion}" can be used to guide the generation process. \textbf{The optimization problem remains unchanged}, so the techniques and knowledge applied to standard GANs are still relevant.
 
-In the cGAN framework, the generator incorporates the \textbf{label as an extension of the latent space}. This can be achieved by appending a one-hot encoded label vector to the latent space. The discriminator also utilizes the label information of real data, enhancing its ability to differentiate between real and generated samples. With this additional information, the discriminator can focus on a specific class, improving its performance.
+In the cGAN framework, the generator incorporates the \textbf{label as an extension of the latent space}. This can be achieved by appending a one-hot encoded label vector to the latent spacez. The discriminator also utilizes the label information of real data, enhancing its ability to differentiate between real and generated samples. With this additional information, the discriminator can focus on a specific class, improving its performance.
 
 \begin{figure}[!htbp]
     \centering
@@ -286,12 +294,21 @@ The CycleGAN architecture modifies the classical GAN training process by adding 
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\linewidth]{tikz/chapter9 - CycleGAN.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Cycle GAN Architecture}
+    \includegraphics[width=0.4\linewidth]{tikz/chapter9 - CycleGAN Rolled.pdf}
+    \caption{Cycle GAN Rolled Architecture}
 \end{figure}
 
 The figure represents the architecture of CycleGAN. On the top, the generative networks 
-$G$ and $F$ handle the translation of images between the $X$ and $Y$ domains. The discriminators $D_X$ and $D_Y$ evaluate the generated images to confirm whether they belong to the respective domains. On the bottom we have the "unrolled" versions of the model and the concept of Cycle-Consistency Loss is illustrated, which ensures that an image translated between the two domains and then reconverted retains a similarity to the original image.
+$G$ and $F$ handle the translation of images between the $X$ and $Y$ domains. The discriminators $D_X$ and $D_Y$ evaluate the generated images to confirm whether they belong to the respective domains. 
+
+Below we have the "unrolled" versions of the model and the concept of Cycle-Consistency Loss is illustrated, which ensures that an image translated between the two domains and then reconverted retains a similarity to the original image.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{tikz/chapter9 - CycleGAN Unrolled.pdf}
+    \caption{Cycle GAN Unrolled Architecture}
+\end{figure}
+
 
 \subsection{Progressive GAN}
 
@@ -320,12 +337,6 @@ StyleGAN uses \textbf{Instance Normalization} to manage the stylistic attributes
 
 In the DragGAN model, the user defines pairs of \textbf{control points} and \textbf{target points}, which indicate the areas of the image to be modified. The goal is to drag portions of the image from the position of the control points to the target points.
 
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=0.75\linewidth]{tikz/chapter9 - DragGAN.pdf}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO: Redo image using images of the paper}} DragGAN Example}
-\end{figure}
-
 The optimization process is divided into two main steps:
 \begin{enumerate}
     \item \textbf{Motion Supervision}: A module that guides the control points to the desired target points.
@@ -342,7 +353,7 @@ Autoencoders are unsupervised models that learn to represent input data in a spa
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=\linewidth]{tikz/chapter9 - Autoencoder.pdf}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-REFINE}} Autoencoder Architecture}
+    \caption{Autoencoder Architecture}
 \end{figure}
 
 The input is passed through the \textbf{Encoder}, a neural network that compiles data into a latent $z$ representation of lower dimension. This representation contains only the \textbf{most relevant features} extracted from the input. Next, the \textbf{Decoder}, which is a symmetric network with respect to the encoder, decodes the latent representation $z$ back to the size of the input to generate a reconstructed sample $x'$. The generated sample is then compared with the original input $x$ via a \textbf{reconstruction loss function (Norm L2)}.
@@ -360,7 +371,7 @@ Traditional autoencoders are designed to \textbf{replicate input data from the s
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=\linewidth]{tikz/chapter9 - Variational Autoencoder.pdf}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-REFINE}} Variational Autoencoders Architecture}
+    \caption{Variational Autoencoders Architecture}
 \end{figure}
 
 VAEs belong to the family of \textbf{explicit density estimation} models. Unlike models that indirectly measure the distribution of the data, VAEs use a direct approach to estimate the likelihood function of the data. The likelihood function for a sample of the dataset $x$ can be expressed as:
@@ -380,7 +391,7 @@ Since the Decoder samples from the prior distribution, the latent space must be 
 
 \textit{Here is a possible solution!} We could obtain $p_{\theta}(z)$ using Bayes' theorem. However, another problem would arise when we try to calculate the a posteriori probability distribution $p_{\theta}(z|x)$, since the denominator is intractable (\emoji{smiling-face-with-tear}):
 
-$$p_{\theta}(z|x)= \frac{p_{\theta}(x|z)p_{\theta}(z)}{p(x)}$$
+$$p_{\theta}(z|x)= \frac{p_{\theta}(x|z)p_{\theta}(z)}{p_{\theta}(x)}$$
 
 In this context, $p_{\theta}(z|x)$ represents the \textbf{latent space distribution extracted from the given input}.
 
@@ -426,7 +437,7 @@ The second term can be computed in closed form because it involves the KL diverg
         \includegraphics[width=\textwidth]{tikz/chapter9 - Latent Space VAEs 3.jpeg}
         \subcaption{Both}
     \end{minipage}  
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO (replace subcaption with tikz nodes)}} Latent Spaces Comparison}
+    \caption{Latent Spaces Comparison}
 \end{figure}
 
 The figure compares three different latent spaces obtained by various autoencoder training strategies. 
@@ -443,14 +454,35 @@ Now, \textbf{to train VAEs we want to use backpropagation, but in practice this 
 
 \section{VQ-VAEs}
 
-Typically, in a classic VAE, the prior ($p_{\theta}(z)$) and posterior ($q_{\phi}(z|x)$) are assumed to be normally distributed with diagonal variance. In the proposed work on VQ-VAEs \href{https://arxiv.org/pdf/1906.00446}{"Generating Diverse High-Fidelity Images with VQ-VAE-2" (Razavi et al.)}, however, the authors use \textbf{discrete latent variables} (instead of a continuous normal distribution). The posterior and prior distributions are categorical, and \textbf{samples drawn from these distributions index a embedding table}. Then, the encoders model a \textbf{categorical distribution}, from which we sample to obtain integral values. These integral values are used to index an embedding dictionary, and the indexed values are then passed to the decoder.
+Typically, in a classic VAE, the prior ($p_{\theta}(z)$) and posterior ($q_{\phi}(z|x)$) are assumed to be normally distributed with diagonal variance. In the proposed work on VQ-VAEs \href{https://arxiv.org/pdf/1711.00937}{"Neural Discrete Representation Learning" ( van den Oord et al.)}, however, the authors use \textbf{discrete latent variables} (instead of a continuous normal distribution). The posterior and prior distributions are categorical, and \textbf{samples drawn from these distributions index a embedding table}. Then, the encoders model a \textbf{categorical distribution}, from which we sample to obtain integral values. These integral values are used to index an embedding dictionary, and the indexed values are then passed to the decoder.
 
 For example, in images we may have categories such as "Dog" or "Bicycle," and it would not make sense to mix these categories. Discrete representations are also easier to handle, since each category has a unique value. In contrast, in a continuous latent space, it would be necessary to normalize the density function and understand the relationships between the various variables, which can be very complicated.
     
 
 \section{GAN and VAE Comparison}
 
-{\color{red}\colorbox{pink}{Tikz TO-DO: tabella finale nelle slides}}
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+& \textbf{GANs} & \textbf{VAEs} \\
+\hline
+Efficient sampling & \cellcolor{mygreen!25}\checkmark & \cellcolor{mygreen!25}\checkmark \\
+\hline
+High quality & \cellcolor{mygreen!25}\checkmark & \cellcolor{myred!20}$\times$ \\
+\hline
+Coverage & \cellcolor{myred!20}$\times$ & \cellcolor{myblue!20}? \\
+\hline
+Well-behaved latent space & \cellcolor{mygreen!25}\checkmark & \cellcolor{mygreen!25}\checkmark \\
+\hline
+Interpretable latent space & \cellcolor{myblue!20}? & \cellcolor{myblue!20}? \\
+\hline
+Efficient likelihood & \cellcolor{myorange!20}n/a & \cellcolor{myred!20}$\times$ \\
+\hline
+\end{tabular}
+\caption{GAN and VAE Comparison}
+\end{table}
+
 \textbf{Comparison of GAN and VAE using the Ideal Properties of Generative Models}
 
 \textbf{High-Quality Sampling}: GANs are capable of generating high-quality samples, meaning the samples they produce are often indistinguishable from real data.
@@ -462,220 +494,3 @@ For example, in images we may have categories such as "Dog" or "Bicycle," and it
 \textbf{Interpretable Latent Space}: Neither GANs nor VAEs excel at providing an interpretable latent space. Ideally, altering each dimension of $z$ should affect a specific, understandable feature of the data, but neither model achieves this effectively.
 
 \textbf{Efficient Likelihood Computation}: VAEs, despite being probabilistic models, struggle with efficiently computing likelihoods. GANs do not use likelihoods, so this characteristic does not apply to them.
-
-
-
-% TUTTO STO BLOCCO ANDREBBE PRIMA DI VQVAE, VEDERE SE INSERIRLO, FARE UNA APPENDIX OPPURE RIMUOVERLO DEL TUTTO.
-\begin{comment}
-
-
-\paragraph{Latent vector}
-
-As in the standard approach, the latent vector $ z $ encapsulates essential features (attributes) of a given input. Each attribute is represented by a \textbf{latent variable}, corresponding to a real feature of the object and their values  are derived from the original sample $x$. These attributes, as implied by the term \textbf{latent}, cannot be directly measured. An example is the age attribute shown in Figure \ref{fig:VAE-example}.
-
-\textbf{Qeustion n.1}: How are these latent variables' values computed by the model?
-
-
-The partial answer lies in the fact that the architecture has changed, now employing a probabilistic approach (Figure \ref{fig:VAE-architecture}). Specifically, the architecture consists of two modules:  the \textbf{Probabilistic Encoder}, represented by $q_{\phi}(z|x)$, and the \textbf{Probabilistic Decoder}, represented by $p_{\phi}(x|z)$. 
-
-\textbf{Answer to question n.1}: 
-
-Instead of compressing the features, the encoder maps the input into the feature distribution function $q_{\phi}(z|x)$, allowing the values to be continuous. 
-
-
-This allows the probabilistic decoder to sample attribute values from each latent variable's distribution, using the resulting vector to reconstruct a new image with the conditional probability $p(\hat{x}|z)$, where $\hat{x}$  is the new sample.
-
-
-
-Furthermore, the encoder divides the features size of $x$ into two parts, the mean $\mu$ and the standard deviation $\sigma$. Subsequently, they are join toghether into $z$ representation, by a linear transformation that involves $\mu$,  multiplying $\sigma$ with a random sample sampled from a standard normal distribution $\sim N(0,1)$.
-
-
-
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=\linewidth]{tikz/variational autoencoder.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Enter Caption}
-    \label{fig:VAE-architecture}
-\end{figure}
-
-
-
-\textbf{First summarized difference}:
-
-Using a VAE, we \textbf{represent each latent attribute for a given input as a probability distribution}, unlike standard autoencoders. For example, given an image of a man (Figure \ref{fig:VAE-example}), a standard AE fixes the smile feature, while a VAE learns a probability distribution for the smile. During decoding, we randomly sample from this distribution for each latent variable, generating a vector used by the decoder to create a new unique image. \textbf{The features of the generated image will belong to the same distribution as the input, but will be different from the samples in our dataset}.
-
-Hence, that is why  we aim to construct our encoder model as a probabilistc one. It must be able to output a \textbf{range of possible values} for each latent attributes from which we will randomly sample to feed into our decoder model.
-
-
-A visual explanation is provided in Figure \ref{fig:VAE-prob}. If we sample green and orange features from the smile probability distribution, they are close to each other in the latent space. Consequently, when these latent vectors are fed into the decoder, the generated images will look similar to the original one because their vectors are similar, and vice versa.
-
-
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=\linewidth]{tikz/VAE latent space.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Enter Caption}
-    \label{fig:VAE-prob}
-\end{figure}
-
-
-
-
-Before diving into the mathematical part and defining the training Loss, we still miss a crucial aspect for easily understanding VAE, which is the goal they try to pursue!
-
-\paragraph{Goal}
-
-\underline{Let us first state it in probabilistic fashion}:
-
-The goal of VAE is to find a distribution $q_{\phi}(z|x)$ (the encoder) of some latent variables $z$ (latent attributes) from which we can sample from $z \sim q_{\phi}(z|\underline{x}) $ to generate a new samples $x^{'} \sim p_{\theta}(x^{'} |z)$ (see figure \ref{fig:VAE-architecture} to better understanding to whom this probability functions refer to). 
-
-We want to stress the keyword \textbf{new} because, when we feed the sampled latent vector $z$ (containing the sampled values of each latent variable)  into the probabilistic decoder, it generates a sample $x^{'}$ that is not present within our dataset but \textbf{still}  has the same distribution of the original sample x.
-
-\underline{Now, let's explaint this concept in a not probabilistic way}:
-
-A VAE ensures that encodings from a known probability distribution can be decoded into reasonable objects, \textbf{even if they are the same of the actual image}, as they share the same probability distribution.
-
-Traditional autoencoders cannot perform this task since they learn the "probability distribution" of a \textbf{restricted domain}. For instance, an autoencoder trained on the MNIST dataset will output random noise when given an image from a different dataset because the decoder cannot recognize the different probability distribution of the latent representation.
-
-VAEs, instead of producing single-value encodings, produce a probability distribution function for \textbf{each encoding} (see Figure \ref{fig:VAE-example}). The decoder then samples from these distributions to cluster the images.
-
-
-
-
-
-\paragraph{Loss Function}
-
-Welcome to the madness! In this subsection we will describe the loss object of VAE in a problem-solution flow manner. Why such approach? Because many problems are linked to the probabilistic style of the two modules. 
-
-Let's start with first defining the loss function:
-
-$$L(\theta, \phi) = E_z \left[log p_{\theta}(x^{(i)}|z) \right]- D_{KL}(q_{\phi}(z|x^{(i)})||p_{\theta}(z))$$
-
-\begin{itemize}
-    \item The first term represents an the expected value of a probability distribution $z$, but \textbf{1. How is z distributed?}
-    \vspace{5 pt}
-
-    \item The second term is the KL divergence between $q_{\phi}(\underline{z}|\underline{x})$ and $p_{\theta}(z)$.
-\end{itemize}
-
-
-$q_{\phi}(\underline{z}|\underline{x}) $ and $p_{\theta}(\underline{x}|\underline{z}) $ are learnt through backpropagation. The parameters  of both modules will be updated in terms of $\phi$ and $\theta$.
-
-\textbf{2. WHAT is KL divergence and 3.WHY we need it?}
-
-\textbf{Answer to question number 2}: The KL divergence is a measure of how similar two probability distributions are; if they are the same, the divergence is zero, and if it is a positive number, the two distributions are different. 
-
-The loss function guides us to build a parameterized model that estimates a distribution by minimizing the KL divergence between the original and our parameterized distribution. Generally, we would compute this divergence between possible distribution families $Q$ and find the optimal distribution that minimizes the distance to the actual distribution. \textbf{As we want to make the decoder's sampling easier},  $q$ is assumed to be a normal distribution (for each attributes/ multivariate guassian distribution for the $z$ vector).
-
-
-
-Still, \textbf{why on earth we would use or even think about using this method}?
-
-See in figure \ref{fig:VAE-architecture}, the probabilistic encoder is defined by the posterior probability $q_{\phi}(z|x)$, which means, given a sample, the encoder should be able to generate the distributions of each latent variables. So, in theory  to compute this probability we would only need the usage of the \textbf{Bayesian theorem}:
-
-$$p(z|x) = \frac{p(x|z)p(z)}{p(x)}$$
-
-However, in practice, the bayesian rule is difficult to compute because the denominator $p(x)$ is difficult to obtain as it requires to marginalize the nominator over \textbf{all} possible values of $z$:
-
-$$p(x)= \int_{z}^{} p(x|z) p(z) dz = \int_{z} p(x,z)dz$$
-
-The integral is not available in closed form and it is intractable due to multiple integrals involved for latent variable vector $z$ (they can be of any size).
-
-
-
-
-
-\textbf{Answer to question number 3}: Thus, the alternative is to approximate $p(z|x)$ by another distribution $Q(z|x)$ which is defined in such a way that it has tractable solution. We approximate $p(z|x)$ using $Q(z|x)$ where $Q(z|x)$ is a simple distribution such as Gaussian. Thus, we keep track of the goodness of this approximation by computing KL between $p(z|x)$ and $Q(z|x)$.  
-
-Then, to "learn" the parameter that better approximate $q(z|x)$, we should find them by an optimization procure that tries minimizing the KL divergence. 
-
-\textbf{4. But how we can convert an inference problem into an optimization one?}
-
-\textbf{Answer to question number 4}: this is done through \textbf{Variational inference}. The main goal of this technique is to pose the inference problem as an optimization problem:
-
-
-
-\begin{equation}
-\begin{aligned}
-D_{KL} (Q_{\phi}(z|x) || p_{\theta}(z|x)) &= \sum_{z}Q_{\phi}(z|x)\log\left(\frac{Q_{\phi}(z|x)}{p_{\theta}(z|x)}\right) \\
-&= E_{z \sim Q_{\phi}(z|x)}\left[ \log\left(\frac{Q_{\phi}(z|x)}{p_{\theta}(z|x)}\right) \right] \\
-&= E_{z \sim Q_{\phi}(z|x)}\left[ \log(Q_{\phi}(z|x)) - \log(p_{\theta}(z|x)) \right]
-\end{aligned}
-\end{equation}
-
-
-$Q_{\phi}(z|x) $ is a simple gaussian and $p_{\theta}(z|x)$ is the probability function that we are trying to approximate. Then, let's substitute the bayesian theorem into $\log(p_{\theta}(z|x))$ :
-
-
-\begin{equation}
-\begin{aligned}
-D_{KL} (Q_{\phi}(z|x) || p_{\theta}(z|x)) &= E_{z}\left[ \log(Q_{\phi}(z|x)) - \log(p_{\theta}(z|x)) \right] \\
-&= E_{z}\left[ \log(Q_{\phi}(z|x)) - \log(p_{\theta}(x|z)) - \log(p_{\theta}(z)) + \log(p_{\theta}(x)) \right]
-\end{aligned}
-\end{equation}
-
-
-
-\textbf{Answer to question number 1}: the latent variables are distributes as a gaussian distribution \textbf{$z = z \sim Q_{\phi}(z|x)$}. 
-
-Since the integration is over $z$ and $p(x)$ does not depend on $z$, it can be moved out.
-
-
-$$D_{KL}(Q_{\phi}(z|x) || p_{\theta}(z|x)) - log P_{\theta}(x) = E_{z}\left[ log(Q_{\phi}(z|x))-log(p_{\theta}(x|z))-log(p_{\theta}(z))  \right] $$
-
-By rearranging the terms we obtain:
-
-$$D_{KL}(Q_{\phi}(z|x) || p_{\theta}(z|x)) - log P_{\theta}(x) = E_{z}\left[ log(p_{\theta}(x|z)) \right] - \textcolor{blue}{E_z\left[log(p_{\theta}(x|z))-log(p_{\theta}(z))  \right]} $$
-
-The \textcolor{blue}{second} expression is the $D_{KL}$, hence:
-
-$$D_{KL}(Q_{\phi}(z|x) || p_{\theta}(z|x)) - log P_{\theta}(x) = \textcolor{myred}{E_{z}\left[ log(p_{\theta}(x|z)) \right]} - \textcolor{mygreen}{D_{KL}(Q_{\phi}(z|x) || p_{\theta}(z))}$$
-
-We have finally re-obtained the VAE objection function, where the first term represents the \textcolor{myred}{reconstrunction likelihood} (as Standard AE) and the \textcolor{mygreen}{second term} ensures that our leaned distributions $Q$ is similar to the prior distribution $p$.
-
-$$L(\theta, \phi) = E_{z \sim Q_{\phi}(z|x)}\left[ log(p_{\theta}(x|z)) \right] - D_{KL}(Q_{\phi}(z|x) || p_{\theta}(z))$$
-
-So our target is to find optimal $\theta$ and $\phi$ such that the loss is minimized. VAE has an \textbf{inherit regularized ($D_{KL}$)}.  $\theta^{*}$ are the weights for the encoder network, $\phi^{*}$ are the weights of the generation network.
-
-Lets explain the loss function:
-
-\begin{itemize}
-    \item $E_{z \sim Q_{\phi}(z|x)}\left[ log(p_{\theta}(x|z)) \right]$: it is the expectation carried out over the log probability function $log(p_{\theta}(x|z))$. Sample of $z$ are taken from $Q_{\phi}(z|x)$, which is the neural network represented by the \textbf{encoder model} that maps x to z . 
-
-    \vspace{10 pt}
-    
-    \item The inner term is called \textbf{log-likelihood}. If $p_{\theta}(x|z)$ is assumed to be a multivariate (because we are working with a vector) gaussian distribution ($p_{\theta}(x|z) \sim N (\mu_{\theta}(z)), \sum_{\theta}(z) $) and take the log, we get a square error of the data sample x and mean of the guassian distribution, i.e the \textbf{L2 norm}. It determines \textbf{how far the reconstructed data \hat{x} is from the input x}. \textbf{Thus, this term refers to the encoder module $p_{\theta}(x|z)$ as it maps the latent vector into a generated sample \hat{x}}
-
-    \vspace{10 pt}
-
-    \item $D_{KL}(Q_{\phi}(z|x) || p_{\theta}(z))$: represents the divergence between $Q_{\phi}(z|x)$ and $p_{\theta}(z)$. Note that here we assume to know $p_{\theta}(z)$ which is a gaussian with mean 0 and variance 1. \textbf{So, this part referes to the encoder model $Q_{\phi}(z|x)$ as it maps x into z}. We want this data generated z to be not far from the normal distribution. It acts like a regularizer as it doesn't allow z to diverge from a normal distribution.
-
-    \vspace{10 pt}
-    
-    \item Therefore, when sampling the z vector before being passed into the decoder module, its values will be a combination of z gaussian, form example $Q_{\phi}(z_1|x)$ and $Q_{\phi}(z_2|x)$. Consequently, the generated sample from z will not be part of the dataset but will still belong to the same distribution.
-\end{itemize}
-
-\textbf{Summary difference n.2}
-
-The intepretation of the loss is: while reconstruction loss enables the distribution to correctly describe the input, by focusing only on minimizing the reconstruction loss, the network learns very narrow distributions. The KL divergence loss prevents the network from learning narrow distributions and tries to approximate posterior closed to the prior.
-
-
-The goal of this derivation is to allows us to derive a lower bound on the data likelihood that is tractable and we can optimize. We have successfully casted the \textbf{inference problem into an optimization problem}!
-
-The \textbf{lowebound} of $log p_{\theta}(x)$ is the loss $L(\theta, \phi) $ itselfe, as  KL divergence is always non negative, thus: 
-
-$$L(\theta, \phi) \le log p_{\theta}(x)$$
-
-Therefore when minimizing the loss, we are maximizing the lower bound of the probability of generating of data samples similar to the original data, \textbf{not identicall} but still from the same distribution.
-
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=\linewidth]{tikz/VAE posterior.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} The overall image describes the whole flow. In few words, we want to know how to learn how to generate data, x, from our latent variables, z. This implies that we want to learn $p(z|x)$. To learn it, we use the KL distance to approximate the true posterior probability that cannot be computed by bayesian theorem; \textbf{Right}: We can choose prior p(z) to be simple, e.g. Gaussian; Conditional p(x|z) is complex (generates image) and it is represented with Decored neural network; \textbf{Left}: The additonal probabilistic encoder.}
-    \label{fig:VAE-posterior}
-\end{figure}
-
-
-
-
-
-\end{comment}

@@ -1,0 +1,38 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mygreen}{green!60!black}
+
+\begin{document}
+
+\begin{tikzpicture}
+\begin{axis}[
+    width=12cm,
+    height=8cm,
+    axis lines = left,
+    xlabel = {$D(G(z))$},
+    ylabel = {},
+    xmin = 0, xmax = 1,
+    ymin = -4, ymax = 4,
+    xtick = {0,0.2,0.4,0.6,0.8,1.0},
+    ytick = {-4,-3,-2,-1,0,1,2,3,4},
+    legend pos = north east,
+    legend cell align={left},
+    domain = 0:0.999,
+    samples = 200,
+    no markers
+]
+
+% Plot log(1 - D(G(z)))
+\addplot[myblue, thick] {ln(1 - x)};
+\addlegendentry{$\log(1 - D(G(z)))$}
+
+% Add a box around the plot
+\draw (rel axis cs:0,0) rectangle (rel axis cs:1,1);
+
+\end{axis}
+\end{tikzpicture}
+
+\end{document}

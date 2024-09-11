@@ -19,8 +19,8 @@ At each time step, the word vector $S_t$ is transformed through an embedding lay
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter7 - Show and Tell Model.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Show and Tell Caption Model}
+    \includegraphics[width=\linewidth]{tikz/chapter7 - Show and Tell Model.pdf}
+    \caption{Show and Tell Caption Model}
 \end{figure}
 
 The quality of the generated caption depends strongly on the performance of the CNN, making fine-tuning crucial. So, the architecture combines CNN and LSTM in a way that leverages the visual feature extraction capabilities of CNN and the sequential modeling capabilities of LSTM to generate accurate and consistent captions for images.
@@ -31,8 +31,8 @@ In the sampling method, the first word is extracted according to a probability $
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter7 - Sampling.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Sampling Visual Example}
+    \includegraphics[width=\linewidth]{tikz/chapter7 - Sampling.pdf}
+    \caption{Sampling Visual Example}
 \end{figure}
 
 With Beam Search, on the other hand, we iteratively consider the \textbf{$k$ best sentences up to time $t$} as candidates to generate sentences of length $t+1$, keeping only the $k$ best of them. This approach allows more word combinations to be explored, improving the quality of the generated sentences compared to simple sampling.
@@ -82,7 +82,7 @@ The main innovations introduced by this approach are as follows:
 
 \begin{itemize}
     \item \textbf{Feature Extractor}: A CNN is used to extract a set of feature vectors, each of which represents a part of the image. So, here we maintain the spatial information.
-    \item \textbf{RNN with Attention}: The extracted feature maps are not only used for initializing the RNN, but are passed to each cell of the RNN during caption generation. This approach allows the network to focus attention on specific parts of the image as it generates each caption word. \textbf{Each RNN cell produces both the probability of the predicted word ($p(y_t)$) and an attention map }($\alpha_t$) indicating the relevant parts of the ima ge.
+    \item \textbf{RNN with Attention}: The extracted feature maps are not only used for initializing the RNN, but are passed to each cell of the RNN during caption generation. This approach allows the network to focus attention on specific parts of the image as it generates each caption word. \textbf{Each RNN cell produces both the probability of the predicted word ($p(y_t)$) and an attention map }($\alpha_t$) indicating the relevant parts of the image.
 \end{itemize}
 
 \begin{figure}[!htbp]
@@ -103,8 +103,8 @@ On the other hand, in hard attention, the attention map gives score 1 to the hig
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter7 - Attention Types.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Soft and Hard Attention}
+    \includegraphics[width=\linewidth]{tikz/chapter7 - Attention Types.pdf}
+    \caption{Soft and Hard Attention}
 \end{figure}
 
 \section{Seq2Seq}
@@ -120,7 +120,7 @@ The distinguishing factor of this paper was the implementation of a machine tran
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter7 - Seq2Seq.png}
+    \includegraphics[width=\linewidth]{tikz/chapter7 - Seq2Seq.pdf}
     \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}}}
 \end{figure}
 
@@ -204,7 +204,7 @@ In the image above, the attention matrix on the left shows the alignment between
 
 \section{Local Attention}
 
-The attention used in RNN Enc-Dec is called \textbf{global attention} because the module attends all of the inputs. Logically, this is a waste of resources and it can also be misleading. Research showed lately that best results where obtained with \textbf{local attention}, firstly introduced in the paper \href{https://arxiv.org/pdf/1508.04025}{"Effective Approaches to Attention-based Neural Machine Translation" (Luong et al.)}.
+The attention used in the previous model is called \textbf{global attention} because the module attends all of the inputs. Logically, this is a waste of resources and it can also be misleading. Research showed lately that best results where obtained with \textbf{local attention}, firstly introduced in the paper \href{https://arxiv.org/pdf/1508.04025}{"Effective Approaches to Attention-based Neural Machine Translation" (Luong et al.)}.
 
 In local attention mechanisms, \textbf{the model focuses only on a subset of the input sequence}, rather than the entire sequence, to compute the context vector $c_t$. This subset is determined by an aligned position indication $p_t$, which the model learns during training based on the previous decoder state $s_{t-1}$.
 
@@ -213,7 +213,7 @@ Instead of using a global view of all input tokens, local attention utilizes a \
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=\linewidth]{tikz/chapter7 - Local Attention Comparison.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Local Attention vs. Global Attention}
+    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Global Attention vs. Local Attention}
 \end{figure}
 
 The image above shows a comparison between a global attention module (right) and a local attention module (left), illustrating the difference in focus areas for the input sequence during output generation.
@@ -307,12 +307,23 @@ The sentences will then be represented as $[1,1,1,1,1,0,0]$ and $[1,0,1,0,0,1,1]
 However, as is evident, this representation is not effective in showing semantic relationships between words, as each is encoded as an individual entity in a vector space and there is no way to establish that the words "love" and "like" have similar connotations. This is where word embeddings come in.
 
 \textbf{Word embeddings} are representations in which contexts and similarities are captured by encoding in vector space. Similar words will have similar representations. \textbf{Word2Vec techniques} create a representation of each word in our vocabulary in a vector. Words used in similar contexts or that have semantic relationships are effectively captured through their \textbf{vicinity in vector space}. Embeddings create semantic and syntactic relationships between words. These relationships, or weights, are determined by the model and not pre-assigned (see example in the figure below).
-
-\begin{figure}[!htbp]
-        \centering
-        \includegraphics[width=0.8\linewidth]{tikz/chapter7 - Word2Vec Example.png}
-        \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Word Embeddings Example}
-\end{figure}
+  
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+ & KING & QUEEN & MAN & GIRL & PRINCE \\
+\hline
+Royalty & \cellcolor{mygreen!25}0.96 & \cellcolor{mygreen!25}0.98 & \cellcolor{myblue!20}0.05 & \cellcolor{myblue!20}0.56 & \cellcolor{mygreen!25}0.95 \\
+\hline
+Masculinity & \cellcolor{myred!20}0.92 & \cellcolor{myorange!20}0.01 & \cellcolor{myred!20}0.90 & \cellcolor{myorange!20}0.09 & \cellcolor{myred!20}0.85 \\
+\hline
+Femininity & \cellcolor{myorange!20}0.08 & \cellcolor{myred!20}0.93 & \cellcolor{myorange!20}0.10 & \cellcolor{myred!20}0.91 & \cellcolor{myorange!20}0.15 \\
+\hline
+Age & \cellcolor{myblue!20}0.61 & \cellcolor{myblue!20}0.71 & \cellcolor{myblue!20}0.56 & \cellcolor{myblue!20}0.11 & \cellcolor{myorange!20}0.42 \\
+\hline
+\end{tabular} \caption{Word Embeddings Example}
+\end{table}
 
 The image shows hypothetical features (weights) in word embeddings learned by the neural network. Consider a classic example: "king," "queen," "man," "women," "prince." In a hypothetical world, vectors could then define the weight of each criterion (e.g., nobility, masculinity, femininity, age, etc.) for each of the words provided in our vocabulary. For example, "king," "queen," and "prince" have similar scores for "nobility," while "women" and "queen" have similar scores for "femininity".
 

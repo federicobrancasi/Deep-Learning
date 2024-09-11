@@ -12,7 +12,7 @@ The Batch Gradient Descent algorithm is one of the most widely used methods for 
 \renewcommand\thealgorithm{}
 \caption{\textbf{\textcolor{mygreen}{Batch Gradient Descent}}}
 \begin{algorithmic}[1]
-\REQUIRE{Learning Rate $\varepsilon$}
+\REQUIRE{Learning Rate $\eta$}
 \REQUIRE{Initial Parameters $\mathbf{w}$}
 \WHILE{Stopping Criteria not met}
     \STATE Compute gradient estimate on \textbf{\textcolor{myred}{$\mathbf{N}$ training examples}} $\{ (\mathbf{x}^{(1)}, y^{(1)}), ..., (\mathbf{x}^{(N)}, y^{(N)}) \}$
@@ -21,7 +21,7 @@ The Batch Gradient Descent algorithm is one of the most widely used methods for 
     $
     \STATE Update parameters:
     $
-    \textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} - \varepsilon \mathbf{\hat{g}}} 
+    \textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} - \eta \mathbf{\hat{g}}} 
     $
 \ENDWHILE
 \end{algorithmic}
@@ -29,6 +29,8 @@ The Batch Gradient Descent algorithm is one of the most widely used methods for 
 
 The distinguishing feature of Batch Gradient Descent is that it uses the \textbf{\textcolor{myred}{entire training dataset to calculate the gradient}} of the loss function. This means it requires \textbf{more computational resources and computation time} than other methods, but it can also lead to \textbf{more stable and accurate convergence}.
 Therefore, Batch Gradient Descent remains one of the most widely used algorithms for training neural networks due to its conceptual simplicity and its effectiveness in learning model parameters. 
+
+N.B. $\eta$ represents the learning rate, an important parameter that determines the step size that is taken when updating model parameters.
 
 \subsection{Stochastic Gradient Descent (SGD)}
 
@@ -38,7 +40,7 @@ The Stochastic Gradient Descent algorithm, on the other hand, computes and appli
 \renewcommand\thealgorithm{}
 \caption{\textbf{\textcolor{mygreen}{Stochastic Gradient Descent}}}
 \begin{algorithmic}[1]
-\REQUIRE{Learning Rate $\varepsilon$}
+\REQUIRE{Learning Rate $\eta$}
 \REQUIRE{Initial Parameters $\mathbf{w}$}
 \WHILE{Stopping Criteria not met}
     \STATE Compute gradient estimate on \textbf{\textcolor{myred}{a random training example}} $(\mathbf{x}^{(i)}, y^{(i)})$
@@ -48,7 +50,7 @@ The Stochastic Gradient Descent algorithm, on the other hand, computes and appli
     $
     \STATE Update parameters:
     $
-    \textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} - \varepsilon \mathbf{\hat{g}}}
+    \textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} - \eta \mathbf{\hat{g}}}
     $
 \ENDWHILE
 \end{algorithmic}
@@ -70,7 +72,7 @@ Stochastic Gradient Descent with Momentum is a variant of the gradient descent a
 \renewcommand\thealgorithm{}
 \caption{\textbf{\textcolor{mygreen}{Stochastic Gradient Descent with Momentum}}}
 \begin{algorithmic}[1]
-\REQUIRE{Learning Rate $\varepsilon$}
+\REQUIRE{Learning Rate $\eta$}
 \REQUIRE{Momentum Parameter $\alpha$}
 \REQUIRE{Initial Parameters $\mathbf{w}$}
 \REQUIRE{Initial Velocity $\mathbf{v}$}
@@ -81,14 +83,14 @@ Stochastic Gradient Descent with Momentum is a variant of the gradient descent a
     \mathbf{\hat{g}} \leftarrow\nabla_{\mathbf{w}} L(f(\mathbf{x}^{(i)},\mathbf{w}), y^{(i)})
     $
     \STATE Update the velocity:
-    $\textcolor{mybluee}{\mathbf{v} \leftarrow \alpha \mathbf{v} - \varepsilon \mathbf{\hat{g}}}$
+    $\textcolor{mybluee}{\mathbf{v} \leftarrow \alpha \mathbf{v} - \eta \mathbf{\hat{g}}}$
     \STATE Update the parameters:
     $\textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} + \mathbf{v}}$
 \ENDWHILE
 \end{algorithmic}
 \end{algorithm}
 
-The parameter \(\alpha\) controls the \textbf{\textcolor{mybluee}{contribution of the previous velocity}} in the current parameter update. If \(\alpha\) is greater than \(\varepsilon\), the current update is more influenced by the previous gradients, thus increasing \textbf{convergence stability} and helping the network to \textbf{avoid local minima}. 
+The parameter \(\alpha\) controls the \textbf{\textcolor{mybluee}{contribution of the previous velocity}} in the current parameter update. If \(\alpha\) is greater than \(\eta\), the current update is more influenced by the previous gradients, thus increasing \textbf{convergence stability} and helping the network to \textbf{avoid local minima}. 
 
 Stochastic Gradient Descent with Momentum, while accelerating the process of reaching the minimum, can sometimes "overshoot" the desired target due to the inertia effect introduced by speed. However, it manages to reach the minimum much \textbf{faster than simple SGD}, making it an effective choice for optimising model parameters when training neural networks.
 
@@ -107,7 +109,7 @@ Stochastic Gradient Descent with Nesterov Momentum is a variant of the previous 
 \renewcommand\thealgorithm{}
 \caption{\textbf{\textcolor{mygreen}{Stochastic Gradient Descent with Nesterov Momentum}}}
 \begin{algorithmic}[1]
-\REQUIRE{Learning Rate $\varepsilon$}
+\REQUIRE{Learning Rate $\eta$}
 \REQUIRE{Momentum Parameter $\alpha$}
 \REQUIRE{Initial Parameters $\mathbf{w}$}
 \REQUIRE{Initial Velocity $\mathbf{v}$}
@@ -117,7 +119,7 @@ $\textcolor{mybluee}{\widetilde{\mathbf{w}} \leftarrow \mathbf{w} + \alpha \math
 \STATE Compute gradient estimate on \textbf{\textcolor{myred}{a random training example}} $(\mathbf{x}^{(i)}, y^{(i)})$
 \STATE $\mathbf{\hat{g}} \leftarrow \nabla_{\textcolor{mybluee}{\widetilde{\mathbf{w}}}} L(f(\mathbf{x}^{(i)},\textcolor{mybluee}{\widetilde{\mathbf{w}}}), y^{(i)})$
 \STATE Update velocity:
-$\textcolor{mybluee}{\mathbf{v} \leftarrow \alpha \mathbf{v} - \varepsilon \mathbf{\hat{g}}}$
+$\textcolor{mybluee}{\mathbf{v} \leftarrow \alpha \mathbf{v} - \eta \mathbf{\hat{g}}}$
 \STATE Update parameters:
 $\textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} + \mathbf{v}}$
 \ENDWHILE
@@ -143,7 +145,7 @@ Adagrad is an optimisation algorithm that \textbf{scales the model parameters by
 \renewcommand\thealgorithm{}
 \caption{\textbf{\textcolor{mygreen}{Adagrad}}}
 \begin{algorithmic}[1]
-\REQUIRE{Learning Rate $\varepsilon$}
+\REQUIRE{Learning Rate $\eta$}
 \REQUIRE{Initial Parameters $\mathbf{w}$}
 \REQUIRE{Small Constant $\delta$ to avoid division by zero}
 \STATE Initialize sum of squared gradients vector: $\mathbf{r} \leftarrow 0$
@@ -153,7 +155,7 @@ Adagrad is an optimisation algorithm that \textbf{scales the model parameters by
 \STATE Accumulate:
 $\textcolor{mybluee}{\mathbf{r} \leftarrow \mathbf{r} + \mathbf{\hat{g}} \odot \mathbf{\hat{g}}}$
 \STATE Update parameters:
-$\textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} - \frac{\varepsilon}{\delta + \sqrt{\mathbf{r}}} \odot \mathbf{\hat{g}}}$ 
+$\textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} - \frac{\eta}{\delta + \sqrt{\mathbf{r}}} \odot \mathbf{\hat{g}}}$ 
 \ENDWHILE
 \end{algorithmic}
 \end{algorithm}
@@ -172,7 +174,7 @@ To address this problem, RMSProp has been proposed as a variant of Adagrad that 
 \renewcommand\thealgorithm{}
 \caption{\textbf{\textcolor{mygreen}{RMSProp}}}
 \begin{algorithmic}[1]
-\REQUIRE{Learning Rate $\varepsilon$}
+\REQUIRE{Learning Rate $\eta$}
 \REQUIRE{Decay Rate $\rho$}
 \REQUIRE{Small constant $\delta$ to avoid division by zero}
 \REQUIRE{Initial Parameters $\mathbf{w}$}
@@ -183,7 +185,7 @@ To address this problem, RMSProp has been proposed as a variant of Adagrad that 
 \STATE Accumulate:
 $\textcolor{mybluee}{\mathbf{r} \leftarrow \rho \mathbf{r} + (1 - \rho) \mathbf{\hat{g}} \odot \mathbf{\hat{g}}}$
 \STATE Update the parameters:
-$\textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} - \frac{\varepsilon}{\delta + \sqrt{\mathbf{r}}} \odot \mathbf{\hat{g}}}$
+$\textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} - \frac{\eta}{\delta + \sqrt{\mathbf{r}}} \odot \mathbf{\hat{g}}}$
 \ENDWHILE
 \end{algorithmic}
 \end{algorithm}
@@ -200,7 +202,7 @@ Adam automatically adapts the learning rates for each parameter based on momentu
 \renewcommand\thealgorithm{}
 \caption{\textbf{\textcolor{mygreen}{Adam}}}
 \begin{algorithmic}[1]
-\REQUIRE{Learning Rate $\varepsilon$}
+\REQUIRE{Learning Rate $\eta$}
 \REQUIRE{Decay Rates for First and Second Moments $\rho_1$, $\rho_2$}
 \REQUIRE{Small constant $\delta$ to avoid division by zero}
 \REQUIRE{Initial Parameters $\mathbf{w}$}
@@ -217,7 +219,7 @@ $\mathbf{r} \leftarrow \rho_2 \mathbf{r} + (1 - \rho_2) \mathbf{\hat{g}} \odot \
 \STATE Correct bias in first moment: $\textcolor{mybluee}{\hat{\mathbf{s}} \leftarrow \frac{\mathbf{s}}{1 - \rho_1^t}}$
 \STATE Correct bias in second moment: $\textcolor{mybluee}{\hat{\mathbf{r}} \leftarrow \frac{\mathbf{r}}{1 - \rho_2^t}}$
 \STATE Update parameters:
-$\textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} - \varepsilon \frac{\hat{\mathbf{s}}}{\delta + \sqrt{\hat{\mathbf{r}}}}}$
+$\textcolor{mybluee}{\mathbf{w} \leftarrow \mathbf{w} - \eta \frac{\hat{\mathbf{s}}}{\delta + \sqrt{\hat{\mathbf{r}}}}}$
 \ENDWHILE
 \end{algorithmic}
 \end{algorithm}
@@ -302,7 +304,7 @@ For each color channel in each image, the mean and standard deviation on all pix
 \begin{minipage}{0.4\textwidth}
 \textbf{\textcolor{myred!70}{Layer Normalization (LN):}} \\
 
-Here, we consider each example in the batch separately. Each example has C channels (features!), each of which has an image of size HxW. With Layer Normalization, we normalise the data of each channel for each example. Then, for each channel, we calculate the mean and standard deviation over the entire input of that example (i.e. over all positions of HxW) and normalise the data of that channel accordingly.
+Here, we consider each example in the batch separately. Each example has C channels (\textit{features!}), each of which has an image of size HxW. With Layer Normalization, we normalise the data of each channel for each example. Then, for each channel, we calculate the mean and standard deviation over the entire input of that example (i.e. over all positions of HxW) and normalise the data of that channel accordingly.
 \end{minipage}
 
 Once again, we would have a tensor of size (10, 3, 100).

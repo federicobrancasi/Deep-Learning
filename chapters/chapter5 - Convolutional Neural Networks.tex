@@ -1,4 +1,4 @@
-Welcome to the second part of the course, in which we delve into the intricate world of \textbf{different neural network architectures}. If things seemed complicated before, they will get even more challenging here. \emoji{smiling-face-with-tear}
+Welcome to the second part of the course, in which we delve into the intricate world of \textbf{different neural network architectures}. \textit{If things seemed complicated before, they will get even more challenging here.} \emoji{smiling-face-with-tear}
 
 Convolutional Neural Networks (CNN) handles \textbf{structured data}, such as images. Various architectures have been developed, each attempting different methods to learn effective representations of structured data. In the case of images, these representations capture \textbf{spatially local dependencies} between pixels. The low-level layers of a CNN extract local features, while the high-level layers extract learn global
 patterns.
@@ -70,8 +70,8 @@ It is important to know two fundamental parameters used to control the size of t
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{tikz/chapter5 - Convolution.pdf}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Example of a 2D Convolution with Zero-Padding}
+    \includegraphics[width=\textwidth]{tikz/chapter5 - Convolution with Padding.pdf}
+    \caption{Example of a 2D Convolution with Zero-Padding}
 \end{figure}
 
 The output of the convolutional layer depends on the size of the kernel $K$, the stride $S$, the padding $P$, and can be calculated using the formula $\mathbf{\frac{(N-K)+2P}{S}+1}$, where $N$ is the size of the input. In the case of our example, the input is a square matrix of size 7x7, the kernel is 3x3, the padding is 1 and the stride is 1, so the output will be a matrix of size 5x5.
@@ -156,12 +156,6 @@ ILSVRC 2013 introduced similar architecture to AlexNet (5 convolutional layers a
     \item Article: \href{https://arxiv.org/pdf/1311.2901.pdf}{"Visualising and Understanding Convolutional Networks" (Zeiler and Fergus)}
 \end{itemize}
 
-% \begin{figure}[!htbp]
-%     \centering
-%     \includegraphics[width=\textwidth]{tikz/chapter5 - ILSVRC.png}
-%     \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} ILSVRC Architecture}
-% \end{figure}
-
 In order to better understand what happens within a convolutional neural network and to identify the areas of interest on which it focuses to classify an image, we use \textbf{Deconvolutional Networks}. The work of Zeiler and Fergus is fundamental in this field and has made it possible to visualise activity in the intermediate layers of a CNN.
 
 A Deconvolutional Network aims to interpret the activations in the various layers of a CNN by mapping them in pixel space. It works by reversing the convolution process: it is run in reverse and used as a probe without the need for learning. To do this, you \textbf{connect a Deconv Net to a layer of the CNN} you wish to probe, pass the input image through the CNN to obtain the activations, and then map these activations to pixel space.
@@ -178,8 +172,8 @@ The result is a visualisation that shows which features of the original image we
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.47\textwidth]{tikz/chapter5 - Deconvolutional Networks Captured Patterns.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Patterns Captured in a Layer of a CNN}
+    \includegraphics[width=0.47\textwidth]{tikz/chapter5 - Deconvolutional Networks Captured Patterns}
+    \caption{Patterns Captured in a Layer of a CNN}
 \end{figure}
 
 Another method to visualise whether the CNN is learning correctly is to \textbf{occlude an image at various positions} and observe the feature activations and classifier confidence. 
@@ -196,9 +190,8 @@ It was introduced in the article \href{https://arxiv.org/pdf/1610.02391}{"Grad-C
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.7\linewidth]{tikz/chapter5 - GradCam.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}}  Grad-CAM applied to an Example Image}
-    \label{fig:gradcam}
+    \includegraphics[width=0.7\linewidth]{tikz/chapter5 - GradCam.pdf}
+    \caption{Grad-CAM applied to an Example Image}
 \end{figure}
 
 The intuition is that gradients of the classification score with respect to the final convolutional feature map are used to identify the parts of an input image that most influence the classification score. The places where this gradient is large are those where the final score is most dependent on the data.
@@ -235,9 +228,9 @@ GoogleNet introduced an innovative structure, reducing the number of parameters 
 \begin{itemize}
     \item Does not use fully connected layers, \textbf{reducing the complexity of the model} (inception module) and the risk of overfitting.
     \item Usage of supervision both at the end and intermidiate layers in order to fight with vanishing gradient (a deeper network is more prone to). 
-    \item Usage of \textbf{inception modules}, allowing the network to capture details at different scales. An inception module consists of multiple convolutional layers with different kernel sizes, which are concatenated to capture features of different scales simultaneously. This parallelism helps GoogLeNet capture fine-grained details as well as high-level features, making it exceptionally effective at image recognition tasks.
+    \item Usage of \textbf{inception modules}, allowing the network to capture details at different scales. An inception module consists of multiple convolutional layers with different kernel sizes, which are concatenated to capture features of different scales simultaneously. This parallelism helps GoogleNet capture fine-grained details as well as high-level features, making it exceptionally effective at image recognition tasks.
     \item Use of \textbf{1x1 convolutions to reduce the number of channels}, improving computational efficiency and reducing the computational workload.
-    \item Introduction of \textbf{batch Normalization}, which helps stabilise and speed up the training process. This is because if the inception block is trained with batch normalization, performance improves, even achieving the same performance as if not using batch normalization, but in fewer steps.
+    \item Introduction of \textbf{batch normalization}, which helps stabilise and speed up the training process. This is because if the inception block is trained with batch normalization, performance improves, even achieving the same performance as if not using batch normalization, but in fewer steps.
     \item Article: \href{https://arxiv.org/pdf/1409.4842.pdf}{"Going Deeper with Convolutions" (Szegedy et al.)}
 \end{itemize}
 
@@ -343,7 +336,6 @@ Its main features include:
     \centering
     \includegraphics[width=\linewidth]{tikz/chapter5 - Selective Search.png}
     \caption{Training Procedure for Selective Search}
-    \label{fig:selective-search}
 \end{figure}
 
 
@@ -413,7 +405,7 @@ YOLO is an innovative approach to object detection that \textbf{stands out for i
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=\textwidth]{tikz/chapter5 - YOLO.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} YOLO Architecture}
+    \caption{YOLO Architecture}
 \end{figure}
 
 \section{Instance Segmentation}
