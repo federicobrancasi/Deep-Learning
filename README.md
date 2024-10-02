@@ -33,6 +33,7 @@ We welcome contributions from the community! Whether it's fixing a typo, improvi
 5. Open a Pull Request
 
 ## Authors
+Feel free to drop us a line if you have any questions or suggestions:
 
 - Federico Brancasi: [LinkedIn](https://www.linkedin.com/in/federicobrancasi/) | [Github](https://www.linkedin.com/in/federicobrancasi/)
 - Jacopo Manenti: [LinkedIn](https://www.linkedin.com/in/jacopo-manenti-7885651a7/) | [Github](https://github.com/jacopomanenti01)
