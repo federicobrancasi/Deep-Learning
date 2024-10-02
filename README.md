@@ -35,7 +35,7 @@ We welcome contributions from the community! Whether it's fixing a typo, improvi
 ## Authors
 Feel free to drop us a line if you have any questions or suggestions:
 
-- Federico Brancasi: [LinkedIn](https://www.linkedin.com/in/federicobrancasi/) | [Github](https://www.linkedin.com/in/federicobrancasi/)
+- Federico Brancasi: [LinkedIn](https://www.linkedin.com/in/federicobrancasi/) | [Github](https://github.com/federicobrancasi)
 - Jacopo Manenti: [LinkedIn](https://www.linkedin.com/in/jacopo-manenti-7885651a7/) | [Github](https://github.com/jacopomanenti01)
 
 We hope this book serves as a valuable companion on your journey to mastering Deep Learning. Happy learning, and may your gradients always descend smoothly!
