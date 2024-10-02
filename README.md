@@ -5,7 +5,7 @@
 Welcome to the repository of our comprehensive Deep Learning book! This work is the culmination of our journey through the fascinating world of neural networks, inspired by the Deep Learning course taught by Professor Elisa Ricci at the University of Trento.
 Our goal is to bridge the gap between theoretical concepts and practical applications in the field of Deep Learning. Whether you're a student, researcher, or AI enthusiast, this book offers a deep dive into the core principles and cutting-edge techniques that power modern AI systems.
 
-|<a href="https://github.com/federicobrancasi/Deep-Learning/blob/main/tikz/Github%20Showcase%20Cover.jpg"><img src="https://github.com/federicobrancasi/Deep-Learning/blob/main/tikz/Github%20Showcase%20Cover.jpg" alt="Backpropagation" width="400px"/></a>|
+|<a href="https://github.com/federicobrancasi/Deep-Learning/blob/main/Deep_Learning.pdf"><img src="https://github.com/federicobrancasi/Deep-Learning/blob/main/tikz/Github%20Showcase%20Cover.jpg" alt="Backpropagation" width="400px"/></a>|
 |:--:|
 📚 [Download the complete book here](https://github.com/federicobrancasi/Deep-Learning/blob/main/Deep_Learning.pdf)
 
