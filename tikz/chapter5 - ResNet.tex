@@ -1,0 +1,107 @@
+\documentclass[border=1mm]{standalone}
+% \usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+\resizebox{\textwidth}{!}{
+\tikz[font=\small,scale=1, every node/.style={outer sep=0pt, inner sep=0pt}, w/.style={minimum width=#1},h/.style={minimum height=#1},s/.style={minimum size=#1}, eu/.style={shorten >=#1},ed/.style={shorten <=#1},line join=round]
+{
+% 64
+\node[draw,w=.5cm,h=3.25cm, fill=white] (1) {\rotatebox{90}{$7\times 7$ conv, $64,/2$}};
+\node[w=.5cm,h=3.25cm, right=.5cm of 1] (2) {\rotatebox{90}{pool $,/2$}};
+
+\node[draw,w=.5cm,h=3.25cm, fill=myred!20, right=.5cm of 2] (3) {\rotatebox{90}{$3\times 3$ conv, $64$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myred!20, right=.5cm of 3] (4) {\rotatebox{90}{$3\times 3$ conv, $64$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myred!20, right=.5cm of 4] (5) {\rotatebox{90}{$3\times 3$ conv, $64$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myred!20, right=.5cm of 5] (6) {\rotatebox{90}{$3\times 3$ conv, $64$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myred!20, right=.5cm of 6] (7) {\rotatebox{90}{$3\times 3$ conv, $64$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myred!20, right=.5cm of 7] (8) {\rotatebox{90}{$3\times 3$ conv, $64$}};
+
+% 128
+\node[draw,w=.5cm,h=3.25cm, fill=mygreen!20, right=.5cm of 8] (9) {\rotatebox{90}{$3\times 3$ conv, $128,/2$}};
+\node[draw,w=.5cm,h=3.25cm, fill=mygreen!20, right=.5cm of 9] (10) {\rotatebox{90}{$3\times 3$ conv, $128$}};
+\node[draw,w=.5cm,h=3.25cm, fill=mygreen!20, right=.5cm of 10] (11) {\rotatebox{90}{$3\times 3$ conv, $128$}};
+\node[draw,w=.5cm,h=3.25cm, fill=mygreen!20, right=.5cm of 11] (12) {\rotatebox{90}{$3\times 3$ conv, $128$}};
+\node[draw,w=.5cm,h=3.25cm, fill=mygreen!20, right=.5cm of 12] (13) {\rotatebox{90}{$3\times 3$ conv, $128$}};
+\node[draw,w=.5cm,h=3.25cm, fill=mygreen!20, right=.5cm of 13] (14) {\rotatebox{90}{$3\times 3$ conv, $128$}};
+\node[draw,w=.5cm,h=3.25cm, fill=mygreen!20, right=.5cm of 14] (15) {\rotatebox{90}{$3\times 3$ conv, $128$}};
+\node[draw,w=.5cm,h=3.25cm, fill=mygreen!20, right=.5cm of 15] (16) {\rotatebox{90}{$3\times 3$ conv, $128$}};
+
+% 256
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, right=.5cm of 16] (17) {\rotatebox{90}{$3\times 3$ conv, $256,/2$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, right=.5cm of 17] (18) {\rotatebox{90}{$3\times 3$ conv, $256$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, below=1.5cm of 1] (19) {\rotatebox{90}{$3\times 3$ conv, $256$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, right=.5cm of 19] (20) {\rotatebox{90}{$3\times 3$ conv, $256$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, right=.5cm of 20] (21) {\rotatebox{90}{$3\times 3$ conv, $256$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, right=.5cm of 21] (22) {\rotatebox{90}{$3\times 3$ conv, $256$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, right=.5cm of 22] (23) {\rotatebox{90}{$3\times 3$ conv, $256$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, right=.5cm of 23] (24) {\rotatebox{90}{$3\times 3$ conv, $256$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, right=.5cm of 24] (25) {\rotatebox{90}{$3\times 3$ conv, $256$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, right=.5cm of 25] (26) {\rotatebox{90}{$3\times 3$ conv, $256$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, right=.5cm of 26] (27) {\rotatebox{90}{$3\times 3$ conv, $256$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myorange!20, right=.5cm of 27] (28) {\rotatebox{90}{$3\times 3$ conv, $256$}};
+
+% 512
+\node[draw,w=.5cm,h=3.25cm, fill=myblue!20, right=.5cm of 28] (29) {\rotatebox{90}{$3\times 3$ conv, $512,/2$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myblue!20, right=.5cm of 29] (30) {\rotatebox{90}{$3\times 3$ conv, $512$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myblue!20, right=.5cm of 30] (31) {\rotatebox{90}{$3\times 3$ conv, $512$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myblue!20, right=.5cm of 31] (32) {\rotatebox{90}{$3\times 3$ conv, $512$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myblue!20, right=.5cm of 32] (33) {\rotatebox{90}{$3\times 3$ conv, $512$}};
+\node[draw,w=.5cm,h=3.25cm, fill=myblue!20, right=.5cm of 33] (34) {\rotatebox{90}{$3\times 3$ conv, $512$}};
+
+\node[w=.5cm,h=3.25cm, right=.5cm of 34] (35) {\rotatebox{90}{Avg pool}};
+\node[draw, w=.5cm,h=3.25cm, right=.5cm of 35, fill=myred!20] (36) {\rotatebox{90}{Avg pool}};
+
+% Arrows
+\draw[-{Latex[length=2mm,width=1.5mm]}] ($(1.west)+(-1,0)$)--node[above,pos=0,align=center, rotate=90, yshift=1mm] {34-layer\\ resudual image} (1);
+
+\foreach \i[count=\j from 2]\k in {1,2,...,17}
+\draw[-{Latex[length=2mm,width=1.5mm]}] (\i)--(\j);
+
+\foreach \i[count=\j from 20]\k in {19,20,...,35}
+\draw[-{Latex[length=2mm,width=1.5mm]}] (\i)--(\j);
+
+\coordinate (u) at ($(1)!.5!(19)$);
+\draw[-{Latex[length=2mm,width=1.5mm]}] (18.east)--coordinate[pos=1] (v) ++(.5,0)--(u-|v)--++(-18.5,0) |- (19);
+
+
+ \foreach \i/\j/\k/\l in {2/3/4/5, 4/5/6/7, 6/7/8/9, 10/11/12/13, 12/13/14/15, 14/15/16/17, 20/21/22/23, 22/23/24/25, 24/25/26/27, 26/27/28/29, 30/31/32/33, 32/33/34/35} {
+        \draw[rounded corners=3mm, postaction={decorate},
+              decoration={markings, mark=at position 0.52 with {\arrow{Latex[length=2mm,width=1.5mm]}}}] 
+              ($(\i)!.5!(\j)$) -- ++(0,2) -| ($(\k)!.4!(\l)$);
+    }
+
+ \foreach \i/\j/\k/\l in {8/9/10/11, 28/29/30/31} {
+        \draw[dashed, rounded corners=3mm, postaction={decorate},
+              decoration={markings, mark=at position 0.52 with {\arrow{Latex[length=2mm,width=1.5mm]}}}] 
+              ($(\i)!.5!(\j)$) -- ++(0,2) -| ($(\k)!.4!(\l)$);
+    }
+
+\draw[rounded corners=3mm, postaction={decorate},
+              decoration={markings, mark=at position 0.52 with {\arrow{Latex[length=2mm,width=1.5mm]}}}] 
+              ($(19)+(-.5,0)$) -- ++(0,2) -| ($(20)!.4!(21)$);
+
+\draw[dashed, rounded corners=3mm, postaction={decorate},
+              decoration={markings, mark=at position 0.52 with {\arrow{Latex[length=2mm,width=1.5mm]}}}] 
+              ($(16)!.5!(17)$) -- ++(0,2) -| ($(18)+(.4,0)$);
+
+% \node at (8,2.5) {\normalsize \textbf{(a)}};
+% \node at (8,-6.85) {\normalsize \textbf{(b)}};
+}
+}
+\end{document}
