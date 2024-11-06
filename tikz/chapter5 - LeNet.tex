@@ -1,0 +1,142 @@
+\documentclass[border=1mm]{standalone}
+% \documentclass{article}
+\usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+\resizebox{\textwidth}{!}{
+\tikz[font=\footnotesize,scale=1, every node/.style={outer sep=0pt, inner sep=0pt,align=center}, w/.style={minimum width=#1},h/.style={minimum height=#1},s/.style={minimum size=#1}, eu/.style={shorten >=#1},ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=2mm,width=1.5mm]}}
+
+\node[s=3cm, fill=mydarkblue!20] (0) {};
+%-----
+% \node[s=2.5cm, fill=mydarkblue!20, right=1cm of 0, yshift=1cm] (a0) {};
+% \node[s=2.5cm, fill=mydarkblue!50] (a1) at ($(a0)+(.25,-.25)$) {};
+\begin{scope}[xshift=3.5cm, yshift=.6cm]
+\foreach \i in {0,...,5} {
+        \ifodd\i
+            \node[s=2.5cm, fill=mydarkblue!50] (a\i) at (.25*\i,-.25*\i) {};
+        \else
+            \node[s=2.5cm, fill=mydarkblue!20] (a\i) at (.25*\i,-.25*\i) {};
+        \fi
+    }
+\end{scope}
+%----------------------------------------
+\begin{scope}[xshift=7.45cm, yshift=.6cm]
+\foreach \i in {0,...,5} {
+        \ifodd\i
+            \node[s=1.5cm, fill=mydarkblue!50] (b\i) at (.25*\i,-.25*\i) {};
+        \else
+            \node[s=1.5cm, fill=mydarkblue!20] (b\i) at (.25*\i,-.25*\i) {};
+        \fi
+    }
+\end{scope}
+%----------------------------------------
+\begin{scope}[xshift=9.7cm, yshift=1.9cm]
+\foreach \i in {0,...,15} {
+        \ifodd\i
+            \node[s=1cm, fill=mydarkblue!50] (c\i) at (.22*\i,-.22*\i) {};
+        \else
+            \node[s=1cm, fill=mydarkblue!20] (c\i) at (.22*\i,-.22*\i) {};
+        \fi
+    }
+\end{scope}
+%----------------------------------------
+\begin{scope}[xshift=12.25cm, yshift=1.9cm]
+\foreach \i in {0,...,15} {
+        \ifodd\i
+            \node[s=.6cm, fill=mydarkblue!50] (d\i) at (.22*\i,-.22*\i) {};
+        \else
+            \node[s=.6cm, fill=mydarkblue!20] (d\i) at (.22*\i,-.22*\i) {};
+        \fi
+    }
+\end{scope}
+
+\begin{scope}[xshift=16.7cm, yshift=-1.25cm]
+\path[fill=mydarkblue!50] (0,0)--coordinate[pos=0](l) coordinate[pos=1](m) ++(.7,0)
+--coordinate[pos=1](n) ++(135:4) --coordinate[pos=1](o) ++(-.7,0)--cycle;
+\end{scope}
+
+\begin{scope}[xshift=18.2cm, yshift=-.9cm]
+\path[fill=mydarkblue!50] (0,0)--coordinate[pos=0](p) coordinate[pos=1](q) ++(.7,0)
+--coordinate[pos=1](r) ++(135:3.25) --coordinate[pos=1](s) ++(-.7,0)--cycle;
+\end{scope}
+
+\begin{scope}[xshift=19.7cm, yshift=-.6cm]
+\path[fill=mydarkblue!50] (0,0)--coordinate[pos=0](t) coordinate[pos=1](u) ++(.7,0)
+--coordinate[pos=1](v) ++(135:3) --coordinate[pos=1](w) ++(-.7,0)--cycle;
+\end{scope}
+
+
+% Paths
+\draw[mydarkblue!50!gray] 
+(d0.north east)--(o) (n)--(s) (r)--(w)
+(d15.south east)--coordinate[pos=.3](p5) (l) (m)--coordinate[pos=.5](p6) (p) (q)--coordinate[pos=.9](p7) (t);
+
+
+% Labels
+\node[above=1mm] at (0.north) {Input $32\times 32$};
+\node[above=1mm] at (a0.north) {C1: feature maps\\6@$28\times 28$};
+\node[above=1mm] at (b0.north) {C1: f. maps\\6@$14\times 14$};
+\node[above=1mm, font=\scriptsize] at (c0.north) {C3: f. maps\\16@$10\times 10$};
+\node[above=1mm, font=\scriptsize] at (d0.north) {S4: f. maps\\16@$5\times 5$};
+\node[above=1mm, font=\scriptsize] at ($(n)!.5!(o)$) {C5: layer\\120};
+\node[above=1mm, font=\scriptsize] at ($(r)!.5!(s)$) {F6: layer\\84};
+\node[above=1mm, font=\scriptsize] at ($(v)!.5!(w)$) {Output\\10};
+
+%------
+\node[draw,mydarkblue!50!gray, very thin, s=.5cm] (1) at ($(0.center)+(.5,-.5)$) {};
+\foreach \i in {north west,north east,south west,south east}
+\draw[very thin,mydarkblue!50!gray] (1.\i)--coordinate[pos=.3](p1) ($(a5.center)+(.5,-.5)$);
+
+\node[draw,,mydarkblue!50!gray, very thin, s=.25cm] (1) at ($(a5.center)+(-.5,.5)$) {};
+\foreach \i in {north west,north east,south west,south east}
+\draw[very thin,mydarkblue!50!gray] (1.\i)--coordinate[pos=.5](p2) ($(b5.center)+(-.35,.35)$);
+
+\node[draw,,mydarkblue!50!gray, very thin, s=.5cm] (1) at ($(b5.center)+(.25,0.25)$) {};
+\foreach \i in {north west,north east,south west,south east}
+\draw[very thin,mydarkblue!50!gray] (1.\i)--coordinate[pos=.5](p3) ($(c15.center)+(.25,0.25)$);
+
+\node[draw,,mydarkblue!50!gray, very thin, s=.25cm] (1) at ($(c15.center)+(-.25,-.25)$) {};
+\foreach \i in {north west,north east,south west,south east}
+\draw[very thin,mydarkblue!50!gray] (1.\i)--coordinate[pos=.4](p4) ($(d15.center)+(-.1,-.1)$);
+
+\draw[ed=2mm] (p1)--node[pos=1,below=1mm](aa) {Convolutions} +(0,-1.5);
+
+\node (bb) at (p2|-aa) {Subsampling};
+\draw[ed=2mm] (p2)--([yshift=1mm]bb.north);
+
+\node (cc) at (p3|-aa) {Convolutions};
+\draw[ed=2mm] (p3)--([yshift=1mm]cc.north);
+
+\node (dd) at (p4|-aa) {Subsampling};
+\draw[ed=2mm] (p4)--([yshift=1mm]dd.north);
+
+\node[anchor=south,yshift=-1mm] (ee) at (p5|-aa) {Full\\connection};
+\draw[ed=2mm] (p5)--([yshift=1mm]ee.north);
+
+\node[anchor=south,yshift=-1mm] (ff) at (p6|-aa) {Full\\connection};
+\draw[ed=2mm] (p6)--([yshift=1mm]ff.north);
+
+\node[anchor=south,yshift=-1mm] (gg) at (p7|-aa) {Gaussian\\connections};
+\draw[ed=2mm] (p7)--([yshift=1mm]gg.north);
+}
+}
+
+\end{document}
