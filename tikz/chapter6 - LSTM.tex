@@ -1,0 +1,69 @@
+\documentclass[border=1mm]{standalone}
+% \usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+% \resizebox{\textwidth}{!}{
+\tikz[font=\small,scale=1, every node/.style={outer sep=0pt, inner sep=0pt}, w/.style={minimum width=#1},h/.style={minimum height=#1},s/.style={minimum size=#1}, eu/.style={shorten >=#1},ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=2mm,width=1.5mm]}}
+
+\node[draw, circle, s=1cm, label={[label distance=1mm]above:$W_g$}, fill=myblue!20] (c1) {};
+\node[draw, circle, s=.5cm, right=1.5cm of c1] (p1) {\huge.};
+\node[draw, circle, s=1cm, label={[label distance=1mm]right:$W_i$}, above=1.5cm of p1, fill=myred!20] (c2) {$i_t$};
+\node[draw, very thick, circle, s=1cm, label={[label distance=1mm]above:Cell}, right=1.5cm of p1, fill=gray!20] (c3) {$c_t$};
+\node[draw, circle, s=.5cm, below=.5cm of c3] (p2) {$\boldsymbol{+}$};
+\node[draw, circle, s=1cm, below=.5cm of p2, label={[label distance=1mm]left:$W_f$}, fill=myred!20] (c4) {$f_t$};
+\node[draw, circle, s=1cm, label={[label distance=1mm]above:}, right=1.5cm of c3] (c5) {};
+\node[draw, circle, s=.5cm, right=1.5cm of c5] (p3) {\huge.};
+\node[draw, circle, s=1cm, label={[label distance=1mm]right:$W_o$}, above=1.5cm of p3, fill=mygreen!20] (c6) {$o_t$};
+
+
+
+% Arrows
+\draw[->] (c1)--(p1);
+\draw[->] (c2)--(p1);
+\draw[->] (p1)--(c3);
+\draw[->] (c3)--(c5);
+\draw[->] (c4)--(p2);
+\draw[->] (c5)--(p3);
+\draw[->] (c6)--(p3);
+\draw[->] (p3)--node[pos=1,right] {$h_t$} node[below=2mm] {$h_t=\textcolor{myred}{o_t} \odot \tanh c_t$} node[pos=.55,above=7mm,myred] {\footnotesize$o_t=\sigma\left(W_o\binom{x_t}{h_{t-1}}+b_o\right)$} +(3,0);
+\draw[->] (p2.west) to[out=160, in=240] (c3.-90-50);
+\draw[<-, densely dashed] (p2.east) to[out=20, in=-40] (c3.-90+50);
+
+\draw[->] ($(c1.north west)+(-.9,.5)$)--node[pos=0,left=1mm] {$x_t$} (c1.north west);
+\draw[->] ($(c1.south west)+(-.9,-.5)$)--node[pos=0,left=1mm] {$h_{t-1}$} (c1.south west);
+
+\draw[->] ($(c2.north west)+(-.5,.9)$)--node[pos=0,left=1mm] {$x_t$} (c2.north west);
+\draw[->] ($(c2.north east)+(.5,.9)$)--node[pos=0,left=1mm] {$h_{t-1}$} (c2.north east);
+
+\draw[->] ($(c6.north west)+(-.5,.9)$)--node[pos=0,left=1mm] {$x_t$} (c6.north west);
+\draw[->] ($(c6.north east)+(.5,.9)$)--node[pos=0,left=1mm] {$h_{t-1}$} (c6.north east);
+
+\draw[->] ($(c4.south west)+(-.5,-.9)$)--node[pos=0,left=1mm] {$x_t$} (c4.south west);
+\draw[->] ($(c4.south east)+(.5,-.9)$)--node[pos=0,left=1mm] {$h_{t-1}$} (c4.south east);
+
+\node[left=3mm of c2, align=center] {Input Gate};
+\node[left=3mm of c6, align=center] {Output Gate};
+\node[right=3mm of c4, align=center] {Forget Gate};
+
+\draw[very thick, eu=1mm, ed=1mm] (c1.north east) to[out=200, in=20, looseness=1.75] (c1.south west);
+\draw[very thick, eu=1mm, ed=1mm] (c5.north east) to[out=200, in=20, looseness=1.75] (c5.south west);
+}
+\end{document}
