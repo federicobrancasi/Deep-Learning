@@ -26,7 +26,7 @@
 \node[draw, circle, s=1cm, label={[label distance=1mm]above:$W_g$}, fill=myblue!20] (c1) {};
 \node[draw, circle, s=.5cm, right=1.5cm of c1] (p1) {\huge.};
 \node[draw, circle, s=1cm, label={[label distance=1mm]right:$W_i$}, above=1.5cm of p1, fill=myred!20] (c2) {$i_t$};
-\node[draw, very thick, circle, s=1cm, label={[label distance=1mm]above:Cell}, right=1.5cm of p1, fill=gray!20] (c3) {$c_t$};
+\node[draw, circle, s=1cm, label={[label distance=1mm]above:Cell}, right=1.5cm of p1, fill=gray!20] (c3) {$c_t$};
 \node[draw, circle, s=.5cm, below=.5cm of c3] (p2) {$\boldsymbol{+}$};
 \node[draw, circle, s=1cm, below=.5cm of p2, label={[label distance=1mm]left:$W_f$}, fill=myred!20] (c4) {$f_t$};
 \node[draw, circle, s=1cm, label={[label distance=1mm]above:}, right=1.5cm of c3] (c5) {};
@@ -43,7 +43,8 @@
 \draw[->] (c4)--(p2);
 \draw[->] (c5)--(p3);
 \draw[->] (c6)--(p3);
-\draw[->] (p3)--node[pos=1,right] {$h_t$} node[below=2mm] {$h_t=\textcolor{myred}{o_t} \odot \tanh c_t$} node[pos=.55,above=7mm,myred] {\footnotesize$o_t=\sigma\left(W_o\binom{x_t}{h_{t-1}}+b_o\right)$} +(3,0);
+\draw[->] (p3)--node[pos=1,right] {$h_t$} node[below=2mm] {} node[pos=.55,above=7mm,mygreen] {} +(1.8,0);
+% \draw[->] (p3)--node[pos=1,right] {$h_t$} node[below=2mm] {$h_t=\textcolor{mygreen}{o_t} \odot \tanh c_t$} node[pos=.55,above=7mm,mygreen] {\footnotesize$o_t=\sigma\left(W_o\binom{x_t}{h_{t-1}}+b_o\right)$} +(3,0);
 \draw[->] (p2.west) to[out=160, in=240] (c3.-90-50);
 \draw[<-, densely dashed] (p2.east) to[out=20, in=-40] (c3.-90+50);
 
