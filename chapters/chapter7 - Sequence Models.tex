@@ -131,11 +131,11 @@ RNN Enc-Dec was introduced in the work \href{https://arxiv.org/pdf/1409.3215}{"L
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.45\linewidth]{tikz/chapter7 - RNN Enc-Dec.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}}  RNN Enc-Dec Architecture}
+    \includegraphics[width=0.7\linewidth]{tikz/chapter7 - RNN Enc-Dec.pdf}
+    \caption{RNN Enc-Dec Architecture}
 \end{figure}
 
-The RNN Encoder-Decoder model is fundamentally identical to the Seq2Seq model, in that both follow the same principle of transforming a variable-length input sequence into a variable-length output sequence via a fixed-length vector representation, known as \textbf{context vector}. 
+The RNN Encoder-Decoder model is fundamentally identical to the Seq2Seq model, in that both follow the same principle of transforming a variable-length input sequence into a variable-length output sequence via a fixed-length vector representation, known as \textbf{\textcolor{mygreen}{context vector}}. 
 
 This approach requires the \textbf{encoder and decoder to be trained jointly}, which allows the model to learn a latent representation that depends on the context vector. A significant improvement of this model is the introduction of GRUs (Gated Recurrent Units), which offer advantages in computational efficiency and learning capability over traditional RNNs.
 

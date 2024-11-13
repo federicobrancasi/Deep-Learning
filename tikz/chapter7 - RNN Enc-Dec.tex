@@ -1,0 +1,89 @@
+\documentclass[border=1mm]{standalone}
+% \documentclass{article}
+\usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+% \resizebox{\textwidth}{!}{
+\tikz[font=\footnotesize,scale=1, every node/.style={outer sep=0pt, inner sep=0pt,align=center}, w/.style={minimum width=#1},h/.style={minimum height=#1},s/.style={minimum size=#1}, eu/.style={shorten >=#1},ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=2mm,width=1.5mm]}}
+
+\node[draw, circle, s=.7cm, fill=myblue!20] (a) {};
+\node[draw, circle, s=.7cm, right=1cm of a, fill=myblue!20] (b) {};
+\node[circle, s=.5cm, right=1cm of b] (p1) {};
+\node[draw, circle, s=.7cm, right=1cm of p1, fill=myblue!20] (c) {};
+
+\draw[->] (a)--(b);
+\draw[->] (b)--(p1);
+\draw[->] (p1)--(c);
+
+\draw[->] ($(a)+(0,-1.25)$)--node[pos=0,below=1mm] {$x_1$} (a);
+\draw[->] ($(b)+(0,-1.25)$)--node[pos=0,below=1mm] {$x_2$} (b);
+\draw[->] ($(c)+(0,-1.25)$)--node[pos=0,below=1mm] {$x_T$} (c);
+
+%------------
+\node[draw, circle, s=.7cm, fill=myblue!20, above=1.3cm of c] (a1) {};
+\node[draw, circle, s=.7cm, left=1cm of a1, fill=myblue!20] (b1) {};
+\node[circle, s=.5cm, left=1cm of b1] (p2) {};
+\node[draw, circle, s=.7cm, left=1cm of p2, fill=myblue!20] (c1) {};
+
+\node[circle, s=.5cm, above=1cm of a1, label={center:$y_1$}] (p3) {};
+\node[circle, s=.5cm, label={center:$y_2$}] (p4) at (p3-|b1) {};
+\node[circle, s=.5cm] (p5) at (p3-|p2) {};
+\node[circle, s=.5cm, label={center:$y_{T'}$}] (p6) at (p3-|c1) {};
+
+\draw[->] (a1)--(b1);
+\draw[->] (b1)--(p2);
+\draw[->] (p2)--(c1);
+
+\draw[->] (a1)--(p3);
+\draw[->] (b1)--(p4);
+\draw[->] (c1)--(p6);
+
+\draw[->] (p3)--(p4);
+\draw[->] (p4)--(p5);
+\draw[->] (p5)--(p6);
+
+\draw[->] (p3)--(b1);
+\path (p4)--node[circle, s=.5cm, pos=.5, fill=white] (p7) {} (c1);
+\draw[->] (p4)--(p7);
+\draw[->] (p7)--(c1);
+
+% Boxes
+\node[draw, w=6cm, h=3.35cm, rounded corners=1mm, anchor=south, yshift=-1.15cm, label={[label distance=1mm]above:Decoder}] (r1) at ($(a1)!.5!(c1)$) {};
+
+\node[draw, w=6cm, h=2.45cm, rounded corners=1mm, anchor=north, yshift=0.75cm, label={[label distance=1mm]below:Encoder}] (r2) at ($(a)!.5!(c)$) {};
+
+% Orange circle
+\coordinate (z) at ($(r1.south)!.5!(r2.north)$);
+\node[draw, circle, s=.7cm, fill=mygreen!40] (or) at ([xshift=1cm]p2|-z) {C};
+
+\draw[->, dashed, mygreen] (or) to[out=40,in=-120] (b1);
+\draw[->, dashed, mygreen] (or) to[out=13,in=-120] (a1);
+\draw[->, dashed, mygreen] (or) to[out=150,in=-70] (c1);
+\draw[->, dashed, mygreen] (or.95) to[out=90,in=-45] (p6.south east);
+\draw[->, dashed, mygreen] (or.85) to[out=90,in=180+45] (p4.south west);
+\draw[->, dashed, mygreen] (or.30) to[out=10,in=-110, looseness=1.2] (p3.235);
+
+\draw[->, dashed, myblue!50] (c) to[out=140,in=-30] (or);
+
+}
+% }
+
+\end{document}
