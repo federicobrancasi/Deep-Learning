@@ -7,7 +7,7 @@ Our goal is to bridge the gap between theoretical concepts and practical applica
 
 |<a href="https://github.com/federicobrancasi/Deep-Learning/blob/main/Deep_Learning.pdf"><img src="https://github.com/federicobrancasi/Deep-Learning/blob/main/tikz/Github%20Showcase%20Cover.jpg" alt="Backpropagation" width="400px"/></a>|
 |:--:|
-📚 [Download the complete book here](https://github.com/federicobrancasi/Deep-Learning/blob/main/Deep_Learning.pdf)
+📚 [Download the complete book here](https://github.com/federicobrancasi/Deep-Learning/raw/refs/heads/main/Deep_Learning.pdf?download=)
 
 ## Contents
 
