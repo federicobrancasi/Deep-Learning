@@ -28,22 +28,22 @@
 % Blocks
 \node[draw, s=1cm, fill=mygreen!40] (g1) {};
 
-\node[draw, circle, s=1cm, right=.5cm of g1, rounded corners=1mm, fill=mygreen!20] (h0) {$h_0$};
+\node[draw, circle, s=1cm, right=.5cm of g1, rounded corners=1mm, fill=myblue!20] (h0) {$h_0$};
 \node[w=1.25cm, h=1cm, below=.5cm of g1, rounded corners=0mm] (cnn) {CNN};
 \begin{scope}[on behind layer]
 \draw[fill=mygreen!20] (cnn.south west)--(cnn.south east)--($(cnn.north east)+(-.15,0)$)--($(cnn.north west)+(.15,0)$)--cycle;
 \end{scope}
 
-\node[draw, circle, s=1cm, right=2cm of h0, rounded corners=1mm, fill=mygreen!20] (h1) {$h_1$};
+\node[draw, circle, s=1cm, right=2cm of h0, rounded corners=1mm, fill=myblue!20] (h1) {$h_1$};
 
 \node[draw, s=1cm, above=.5cm of h0, label={[label distance=1mm]above:$\alpha_1$}] (g2) {};
 \node[draw, s=1cm, above=.5cm of h1, xshift=-.7cm, label={[label distance=1mm]above:$\alpha_2$}] (g3) {};
 \node[draw, circle, s=1cm, above=.5cm of h1, xshift=.7cm, rounded corners=1mm, fill=myred!20] (py1) {$p(y_1)$};
-\node[draw, circle, s=1cm, below=.5cm of h1, xshift=-.7cm, rounded corners=1mm, fill=myblue!20] (z1) {$z_1$};
+\node[draw, circle, s=1cm, below=.5cm of h1, xshift=-.7cm, rounded corners=1mm, fill=mygreen!20] (z1) {$z_1$};
 \node[draw, circle, s=1cm, below=.5cm of h1, xshift=.7cm, rounded corners=1mm, fill=myorange!20] (y0) {$y_0$};
 
 % Image
-\node[draw, below=.5cm of cnn] (im1) {\includegraphics[width=1.25cm]{tikz/bird.jpg}};
+\node[draw, below=.5cm of cnn] (im1) {\includegraphics[width=1.25cm]{tikz/chapter7 - Show, Attend and Tell.jpg}};
 
 % Arrows
 \draw[->] (im1)--(cnn);
@@ -75,26 +75,26 @@
 ($(g\i.north west)!.666!(g\i.south west)$)--($(g\i.north east)!.666!(g\i.south east)$);
 
 %---------------------------Middle shape------------------------
-\begin{scope}[xshift=8cm]
+\begin{scope}[xshift=10cm]
 % Blocks
 \node[draw, s=1cm, fill=mygreen!40] (g1) {};
 
-\node[draw, circle, s=1cm, right=.5cm of g1, rounded corners=1mm, fill=mygreen!20] (h0) {$h_0$};
+\node[draw, circle, s=1cm, right=.5cm of g1, rounded corners=1mm, fill=myblue!20] (h0) {$h_0$};
 \node[w=1.25cm, h=1cm, below=.5cm of g1, rounded corners=0mm] (cnn) {CNN};
 \begin{scope}[on behind layer]
 \draw[fill=mygreen!20] (cnn.south west)--(cnn.south east)--($(cnn.north east)+(-.15,0)$)--($(cnn.north west)+(.15,0)$)--cycle;
 \end{scope}
-\node[draw, circle, s=1cm, right=2cm of h0, rounded corners=1mm, fill=mygreen!20] (h1) {$h_1$};
+\node[draw, circle, s=1cm, right=2cm of h0, rounded corners=1mm, fill=myblue!20] (h1) {$h_1$};
 
 \node[draw, s=1cm, above=.5cm of h0, label={[label distance=1mm]above:$\alpha_1$}] (g2) {};
 \node[draw, s=1cm, above=.5cm of h1, xshift=-.7cm, label={[label distance=1mm]above:$\alpha_2$}] (g3) {};
 \node[draw, circle, s=1cm, above=.5cm of h1, xshift=.7cm, rounded corners=1mm, fill=myred!20] (py1) {$p(y_1)$};
-\node[draw, circle, s=1cm, below=.5cm of h1, xshift=-.7cm, rounded corners=1mm, fill=myblue!20] (z1) {$z_1$};
+\node[draw, circle, s=1cm, below=.5cm of h1, xshift=-.7cm, rounded corners=1mm, fill=mygreen!20] (z1) {$z_1$};
 \node[draw, circle, s=1cm, below=.5cm of h1, xshift=.7cm, rounded corners=1mm, fill=myorange!20] (y0) {$y_0$};
 
-\node[draw, circle, s=1cm, right=1cm of y0, rounded corners=1mm, fill=myblue!20] (z2) {$z_2$};
+\node[draw, circle, s=1cm, right=1cm of y0, rounded corners=1mm, fill=mygreen!20] (z2) {$z_2$};
 % Image
-\node[draw, below=.5cm of cnn] (im1) {\includegraphics[width=1.25cm]{tikz/bird.jpg}};
+\node[draw, below=.5cm of cnn] (im1) {\includegraphics[width=1.25cm]{tikz/chapter7 - Show, Attend and Tell.jpg}};
 
 % Arrows
 \draw[->] (im1)--(cnn);
@@ -129,37 +129,37 @@
 
 
 %---------------------------Shape on the right hand side------------------------
-\begin{scope}[xshift=17.5cm]
+\begin{scope}[xshift=3.7cm, yshift=-7.2cm]
 % Blocks
 \node[draw, s=1cm, fill=mygreen!40] (g1) {};
 
-\node[draw, circle, s=1cm, right=.5cm of g1, rounded corners=1mm, fill=mygreen!20] (h0) {$h_0$};
+\node[draw, circle, s=1cm, right=.5cm of g1, rounded corners=1mm, fill=myblue!20] (h0) {$h_0$};
 \node[w=1.25cm, h=1cm, below=.5cm of g1, rounded corners=0mm] (cnn) {CNN};
 
 \begin{scope}[on behind layer]
 \draw[fill=mygreen!20] (cnn.south west)--(cnn.south east)--($(cnn.north east)+(-.15,0)$)--($(cnn.north west)+(.15,0)$)--cycle;
 \end{scope}
-\node[draw, circle, s=1cm, right=2cm of h0, rounded corners=1mm, fill=mygreen!20] (h1) {$h_1$};
+\node[draw, circle, s=1cm, right=2cm of h0, rounded corners=1mm, fill=myblue!20] (h1) {$h_1$};
 
 \node[draw, s=1cm, above=.5cm of h0, label={[label distance=1mm]above:$\alpha_1$}] (g2) {};
 \node[draw, s=1cm, above=.5cm of h1, xshift=-.7cm, label={[label distance=1mm]above:$\alpha_2$}] (g3) {};
 \node[draw, circle, s=1cm, above=.5cm of h1, xshift=.7cm, rounded corners=1mm, fill=myred!20] (py1) {$p(y_1)$};
-\node[draw, circle, s=1cm, below=.5cm of h1, xshift=-.7cm, rounded corners=1mm, fill=myblue!20] (z1) {$z_1$};
+\node[draw, circle, s=1cm, below=.5cm of h1, xshift=-.7cm, rounded corners=1mm, fill=mygreen!20] (z1) {$z_1$};
 \node[draw, circle, s=1cm, below=.5cm of h1, xshift=.7cm, rounded corners=1mm, fill=myorange!20] (y0) {$y_0$};
 
-\node[draw, circle, s=1cm, right=3cm of h1, rounded corners=1mm, fill=mygreen!20] (h2) {$h_2$};
+\node[draw, circle, s=1cm, right=3cm of h1, rounded corners=1mm, fill=myblue!20] (h2) {$h_2$};
 \node[draw, s=1cm, above=.5cm of h2, xshift=-.7cm, label={[label distance=1mm]above:$\alpha_2$}] (g4) {};
 \node[draw, circle, s=1cm, above=.5cm of h2, xshift=.7cm, rounded corners=1mm, fill=myred!20] (py2) {$p(y_2)$};
-\node[draw, circle, s=1cm, below=.5cm of h2, xshift=-.7cm, rounded corners=1mm, fill=myblue!20] (z2) {$z_2$};
+\node[draw, circle, s=1cm, below=.5cm of h2, xshift=-.7cm, rounded corners=1mm, fill=mygreen!20] (z2) {$z_2$};
 \node[draw, circle, s=1cm, below=.5cm of h2, xshift=.7cm, rounded corners=1mm, fill=myorange!20] (y1) {$y_1$};
 
 % Image
-\node[draw, below=.5cm of cnn] (im1) {\includegraphics[width=1.25cm]{tikz/bird.jpg}};
+\node[draw, below=.5cm of cnn] (im1) {\includegraphics[width=1.25cm]{tikz/chapter7 - Show, Attend and Tell.jpg}};
 
 % Arrows
 \draw[->] (im1)--(cnn);
 \draw[->] (cnn)--(g1);
-\draw[->] (g1)--(h0);
+\draw[->] (g1)--(h0);\draw[->] (g1)--(h0);
 \draw[->] (h0)--(h1);
 \draw[->] (h0)--(g2);
 \draw[->] (h1.100)--++(0,.2) -| (g3);

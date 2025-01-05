@@ -39,8 +39,8 @@ With Beam Search, on the other hand, we iteratively consider the \textbf{$k$ bes
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter7 - Beam Search.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Beam Search Visual Example}
+    \includegraphics[width=\linewidth]{tikz/chapter7 - Beam Search.pdf}
+    \caption{Beam Search Visual Example}
 \end{figure}
 
 In the image above you can see an example of Beam Search with a width of 2, using characters for simplicity. Here's the description of what is happening:
@@ -87,8 +87,8 @@ The main innovations introduced by this approach are as follows:
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=1\linewidth]{tikz/chapter7 - Attention Model.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}}  Flow of Show, Attend and Tell}
+    \includegraphics[width=\linewidth]{tikz/chapter7 - Show, Attend and Tell.pdf}
+    \caption{Flow of Show, Attend and Tell}
 \end{figure}
 
 In the image above, each LSTM cell receives \textbf{three main inputs}: the previous latent space $h_{t-1}$, the predicted word in the current sequence $ y_{t-1} $ and a context vector $ z_{t} $ (obtained from the dot product between the feature map produced by the CNN and the previous attention map $\alpha_{t-1}$). 
@@ -121,7 +121,7 @@ The distinguishing factor of this paper was the implementation of a machine tran
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=\linewidth]{tikz/chapter7 - Seq2Seq.pdf}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}}}
+    \caption{Sequence to Sequence Model}
 \end{figure}
 
 The image shows a very high prospective of the Seq2Seq model. The "c" block captures the entire input sequence. This limitation already suggest the need of an attention model, as the latent representation cannot contain all information about the entire input sequence.
@@ -151,8 +151,8 @@ The decoder, on the other hand, generates the output sequence one step at a time
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.7\linewidth]{tikz/chapter7 - RNN with Attention.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} RNN with Attention Architecture}
+    \includegraphics[width=0.7\linewidth]{tikz/chapter7 - RNN with Attention.pdf}
+    \caption{RNN with Attention Architecture}
 \end{figure}
 
 
@@ -195,8 +195,13 @@ The attention mechanism works as follows:
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter7 - Attention is Alignment.jpg}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} The mechanism of attention in the RNN Encoder-Decoder model}
+    \includegraphics[width=0.5\linewidth]{tikz/chapter7 - Attention is Alignment 1.pdf}
+\end{figure}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{tikz/chapter7 - Attention is Alignment 2.pdf}
+    \caption{The mechanism of attention in the RNN Encoder-Decoder model}
 \end{figure}
 
 In the image above, the attention matrix on the left shows the alignment between the words in the input sequence (English) and the words in the output sequence (French) for an example sentence. The lines in the diagram on the right illustrate how the attention mechanism allows the decoder to directly access representations of the encoder states by dynamically focusing on the relevant parts of the input sequence.
@@ -212,8 +217,8 @@ Instead of using a global view of all input tokens, local attention utilizes a \
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter7 - Local Attention Comparison.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Global Attention vs. Local Attention}
+    \includegraphics[width=\linewidth]{tikz/chapter7 - Local Attention Comparison.pdf}
+    \caption{Global Attention vs. Local Attention}
 \end{figure}
 
 The image above shows a comparison between a global attention module (right) and a local attention module (left), illustrating the difference in focus areas for the input sequence during output generation.
@@ -266,8 +271,8 @@ Having discussed the significant milestones in the field of Machine Translation,
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=1\linewidth]{tikz/chapter7 - GNMT.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} GNMT Architecture}
+    \includegraphics[width=\linewidth]{tikz/chapter7 - GNMT.pdf}
+    \caption{GNMT Architecture}
 \end{figure}
 
 \textbf{Encoder Architecture}: The encoder is composed of several layers of LSTMs. It starts with bidirectional lower layers of LSTMs, followed by stacked unidirectional LSTMs. Jump connections are incorporated during stacking to facilitate training. \textbf{The model is distributed over 8 GPUs, with the model divided into 8 parts, each on a different GPU}. The bidirectional lower layers of the encoder compute in parallel first. Once both are finished, the unidirectional layers of the encoder can begin computation, each on a separate GPU. This approach uses stacked LSTMs with residual connections.

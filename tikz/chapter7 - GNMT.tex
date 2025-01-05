@@ -1,0 +1,191 @@
+\documentclass[border=1mm]{standalone}
+% \documentclass{article}
+\usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta,3d}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+\resizebox{.9\textwidth}{!}{
+\tikz[font=\footnotesize,yscale=1, every node/.style={outer sep=0pt, inner sep=0pt,align=center}, w/.style={minimum width=#1},h/.style={minimum height=#1},s/.style={minimum size=#1}, eu/.style={shorten >=#1},ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=1.75mm,width=1.25mm]}}
+% \tikzset{>={Latex[length=2mm,width=1.5mm]}}
+
+% Blue and green blocks
+\foreach \i in {1,2,3,4,7}
+{\begin{scope}[yshift=\i cm]
+\node[draw, w=.9cm, h=.5cm, rounded corners=1pt, 
+      fill={\ifnum\i=2 mygreen!20 \else myblue!20 \fi}] (a\i) {};
+\node[draw, w=.9cm, h=.5cm, rounded corners=1pt, 
+      fill={\ifnum\i=2 mygreen!20 \else myblue!20 \fi}, right=.7cm of a\i] (b\i) {};
+\node[draw, w=.9cm, h=.5cm, rounded corners=1pt, 
+      fill={\ifnum\i=2 mygreen!20 \else myblue!20 \fi}, right=2.4cm of b\i] (c\i) {};
+\end{scope}}
+\begin{scope}[yshift=0cm]
+\node[w=.9cm, h=.5cm] (a0) {$x_3$};
+\node[w=.9cm, h=.5cm, right=.7cm of a0] (b0) {$x_2$};
+\node[w=.9cm, h=.5cm, right=2.4cm of b0] (c0) {\texttt{</s>}};
+\end{scope}
+\begin{scope}[yshift=5cm]
+\node[w=.9cm, h=.5cm] (a5) {$+$};
+\node[w=.9cm, h=.5cm, right=.7cm of a5] (b5) {$+$};
+\node[w=.9cm, h=.5cm, right=2.4cm of b5] (c5) {$+$};
+\end{scope}
+\begin{scope}[yshift=6cm]
+\node[w=.9cm, h=.5cm] (a6) {$\cdots$};
+\node[w=.9cm, h=.5cm, right=.7cm of a6] (b6) {$\cdots$};
+\node[w=.9cm, h=.5cm, right=2.4cm of b6] (c6) {$\cdots$};
+\end{scope}
+      
+\foreach \i in {0,1,2,3,4,7}
+\node[w=.9cm, h=.5cm] (u\i) at ($(b\i)!.5!(c\i)$) {$\cdots$};
+
+
+% Red blocks
+\foreach \i in {1,2,3,7}
+{\begin{scope}[xshift=10cm,yshift=\i cm]
+\node[draw, w=.9cm, h=.5cm, rounded corners=1pt, 
+      fill=myred!20] (aa\i) {};
+\node[draw, w=.9cm, h=.5cm, rounded corners=1pt, 
+      fill=myred!20, right=.7cm of aa\i] (bb\i) {};
+\node[draw, w=.9cm, h=.5cm, rounded corners=1pt, 
+      fill=myred!20, right=2.4cm of bb\i] (cc\i) {};
+\end{scope}}
+
+\begin{scope}[xshift=10cm,yshift=4cm]
+\node[w=.9cm, h=.5cm] (aa4) {$+$};
+\node[w=.9cm, h=.5cm, right=.7cm of aa4] (bb4) {$+$};
+\node[w=.9cm, h=.5cm, right=2.4cm of bb4] (cc4) {$+$};
+\end{scope}
+\begin{scope}[xshift=10cm,yshift=6cm]
+\node[w=.9cm, h=.5cm] (aa6) {$\cdots$};
+\node[w=.9cm, h=.5cm, right=.7cm of aa6] (bb6) {$\cdots$};
+\node[w=.9cm, h=.5cm, right=2.4cm of bb6] (cc6) {$\cdots$};
+\end{scope}
+\begin{scope}[xshift=10cm,yshift=9cm]
+\node[w=.9cm, h=.5cm] (aa8) {$y_1$};
+\node[w=.9cm, h=.5cm, right=.7cm of aa8] (bb8) {$y_2$};
+\node[w=.9cm, h=.5cm, right=2.4cm of bb8] (cc8) {\texttt{</s>}};
+\end{scope}
+\begin{scope}[xshift=10cm,yshift=0cm]
+\node[w=.9cm, h=.5cm] (aa0) {\texttt{</s>}};
+\node[w=.9cm, h=.5cm, right=.7cm of aa0] (bb0) {$y_1$};
+\node[w=.9cm, h=.5cm, right=2.4cm of bb0] (cc0) {$y_2$};
+\end{scope}
+
+\foreach \i in {0,1,2,3,7,8}
+\node[w=.9cm, h=.5cm] (v\i) at ($(bb\i)!.5!(cc\i)$) {$\cdots$};
+
+% Gray rectangle
+\node[draw, w=5.8cm, h=.5cm, anchor=south west, fill=gray!20, label={[label distance=1mm]above:}] (gr) at ([yshift=.5cm]a7.north west) {};
+
+% Blue rectangle
+\node[draw, w=5.8cm, h=.5cm, anchor=south west, fill=myblue!50!cyan!20, label={[label distance=1mm]above:}] (br) at ([yshift=.5cm]aa7.north west) {Softmax};
+\draw ($(br.north west)+(.25,0)$)--($(br.south west)+(.25,0)$)
+($(br.north west)+(.5,0)$)--($(br.south west)+(.5,0)$)
+($(br.north west)+(.75,0)$)--($(br.south west)+(.75,0)$)
+($(br.north west)+(1,0)$)--($(br.south west)+(1,0)$)
+($(br.north east)+(-.25,0)$)--($(br.south east)+(-.25,0)$)
+($(br.north east)+(-.5,0)$)--($(br.south east)+(-.5,0)$);
+
+% Arrows
+\foreach \i in{0,1,2,3,4,7}
+{
+\ifnum\i=2
+\draw[<-] (a\i)--(b\i);
+\draw[<-] (b\i)--(u\i);
+\draw[<-] (u\i)--(c\i);
+\else
+\draw[->] (a\i)--(b\i);
+\draw[->] (b\i)--(u\i);
+\draw[->] (u\i)--(c\i);
+\fi
+}
+
+\foreach \i in{0,1,2,3,7,8}
+{\draw[->] (aa\i)--(bb\i);
+\draw[->] (bb\i)--(v\i);
+\draw[->] (v\i)--(cc\i);
+}
+
+\foreach \i\j in {a1/a3,b1/b3,c1/c3,a3/a5,b3/b5,c3/c5,aa2/aa4,bb2/bb4,cc2/cc4}
+\draw[->] (\i.north) to[out=130,in=-90] (\j.-110);
+
+\foreach \i\j in{a2/a3,b2/b3,c2/c3,a4/a5,b4/b5,c4/c5,aa3/aa4,bb3/bb4,cc3/cc4}
+\draw[->] (\i.80)--(\j.-80);
+
+\foreach \i\j in {a5/a6,b5/b6,c5/c6,aa1/aa2,aa2/aa3,bb1/bb2,bb2/bb3,cc1/cc2,cc2/cc3,aa4/aa6,bb4/bb6,cc4/cc6}
+\draw[->] (\i)--(\j);
+
+\draw[->] (a7)--(a7|-gr.south);
+\draw[->] (b7)--(b7|-gr.south);
+\draw[->] (c7)--(c7|-gr.south);
+
+% GPU labels
+\foreach \i in {1,2,3,4,7}
+{\ifnum\i=7
+\node[left=4mm] at (a\i.west) {GPU8};
+\else
+\node[left=4mm] at (a\i.west) {GPU\i};
+\fi}
+
+\foreach \i in {1,2,3,7}
+{\ifnum\i=7
+\node[right=2mm] at (cc\i.east) {GPU8};
+\else
+\node[right=2mm] at (cc\i.east) {GPU\i};
+\fi}
+
+% Attention block
+\node[draw, w=1.5cm, h=.8cm, fill=myblue!50!cyan!20] (att) at ($(c3)!.5!(aa3)$) {Attention};
+\node[draw, w=1.5cm, h=.5cm, fill=myblue!50!cyan!20, above=.5cm of att] (att1)  {};
+\node[draw, w=1.5cm, h=.5cm, fill=myblue!50!cyan!20, above=.5cm of att1] (att2)  {};
+
+% Dashed rectangles
+\node[draw,dashed,w=8cm,h=9cm, rounded corners=1.5mm, label={[label distance=1mm]below:Encoder LSTMs}] at ([xshift=-2.5mm, yshift=0cm]$(a4)!.5!(c4)$) {};
+\draw[dashed, rounded corners=1.5mm] ($(a1.south west)+(-.2,-.2)$) rectangle ($(c2.north east)+(.2,.2)$);
+
+\node[draw,dashed,w=7.8cm,h=7.9cm, rounded corners=1.5mm, label={[label distance=1mm]below:Decoder LSTMs}] at ([xshift=2mm, yshift=-.55cm]$(aa4)!.5!(cc4)$) {};
+
+
+% Arrows from attention blocks
+\begin{scope}[on behind layer]
+% \draw[->] (att2.east) to[out=0, in=180] (bb7.200);
+\draw[->] (att2.10)--++(1.2,0)--++(0,-1.85)--++(1.4,0) |- (bb3.160);
+\draw[->] (att2.0)--++(1,0)--++(0,-2.7)--++(1.6,0) |- (bb2.160);
+\draw[->] (att2.-10)--++(.8,0)--++(0,-3.6)--++(1.8,0) |- (bb1.160);
+\draw[->] (att2.north)--++(0,1)--++(3.3,0) |- (bb7.200);
+% \draw[->] (att2.east) to[out=0, in=180] (bb2.160);
+% \draw[->] (att2.east) to[out=0, in=180] (bb1.160);    
+\end{scope}
+
+\draw[->] (c7.east)--++(0.4,0) |- (att.west);
+
+\draw[->] (att)--(att1);
+\draw[->] (att1)--(att2);
+
+\draw[->, densely dotted] (aa7)--(aa7|-br.south);
+\draw[->, densely dotted] (bb7)--(bb7|-br.south);
+\draw[->, densely dotted] (cc7)--(cc7|-br.south);
+
+\draw[->, densely dotted] (br.north-|aa8)--(aa8);
+\draw[->, densely dotted] (br.north-|bb8)--(bb8);
+\draw[->, densely dotted] (br.north-|cc8)--(cc8);
+}
+}
+
+\end{document}
