@@ -1,0 +1,94 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath,ifthen} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+\resizebox{\textwidth}{!}{
+\tikz[font=\small,scale=1, every node/.style={outer sep=0pt, inner sep=0pt}, w/.style={minimum width=#1},h/.style={minimum height=#1},s/.style={minimum size=#1}, eu/.style={shorten >=#1},ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=1.5mm,width=1.25mm]}}
+
+\foreach \i in {1,2,...,14}{
+\node[draw, rounded corners=.3mm, s=.7cm, fill=white] (a\i) at (\i*1.75,0) {A};
+}
+
+\foreach \i in {1,2,...,15}{
+\ifnum\i=1
+\node[draw, rounded corners=.3mm, s=.7cm, fill=white] (b\i) at (\i*1.75,3) {B};
+\else\node[draw, rounded corners=.3mm, s=.7cm, fill=white] (b\i) at (\i*1.635,3) {B};
+\fi
+}
+
+\begin{scope}[on behind layer]
+\fill[myblue!15, rounded corners=1mm] ($(a1.south west)+(-.3,-.3)$) rectangle ($(a14.north east)+(.3,.3)$);
+\fill[myblue!15, rounded corners=1mm] ($(b1.south west)+(-.3,-.3)$) rectangle ($(b15.north east)+(.3,.3)$);
+\end{scope}
+
+
+
+% Lines and arrows
+\begin{scope}[on behind layer]
+\foreach \i in {1,2,...,14}{
+\foreach \j in {1,2,...,15}{
+\draw[thin, myblue, draw opacity=.03] (a\i.north) to[out=90,in=-90, looseness=.3] (b\j.south);
+}
+}    
+
+\foreach \i\j in {1/2}
+\draw[myblue, thick, draw opacity=.1] (b\i) to[out=-90,in=90] (a\j);
+
+\foreach \i\j in {1/8,1/9,1/10,3/1,3/2,3/10,3/8,14/7,14/8,14/9,14/10,14/11}
+\draw[myblue, thick, draw opacity=.1] (b\i) to[out=-90,in=90, looseness=.3] (a\j);
+
+\foreach \i\j in {15/13,15/12,15/11}
+\draw[myblue, thick, draw opacity=.05] (b\i) to[out=-90,in=90, looseness=.3] (a\j);
+
+
+
+
+
+\foreach \i\j in {1,3,4,8,9,9/8}
+\draw[myblue, thick, draw opacity=.2] (b\i) to[out=-90,in=90] (a\j);
+
+\foreach \i\j in {2,5/7,6,7/5,10/9,12/11,13/12,11/10,15/14}
+\draw[myblue, thick, draw opacity=1] (b\i) to[out=-90,in=90] (a\j);
+\end{scope}
+
+
+\foreach \i[count=\j from 2] in {1,2,...,13}{
+\draw[<->, eu=.2mm, ed=.2mm] (a\i)--(a\j);
+}
+
+\foreach \i[count=\j from 2] in {1,2,...,14}{
+\draw[->, eu=.2mm, ed=.2mm] (b\i)--(b\j);
+}
+
+\foreach \i[count=\j] in {l',accord,sur,la,zone,économique,européenne,a,été,signé,en,aout,1992,.,$<$end$>$}
+\draw[->] (b\j.north)--node[pos=1,above=2mm] {\footnotesize\strut \i} +(0,.75);
+
+\foreach \i[count=\j] in {the,agreement,on,the,european,economic,area,was,signed,in,August,1992,.,$<$end$>$}
+\draw[->] ($(a\j.south)+(0,-.75)$)--node[pos=0,below=1mm] {\footnotesize\strut \i} (a\j.south);
+
+
+
+
+
+}
+}
+\end{document}
+

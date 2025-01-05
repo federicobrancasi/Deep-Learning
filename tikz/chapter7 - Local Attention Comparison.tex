@@ -1,0 +1,126 @@
+\documentclass[border=1mm]{standalone}
+% \documentclass{article}
+\usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!70!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+% \resizebox{\textwidth}{!}{
+\tikz[font=\footnotesize,scale=1, every node/.style={outer sep=0pt, inner sep=0pt,align=center}, w/.style={minimum width=#1},h/.style={minimum height=#1},s/.style={minimum size=#1}, eu/.style={shorten >=#1},ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=1.75mm,width=1.25mm]}}
+% \tikzset{>={Latex[length=2mm,width=1.5mm]}}
+
+% Blocks
+\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, label={[label distance=1mm]above left:}] (a) {\color{white} $\bar{h}_s$};
+\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of a] (b) {};
+\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of b] (c) {};
+\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of c] (d) {};
+\node[draw, h=1cm, w=.5cm, fill=myblue!20, right=.5cm of d] (e) {};
+\node[draw, h=1cm, w=.5cm, fill=myblue!20, right=.5cm of e] (f) {$h_t$};
+
+\node[draw, h=1cm, w=.5cm, fill=myred!20, above=1.75cm of b] (g) { $c_t$};
+\node[draw, h=1cm, w=.5cm, fill=mygreen!20, xshift=1cm] (h) at (g-|f) {$\bar{h}_t$};
+
+% Dashed box
+\node[draw, densely dashed, w=5cm, h=2.5cm, anchor=north west, rounded corners=1.5mm, label={[label distance=1mm]above:Attention layer}] at ($(g.north west)+(-.5,.25)$) {};
+
+\node[draw, w=.3cm, h=.3cm, anchor=north west, label={[label distance=1mm]left:$\alpha_t$}] (alpha) at (g.south-|d.north east) {};
+
+
+% Arrows
+\draw[->] (g)--node[above=1mm,pos=.25] {Context vector} (h);
+
+\foreach \i\j in{a/b,b/c,c/d,d/e,e/f}
+\draw[->] (\i)--(\j);
+
+\foreach \i in {a,b,...,f}
+\draw[->] ($(\i.south)+(0,-.35)$)--(\i);
+
+\draw[->] (f)--+(1,0);
+\draw[->] (h.east)--node[above=1mm] {$y_t$} +(.5,0);
+
+\tikzset{>={Latex[length=1.3mm,width=.8mm]}}
+\draw[->] (a) to[out=90, in=-90] (g.-105);
+\draw[->] (b) to[out=90, in=-90] (g.-97);
+\draw[->] (c) to[out=90, in=-90] (g.-88);
+\draw[->] (d) to[out=90, in=-90] (g.-78);
+\draw[->] (f) to[out=100, in=0] (alpha.-20);
+\draw[->] (f) to[out=80, in=-90] (h.-90);
+
+\tikzset{>={Latex[length=1mm,width=.5mm]}}
+\draw[->, densely dotted] (a) to[out=90, in=-100, looseness=.7] (alpha.-125);
+\draw[->, densely dotted] (b) to[out=90, in=-100, looseness=1] (alpha.-101);
+\draw[->, densely dotted] (c) to[out=90, in=-90] (alpha.-80);
+\draw[->, densely dotted] (d) to[out=90, in=-90] (alpha.-55);
+
+\draw (g.south east)--node[above=1mm,pos=1] {\scriptsize Global align weights} (alpha.north west);
+
+
+\begin{scope}[xshift=8cm]
+\tikzset{>={Latex[length=1.75mm,width=1.25mm]}}
+% Blocks
+\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, label={[label distance=1mm]above left:}] (a) {\color{white} $\bar{h}_s$};
+\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of a] (b) {};
+\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of b] (c) {};
+\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of c] (d) {};
+\node[draw, h=1cm, w=.5cm, fill=myblue!20, right=.5cm of d] (e) {};
+\node[draw, h=1cm, w=.5cm, fill=myblue!20, right=.5cm of e] (f) {$h_t$};
+
+\node[draw, h=1cm, w=.5cm, fill=myred!20, above=1.75cm of b] (g) { $c_t$};
+\node[draw, h=1cm, w=.5cm, fill=mygreen!20, xshift=1cm] (h) at (g-|f) {$\bar{h}_t$};
+
+% Dashed box
+\node[draw, densely dashed, w=5cm, h=2.5cm, anchor=north west, rounded corners=1.5mm, label={[label distance=1mm]above:Attention layer}] at ($(g.north west)+(-.5,.25)$) {};
+
+\node[draw, w=.3cm, h=.3cm, anchor=north west, label={[label distance=1mm]above:$\alpha_t$}] (alpha) at ([xshift=-.5cm, yshift=-.5cm]g.south-|d.north east) {};
+
+
+% Arrows
+\draw[->] (g)--node[above=1mm,pos=.25] {Context vector} (h);
+
+\foreach \i\j in{a/b,b/c,c/d,d/e,e/f}
+\draw[->] (\i)--(\j);
+
+\foreach \i in {a,b,...,f}
+\draw[->] ($(\i.south)+(0,-.35)$)--(\i);
+
+\draw[->] (f)--+(1,0);
+\draw[->] (h.east)--node[above=1mm] {$y_t$} +(.5,0);
+
+\tikzset{>={Latex[length=1.3mm,width=.8mm]}}
+\draw[->] (b) to[out=90, in=-90] (g.-97);
+\draw[->] (c) to[out=90, in=-90] (g.-88);
+\draw[->] (f) to[out=100, in=0] (alpha.-20);
+\draw[->] (f) to[out=80, in=-90] (h.-90);
+
+\tikzset{>={Latex[length=1mm,width=.5mm]}}
+\draw[->, densely dotted] (b) to[out=90, in=-100, looseness=.7] (alpha.-110);
+
+\draw[->, densely dotted] (c) to[out=90, in=-90] (alpha.-80);
+
+
+\draw (g.south east)--node[above=1mm,pos=1, xshift=-.5cm,yshift=-4mm, align=left, font=\tiny] {Local\\weights} (alpha.north west);
+
+\draw (g.south east) --node[above=2mm,pos=1] {\scriptsize Aligned position} node[pos=1, right, inner sep=2pt] (p) {$p_t$} +(2.5,0);
+
+\draw[->] (f.90) to[out=80, in=-70] (p.-90);
+\end{scope}
+}
+% }
+
+\end{document}

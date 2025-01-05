@@ -1,0 +1,88 @@
+\documentclass[border=1mm]{standalone}
+% \documentclass{article}
+\usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath} 
+% \usepackage[a]{esvect}
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+% \resizebox{\textwidth}{!}{
+\tikz[font=\footnotesize,scale=1, every node/.style={outer sep=0pt, inner sep=0pt,align=center}, w/.style={minimum width=#1},h/.style={minimum height=#1},s/.style={minimum size=#1}, eu/.style={shorten >=#1},ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=1.75mm,width=1.25mm]}}
+% \tikzset{>={Latex[length=2mm,width=1.5mm]}}
+
+% Blocks
+\node[draw, fill=mygreen!20, w=.7cm, h=1cm] (h1r) {$\overrightarrow{h_1}$};
+\node[draw, fill=mygreen!20, w=.7cm, h=1cm, below=1.5mm of h1r] (h1l) {$\overleftarrow{h_1}$};
+\node[draw, densely dotted, w=1cm, h=2.4cm, label={[label distance=1mm]below:$x_1$}] (a) at ($(h1r)!.5!(h1l)$) {};
+
+\node[draw, fill=mygreen!20, w=.7cm, h=1cm, right=.7cm of h1r] (h2r) {$\overrightarrow{h_2}$};
+\node[draw, fill=mygreen!20, w=.7cm, h=1cm, below=1.5mm of h2r] (h2l) {$\overleftarrow{h_2}$};
+\node[draw,  densely dotted, w=1cm, h=2.4cm, label={[label distance=1mm]below:$x_2$}] (b) at ($(h2r)!.5!(h2l)$) {};
+
+\node[draw, fill=mygreen!20, w=.7cm, h=1cm, right=.7cm of h2r] (h3r) {$\overrightarrow{h_3}$};
+\node[draw, fill=mygreen!20, w=.7cm, h=1cm, below=1.5mm of h3r] (h3l) {$\overleftarrow{h_3}$};
+\node[draw, densely dotted, w=1cm, h=2.4cm, label={[label distance=1mm]below:$x_3$}] (c) at ($(h3r)!.5!(h3l)$) {};
+
+\node[draw, fill=mygreen!20, w=.7cm, h=1cm, right=1.7cm of h3r] (htr) {$\overrightarrow{h_T}$};
+\node[draw, fill=mygreen!20, w=.7cm, h=1cm, below=1.5mm of htr] (htl) {$\overleftarrow{h_T}$};
+\node[draw, densely dotted, w=1cm, h=2.4cm, label={[label distance=1mm]below:$x_T$}] (d) at ($(htr)!.5!(htl)$) {};
+
+% Circle
+\node[draw, circle, s=.4cm, above=1.5cm of c] (circle) {$+$};
+
+%--
+\node[draw, fill=myred!20, w=.7cm, h=1cm, above left=1cm of circle, label={[label distance=1mm]above:$y_{t-1}$}] (st1) {$s_{t-1}$};
+\node[draw, fill=myred!20, w=.7cm, h=1cm, above right=1cm of circle, label={[label distance=1mm]above:$y_{t}$}] (st) {$s_{t}$};
+
+% Arrows
+\draw[->] (a.north) to[out=90,in=180] node[sloped,fill=white, inner xsep=1mm] {\small$a_{t,1}$} (circle.west);
+\draw[->] (b.north) to[out=90,in=220] node[sloped,fill=white, inner xsep=1mm] {\small$a_{t,2}$} (circle.220);
+\draw[->] (c.north) to[out=90,in=-90] node[sloped,fill=white, inner xsep=1mm] {\small$a_{t,3}$} (circle.-90);
+\draw[->] (d.north) to[out=90,in=0, looseness=.9] node[sloped,fill=white, inner xsep=1mm] {\small$a_{t,T}$} (circle.east);
+\draw[->] (circle.north) to[out=90,in=180] node[sloped,fill=white, inner xsep=1mm] {} (st.210);
+\draw[->] (st1)--(st);
+
+\draw[->] ($(st1.west)+(-.5,0)$)--node[pos=0, left] {$\cdots$} (st1);
+\draw[->] (st.east)--node[pos=1, right] {$\cdots$} +(.5,0);
+
+\draw[->] (h1r)--(h2r);
+\draw[<-] (h1l)--(h2l);
+\draw[->] (h2r)--(h3r);
+\draw[<-] (h2l)--(h3l);
+
+\draw[->] (h3r.east)--+(.6,0);
+\draw[<-] (h3l.east)--+(.6,0);
+
+\draw[->] ($(htr.west)+(-.6,0)$)--(htr);
+\draw[<-] ($(htl.west)+(-.6,0)$)--(htl);
+
+% Labels
+\node[myblue, align=left] (z) at ([xshift=-3.5cm]$(st1)!.5!(h1r)$) {
+\textcolor{black}{Alignment model}\\[4mm]
+$e_{t j}=a\left(s_{t-1}, h_j\right)$\\[4mm]
+$\alpha_{t j}=\operatorname{softmax}\left(e_{t j}\right)$\\[4mm]
+\textcolor{black}{Bidirectional RNN}\\[4mm]
+$h_j=\left[\overrightarrow{h_j} ; \overleftarrow{h_j}\right]$};
+
+\draw[thin, mygreen] ($(z.east)+(1mm,0)$) to[out=0, in=-90, looseness=.7] ([yshift=2mm]st1.south);
+\draw[thin, mygreen] ($(z.east)+(1mm,0)$) to[out=0, in=90, looseness=] (h1r.north);
+}
+% }
+
+\end{document}
