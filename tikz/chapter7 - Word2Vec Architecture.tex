@@ -1,0 +1,87 @@
+\documentclass[border=1mm]{standalone}
+% \documentclass{article}
+\usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta,3d}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+% \resizebox{.9\textwidth}{!}{
+\tikz[font=\normalsize,yscale=1, every node/.style={outer sep=0pt, inner sep=0pt,align=center}, w/.style={minimum width=#1},h/.style={minimum height=#1},s/.style={minimum size=#1}, eu/.style={shorten >=#1},ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=1.75mm,width=1.25mm]}}
+% \tikzset{>={Latex[length=2mm,width=1.5mm]}}
+
+% Circles
+\node[draw, circle, s=.8cm, fill=myblue!20] (h1) {$\sum$};
+\node[draw, circle, s=.8cm, fill=myblue!20, below=5mm of h1] (h2) {$\sum$};
+\node[draw, circle, s=.8cm, fill=myblue!20, below=1.3cm of h2] (h3) {$\sum$};
+
+\node[draw, circle, s=.8cm, fill=myred!20] (o2) at ([xshift=3cm]$(h1)!.5!(h2)$) {$\sum$};
+\node[draw, circle, s=.8cm, fill=myred!20, above=5mm of o2] (o1) {$\sum$};
+\node[draw, circle, s=.8cm, fill=myred!20, below=5mm of o2] (o3) {$\sum$};
+\node[draw, circle, s=.8cm, fill=myred!20] (o4) at ([yshift=-.7cm]o1|-h3) {$\sum$};
+
+
+% Array
+\node[draw, s=.37cm, left=2cm of h3, yshift=.5cm] (0) {\footnotesize 0};
+
+\foreach \i[count=\j] in {0,1,...,8}
+{\ifnum\i=1
+\node[draw, s=.37cm, above=0cm of \i, fill=mygreen!20] (\j)  {\footnotesize 1};
+\else
+\node[draw, s=.37cm, above=0cm of \i] (\j)  {\footnotesize 0};
+\fi}
+
+\node[draw, s=.37cm, below=1cm of 0] (00) {\footnotesize 0};
+
+% Vertical Dots
+\node at ($(h2)!.5!(h3)$) {\strut$\vdots$};
+\node at ($(o3)!.5!(o4)$) {\strut$\vdots$};
+\node at ($(0)!.5!(00)$) {\strut$\vdots$};
+
+% Arrows
+\foreach \i in {1,2,3}
+{\foreach \j in {1,2,3,4}
+\draw[->] (h\i)--(o\j);}
+
+\draw[->, ed=2mm] (3)--(h3);
+\draw[->, ed=2mm] (4)--(h2);
+\draw[->, ed=2mm] (5)--(h1);
+
+\draw[->] (o1)--node[black, pos=1, right=1mm, align=left, font=\scriptsize] {Probability that the word at a\\ randomly chosen, nearby\\ position is``\textbf{abandon}''} +(1.25,0);
+
+\draw[->] (o2)--node[black, pos=1, right=1mm, align=left, font=\small] {$\cdots$``\textbf{ability}''} +(1.25,0);
+
+\draw[->] (o3)--node[black, pos=1, right=1mm, align=left, font=\small] {$\cdots$``\textbf{able}''} +(1.25,0);
+
+\draw[->] (o4)--node[black, pos=1, right=1mm, align=left, font=\small] {$\cdots$``\textbf{zone}''} +(1.25,0);
+
+% Labels
+\node[above=1cm, font=\small] (iv) at (9) {Input\\Vector};
+\node[, font=\small] at (h1|-iv) {Hidden Layer\\Linear Neurons};
+\node[, font=\small] at (o1|-iv) {Output Layer\\Softmax Classifier};
+
+\draw[<-, mygreen!50, font=\scriptsize] (2)--node[black,pos=1, left=2mm, align=left] {A '1' in the position\\ corresponding to\\ the word "ants"} +(-1,0);
+
+\node[below=3mm,font=\scriptsize] at (00.south) {10,000\\positions};
+\node[below=3mm,font=\scriptsize] at (h3.south) {300\\positions};
+\node[below=3mm,font=\scriptsize] at (o4.south) {10,000\\positions};
+
+}
+% }
+
+\end{document}

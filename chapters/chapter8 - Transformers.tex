@@ -40,8 +40,8 @@ For a better understanding see this explanatory diagram:
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.55\linewidth]{tikz/chapter8 - Temporal Convolutional Network.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} A global overview of Dilated Causal Convolution.}
+    \includegraphics[width=\linewidth]{tikz/chapter8 - Temporal Convolutional Network.pdf}
+    \caption{A global overview of Dilated Causal Convolution.}
 \end{figure}
 
 The architecture differs significantly from standard CNNs because the output of each hidden layer is obtained using dilation (1, 2, 4) and kernels of size 3. The most notable change is the causal effect: the CNN has been adapted to predict tokens sequentially. For example, the output $y_t$ is predicted after $y_{t-1}$ using only a "shifted" number of features from the previous level, i.e. $x_t, x_{t-4}, x_{t-8}$.
@@ -111,11 +111,11 @@ But how does it work? In multi-head attention, vectors of input embeddings are d
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.5\linewidth]{tikz/chapter8 - Multi Head Self-Attention.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Multi Head Self-Attention}
+    \includegraphics[width=0.8\linewidth]{tikz/chapter8 - Multi Head Self-Attention.pdf}
+    \caption{Multi Head Self-Attention}
 \end{figure}
 
-The image provided shows a visualization of the outputs using two heads. We can see that if the query word is "it", the first head focuses more on the words "the animal", while the second head focuses on the word "tired". As a result, the final context representation takes into account all the words "the", "animal", and "tired", providing a richer and more accurate representation than traditional methods.
+The image provided shows a visualization of the outputs using two heads. We can see that \textbf{\textcolor{myred}{if the query word is "it"}}, \textbf{\textcolor{myblue}{the first head focuses more on the words "the animal"}}, while \textbf{\textcolor{mygreen}{the second head focuses on the word "tired"}}. As a result, the final context representation takes into account all the words "the", "animal", and "tired", providing a richer and more accurate representation than traditional methods.
 
 
 \subsection{Positional Encoding}

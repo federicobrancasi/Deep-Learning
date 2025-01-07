@@ -312,32 +312,28 @@ The sentences will then be represented as $[1,1,1,1,1,0,0]$ and $[1,0,1,0,0,1,1]
 However, as is evident, this representation is not effective in showing semantic relationships between words, as each is encoded as an individual entity in a vector space and there is no way to establish that the words "love" and "like" have similar connotations. This is where word embeddings come in.
 
 \textbf{Word embeddings} are representations in which contexts and similarities are captured by encoding in vector space. Similar words will have similar representations. \textbf{Word2Vec techniques} create a representation of each word in our vocabulary in a vector. Words used in similar contexts or that have semantic relationships are effectively captured through their \textbf{vicinity in vector space}. Embeddings create semantic and syntactic relationships between words. These relationships, or weights, are determined by the model and not pre-assigned (see example in the figure below).
-  
+
 \begin{table}[h]
 \centering
-\begin{tabular}{|l|c|c|c|c|c|}
+\begin{tabular}{l|c|c|c|c|c}
+& KING & QUEEN & MAN & GIRL & PRINCE \\
 \hline
- & KING & QUEEN & MAN & GIRL & PRINCE \\
-\hline
-Royalty & \cellcolor{mygreen!25}0.96 & \cellcolor{mygreen!25}0.98 & \cellcolor{myblue!20}0.05 & \cellcolor{myblue!20}0.56 & \cellcolor{mygreen!25}0.95 \\
-\hline
-Masculinity & \cellcolor{myred!20}0.92 & \cellcolor{myorange!20}0.01 & \cellcolor{myred!20}0.90 & \cellcolor{myorange!20}0.09 & \cellcolor{myred!20}0.85 \\
-\hline
-Femininity & \cellcolor{myorange!20}0.08 & \cellcolor{myred!20}0.93 & \cellcolor{myorange!20}0.10 & \cellcolor{myred!20}0.91 & \cellcolor{myorange!20}0.15 \\
-\hline
-Age & \cellcolor{myblue!20}0.61 & \cellcolor{myblue!20}0.71 & \cellcolor{myblue!20}0.56 & \cellcolor{myblue!20}0.11 & \cellcolor{myorange!20}0.42 \\
-\hline
-\end{tabular} \caption{Word Embeddings Example}
+Royalty & \cellcolor{myred!20}0.96 & \cellcolor{myred!20}0.98 & \cellcolor{mygreen!25}0.05 & \cellcolor{myblue!20}0.56 & \cellcolor{myred!20}0.95 \\
+Age & \cellcolor{myred!20}0.92 & \cellcolor{mygreen!25}0.01 & \cellcolor{myred!20}0.90 & \cellcolor{mygreen!25}0.09 & \cellcolor{myred!20}0.85 \\
+Masculinity & \cellcolor{mygreen!25}0.08 & \cellcolor{myred!20}0.93 & \cellcolor{mygreen!25}0.10 & \cellcolor{myred!20}0.91 & \cellcolor{mygreen!25}0.15 \\
+Femininity & \cellcolor{myblue!20}0.61 & \cellcolor{myblue!20}0.71 & \cellcolor{myblue!20}0.56 & \cellcolor{mygreen!25}0.11 & \cellcolor{myblue!25}0.42 \\
+\end{tabular}
+\caption{Word Embeddings Example}
 \end{table}
 
 The image shows hypothetical features (weights) in word embeddings learned by the neural network. Consider a classic example: "king," "queen," "man," "women," "prince." In a hypothetical world, vectors could then define the weight of each criterion (e.g., nobility, masculinity, femininity, age, etc.) for each of the words provided in our vocabulary. For example, "king," "queen," and "prince" have similar scores for "nobility," while "women" and "queen" have similar scores for "femininity".
 
-The architecture of Word2Vec is essentially a \textbf{two-layer surface neural network} trained to represent words in a document or text context. During training, the input consists of all the documents or texts in the training set, each of which is represented using a \textbf{one-hot encoding of the words} present. This means that each word is represented by a vector in which a single dimension is set to 1 and all others to 0, indicating the presence of the word in the document.
+The architecture of Woxrd2Vec is essentially a \textbf{two-layer surface neural network} trained to represent words in a document or text context. During training, the input consists of all the documents or texts in the training set, each of which is represented using a \textbf{one-hot encoding of the words} present. This means that each word is represented by a vector in which a single dimension is set to 1 and all others to 0, indicating the presence of the word in the document.
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\linewidth]{tikz/chapter7 - Word2Vec Architecture.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Understanding the neural network training of Word2Vec model}
+    \includegraphics[width=\linewidth]{tikz/chapter7 - Word2Vec Architecture.pdf}
+    \caption{Understanding the neural network training of Word2Vec model}
 \end{figure}
 
 The hidden layer of the neural network has a \textbf{number of neurons equal to the desired size for word embedding}. For example, if you want each word to be represented by a vector of length 300, the hidden layer will contain 300 neurons. During the training process, the weights associated with the hidden layers of the network are treated as the word embedding. These weights represent network parameters that capture the semantic and syntactic features of words, allowing them to be placed in a vector space in which similar words are close to each other. In other words, each word can be viewed as having a set of weights (300 in the case of the example) that "weigh" different semantic and syntactic features, such as the context in which they appear and their relationships to other words in the text.

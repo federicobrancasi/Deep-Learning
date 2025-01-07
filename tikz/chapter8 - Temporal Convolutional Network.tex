@@ -1,0 +1,128 @@
+\documentclass[border=1mm]{standalone}
+\usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath,ifthen} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+% \resizebox{\textwidth}{!}{
+\tikz[font=\small,scale=1, every node/.style={outer sep=0pt, inner sep=0pt}, w/.style={minimum width=#1},h/.style={minimum height=#1},s/.style={minimum size=#1}, eu/.style={shorten >=#1},ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=1.5mm,width=1.25mm]}}
+
+
+\node[draw, s=.6cm, fill=myred!20] (1) {};
+
+\foreach \i[count=\j from 2] in {1,2,...,12} {%
+    \ifthenelse{\(\i = 1 \OR \i = 2\)}{%
+        \node[draw, minimum size=.6cm, fill=myred!20, right=0cm of \i] (\j) {};
+    }{%
+    \ifthenelse{\(\i = 3 \OR \i = 4 \OR \i = 5 \OR \i = 6 \OR \i = 7 \OR \i = 8\)}{%
+        \node[draw, minimum size=.6cm, fill=mygreen!20, right=0cm of \i] (\j) {};
+    }{%
+        \node[draw, minimum size=.6cm, fill=myblue!20, right=0cm of \i] (\j) {};
+    }}
+}
+
+\begin{scope}[yshift=2cm]
+\node[draw, s=.6cm, fill=myred!20] (a1) {};
+
+\foreach \i[count=\j from 2] in {1,2,...,12} {%
+    \ifthenelse{\(\i = 1 \OR \i = 2\)}{%
+        \node[draw, minimum size=.6cm, fill=myred!20, right=0cm of a\i] (a\j) {};
+    }{%
+    \ifthenelse{\(\i = 3 \OR \i = 4 \OR \i = 5 \OR \i = 6 \OR \i = 7 \OR \i = 8\)}{%
+        \node[draw, minimum size=.6cm, fill=mygreen!20, right=0cm of a\i] (a\j) {};
+    }{%
+        \node[draw, minimum size=.6cm, fill=myblue!20, right=0cm of a\i] (a\j) {};
+    }}
+}
+\end{scope}
+
+\begin{scope}[yshift=4cm]
+\node[s=.6cm, fill=none] (b1) {};
+
+\foreach \i[count=\j from 2] in {1,2,...,12} {%
+    \ifthenelse{\(\i = 1 \OR \i = 2\)}{%
+        \node[s=.6cm, fill=none, right=0cm of b\i] (b\j) {};
+    }{%
+    \ifthenelse{\(\i = 3 \OR \i = 4 \OR \i = 5 \OR \i = 6 \OR \i = 7 \OR \i = 8\)}{%
+        \node[draw, minimum size=.6cm, fill=mygreen!20, right=0cm of b\i] (b\j) {};
+    }{%
+        \node[draw, minimum size=.6cm, fill=myblue!20, right=0cm of b\i] (b\j) {};
+    }}
+}
+\end{scope}
+
+
+\node[draw, circle, s=.6cm, yshift=.8cm, fill=myblue!20] (circle) at ($(b6.north)!.5!(b7.north)$) {$+$};
+
+\node[draw, w=2.3cm, h=1cm, right=1cm of a13, fill=myblue!20, align=center, font=\small] (rec) {Optional $1\times 1$\\Convolution};
+
+% Gray background
+\begin{scope}[on behind layer]
+\node[draw, fill=gray!15, w=11.5cm, h=6.8cm] (back) at ([xshift=-2mm, yshift=0.5cm]a10) {};    
+\end{scope}
+
+% Arrows
+% \draw[->] (a1) to[out=90, in=-90] (b5.-120);
+\draw[->, rounded corners=2mm] (a1.north)--++(0,.75) -| (b5.-120);
+\draw[->, rounded corners=2mm] (a3.north) --++(0,.5) -| (b5.-90);
+\draw[->, rounded corners=2mm] (a5.60) -- (b5.-60);
+
+\draw[->, rounded corners=0mm] (a5.60)--++(0,.75) -| (b9.-120);
+\draw[->, rounded corners=2mm] (a7.north) --++(0,.5) -| (b9.-90);
+\draw[->, rounded corners=2mm] (a9.60) -- (b9.-60);
+
+\draw[->, rounded corners=0mm] (a9.60)--++(0,.75) -| (b13.-120);
+\draw[->, rounded corners=2mm] (a11.north) --++(0,.5) -| (b13.-90);
+\draw[->, rounded corners=2mm] (a13.60) -- (b13.-60);
+%-------------
+\draw[->, rounded corners=2mm] (1.north)--++(0,.75) -| (a5.-120);
+\draw[->, rounded corners=2mm] (3.north) --++(0,.5) -| (a5.-90);
+\draw[->, rounded corners=2mm] (5.60) -- (a5.-60);
+
+\draw[->, rounded corners=0mm] (5.60)--++(0,.75) -| (a9.-120);
+\draw[->, rounded corners=2mm] (7.north) --++(0,.5) -| (a9.-90);
+\draw[->, rounded corners=2mm] (9.60) -- (a9.-60);
+
+\draw[->, rounded corners=0mm] (9.60)--++(0,.75) -| (a13.-120);
+\draw[->, rounded corners=2mm] (11.north) --++(0,.5) -| (a13.-90);
+\draw[->, rounded corners=2mm] (13.60) -- (a13.-60);
+
+\draw[->] (circle)--(circle|-back.north);
+\draw[->] ($(b6.north)!.5!(b7.north)$)--(circle);
+\draw[->, rounded corners=2mm] (rec) |- (circle);
+
+\coordinate (u) at ($(6.south)!.5!(7.south)$);
+\draw[->] (back.south-|u)--coordinate[pos=.45] (z) (u);
+\draw[rounded corners=2mm] (z) -| (rec);
+
+\draw[->] ($(back.south-|u)+(0,-.6)$)--node[pos=0, below=1mm] {Output from previous residual block} ([yshift=-1mm]back.south-|u);
+
+\draw[->] ([yshift=1mm]back.north-|circle)--node[pos=1, above=1mm] {Input for next residual block} +(0,.5);
+
+\node[anchor=north west, align=left] at ($(back.north west)+(.1,-.1)$) {Residual block\\$(k=3, d=2)$};
+
+% Red rectangles
+\node[draw, densely dashed, semithick, myred!80, w=7.8cm, h=.6cm] (r1) at ($(a7)!.465!(b7)$) {};
+\node[draw, densely dashed, semithick, myred!80, w=7.8cm, h=.6cm] (r2) at ($(7)!.465!(a7)$) {};
+
+\draw[myred!80] ($(r2.east)+(.1,0)$)--++(.25,0) |- coordinate[pos=.25] (e) ($(r1.east)+(.1,0)$);
+
+\draw[<-,myred!80] (e) to[out=0, in=-90, looseness=.4] node[align=center,pos=1, above=1mm, xshift=0cm] {Here also applied Weight \\ Norm $+$ ReLu $+$ Dropout} +(.5,4.2);
+}
+\end{document}
