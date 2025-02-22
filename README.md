@@ -17,6 +17,10 @@ This book covers a wide range of topics in Deep Learning, from foundational conc
 |:--:|:--:|:--:|
 |Backpropagation|Optimization|Generative Models|
 
+|<a href="https://github.com/federicobrancasi/Deep-Learning/blob/main/tikz/Github%20Showcase%204.jpg"><img src="https://github.com/federicobrancasi/Deep-Learning/blob/main/tikz/Github%20Showcase%204.jpg" alt="Backpropagation" width="220px"/></a>|<a href="https://github.com/federicobrancasi/Deep-Learning/blob/main/tikz/Github%20Showcase%205.jpg"><img src="https://github.com/federicobrancasi/Deep-Learning/blob/main/tikz/Github%20Showcase%205.jpg" alt="Optimization" width="220px"/></a>|<a href="https://github.com/federicobrancasi/Deep-Learning/blob/main/tikz/Github%20Showcase%206.jpg"><img src="https://github.com/federicobrancasi/Deep-Learning/blob/main/tikz/Github%20Showcase%206.jpg" alt="Generative Models" width="220px"/></a>|
+|:--:|:--:|:--:|
+|Sequence Models|Transformers|Large Multi-Modals Models|
+
 ## TikZ Illustrations
 
 One of the unique features of this book is our extensive use of TikZ for creating high-quality illustrations. TikZ, a powerful package for creating graphics in LaTeX, has allowed us to craft clear, elegant diagrams that enhance understanding of complex concepts.
