@@ -136,16 +136,16 @@ AlexNet marked the \textbf{beginning of the deep learning revolution} and was th
     \item It was developed to participate in the \textbf{ImageNet Challenge competition} and outperformed all the previous models in the challenge.
     \item It was the \textbf{first GPU implementation} of a neural network (2 in parallel, that's why each CN layer is splitted into two halfs).
     \item Also, AlexNet used for the first time ReLu activation function instead of Tanh (because obtaininng the same performance using a Relu requires less time than using tanh).
-    \item \textbf{Universal Feature Extractor}: AlexNet showed that features learnt from convolutional layers (features before the output layer, 4096 dimensional features for each image) can be generalised and reused effectively for a wide range of computer vision tasks, making it a universal feature extractor (as they become quite discriminative). Also, a study showed that features used in computer vision before AlexNet were way less discriminative even than features extracted after the first convolutional layer of the network. Finally, the features extracted from AlexNet are so powerful and discriminative that, when applied to another dataset (such as SUN-397) or to a different task from the original one, they produce \textbf{equally effective results without needing to be redefined or re-trained}.
     \item Article: \href{https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf}{"ImageNet Classification with Deep Convolutional Neural Networks" (Krizhevsky et al.)}
 \end{itemize}
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{tikz/chapter5 - AlexNet.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} AlexNet Architecture}
+    \includegraphics[width=\textwidth]{tikz/chapter5 - AlexNet.pdf}
+    \caption{AlexNet Architecture}
 \end{figure}
 
+\textbf{Universal Feature Extractor}: AlexNet showed that features learnt from convolutional layers (features before the output layer, 4096 dimensional features for each image) can be generalised and reused effectively for a wide range of computer vision tasks, making it a universal feature extractor (as they become quite discriminative). Also, a study showed that features used in computer vision before AlexNet were way less discriminative even than features extracted after the first convolutional layer of the network. Finally, the features extracted from AlexNet are so powerful and discriminative that, when applied to another dataset (such as SUN-397) or to a different task from the original one, they produce \textbf{equally effective results without needing to be redefined or re-trained}.
 
 \subsection{ILSVRC - Zeiler and Fergus Net (2013)}
 ILSVRC 2013 introduced similar architecture to AlexNet (5 convolutional layers and 2 fully connected layer at the end each with 4096 units), but with some significant innovations. Its main features include:
@@ -162,8 +162,8 @@ A Deconvolutional Network aims to interpret the activations in the various layer
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{tikz/chapter5 - Deconvolutional Networks.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Functioning of a Deconvolutional Network with Unpooling}
+    \includegraphics[width=0.9\textwidth]{tikz/chapter5 - Deconvolutional Networks.pdf}
+    \caption{Functioning of a Deconvolutional Network with Unpooling}
 \end{figure}
 
 The deconvolution process includes several steps: unpooling, rectification and filtering. Unpooling is performed using \textbf{switch variables to keep track of the positions of the maxima in the original pooling}, as max pooling is not invertible. Rectification uses the ReLU function to propagate only non-negative values, while filtering applies transposed versions of the learned filters.
@@ -188,12 +188,6 @@ However, two main challenges arise: different optimisers may produce different s
 An important technique introduced later to better understand how CNNs work is \textbf{Grad-CAM} (Gradient-weighted Class Activation Mapping), which \textbf{evidences relevant} regions of an image for classification.
 It was introduced in the article \href{https://arxiv.org/pdf/1610.02391}{"Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization" (Selvaraju et al.)}.
 
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=0.7\linewidth]{tikz/chapter5 - GradCam.pdf}
-    \caption{Grad-CAM applied to an Example Image}
-\end{figure}
-
 The intuition is that gradients of the classification score with respect to the final convolutional feature map are used to identify the parts of an input image that most influence the classification score. The places where this gradient is large are those where the final score is most dependent on the data.
 
 To calculate the Grad-CAM, we proceed as follows:
@@ -202,6 +196,12 @@ To calculate the Grad-CAM, we proceed as follows:
     \item The gradient of the score for the class \(c\) before softmax with respect to the feature maps of a convolutional level is calculated.
     \item A global pooling is performed on the obtained gradients.
 \end{itemize}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{tikz/chapter5 - GradCam.pdf}
+    \caption{Grad-CAM applied to an Example Image}
+\end{figure}
 
 \subsection{VGGNet (2014)}
 VGGNet represents an extension of the ideas introduced by AlexNet, with increased depth. It was the last NN developed with the AlexNet-like structure: alternation of convolutional layers and pooling layer until a small dimension is reached, and then attach a fully connected layer.
@@ -221,8 +221,7 @@ Its main features include:
 \end{figure}
 
 \subsection{GoogleNet (2014)}
-The primary issue with VGG was the exponential increase in the number of parameters. Subsequently, neural network architectures underwent a dramatic shift towards significantly reducing the number of parameters. This reduction was prompted by the recognition that the alternating architecture employed by AlexNet had become impractical. Instead of expanding the parameter count, the focus shifted towards increasing the number of layers (depth). A prominent example of this "new NN way" is GoogleNet, A 22-layer CNN but with a reduction in the number of parameters: from 60
-million (AlexNet) to 4 million.
+The primary issue with VGG was the exponential increase in the number of parameters. Subsequently, neural network architectures underwent a dramatic shift towards significantly reducing the number of parameters. This reduction was prompted by the recognition that the alternating architecture employed by AlexNet had become impractical. Instead of expanding the parameter count, the focus shifted towards increasing the number of layers (depth). A prominent example of this "new NN way" is GoogleNet, A 22-layer CNN but with a reduction in the number of parameters: from 60 million (AlexNet) to 4 million.
 
 GoogleNet introduced an innovative structure, reducing the number of parameters compared to AlexNet. Its main features include:
 \begin{itemize}
@@ -236,9 +235,10 @@ GoogleNet introduced an innovative structure, reducing the number of parameters 
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\textwidth]{tikz/chapter5 - GoogleNet.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} GoogleNet Architecture}
+    \includegraphics[width=\textwidth]{tikz/chapter5 - GoogleNet.pdf}
+    \caption{GoogleNet Architecture}
 \end{figure}
+
 
 
 Furthermore, the same authors of this paper suggested some guidelines for designing deeper
@@ -332,12 +332,6 @@ Its main features include:
     \item Article: \href{https://ivi.fnwi.uva.nl/isis/publications/2013/UijlingsIJCV2013/UijlingsIJCV2013.pdf}{"Selective Search for Object Recognition" (J.R.R. Uijlings et al.)}
 \end{itemize}
 
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=\linewidth]{tikz/chapter5 - Selective Search.png}
-    \caption{Training Procedure for Selective Search}
-\end{figure}
-
 
 \subsection{R-CNN - Region-based Convolutional Neural Network (2014)}
 R-CNN is the \textbf{first convolutional neural network-based approaches for object recognition}. Its main features include:
@@ -352,7 +346,7 @@ R-CNN is the \textbf{first convolutional neural network-based approaches for obj
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.9\linewidth]{tikz/chapter5 - R-CNN.png}
+    \includegraphics[width=\linewidth]{tikz/chapter5 - R-CNN.pdf}
     \caption{R-CNN Pipeline}
 \end{figure}
 
@@ -367,8 +361,8 @@ Fast R-CNN is an improved version of R-CNN that \textbf{addresses the efficiency
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\textwidth]{tikz/chapter5 - Fast R-CNN.jpeg}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Fast R-CNN Architecture. In the figure, the backbone block is responsible to extract every feature from the image, thus allowing to perform the forward pass of CNN only one time per image; RoI pooling extracts regions of proposal and are reshaped them into a fixed size. This helps to feed the features of each sub-region into a (shallow) fully connected layer,  by which we can perform classification and regression tasks.   }
+    \includegraphics[width=\textwidth]{tikz/chapter5 - Fast R-CNN.pdf}
+    \caption{Fast R-CNN Architecture}
 \end{figure}
 
 
@@ -385,8 +379,8 @@ Faster R-CNN is another significant development in the field of object detection
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{tikz/chapter5 - Faster R-CNN.jpeg}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Faster R-CNN Architecture}
+    \includegraphics[width=\textwidth]{tikz/chapter5 - Faster R-CNN.pdf}
+    \caption{Faster R-CNN Architecture}
 \end{figure}
 
 

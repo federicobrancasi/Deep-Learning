@@ -67,8 +67,8 @@
     (1.6,-2.7) --++ (0,5.4) --++ (3.8,-1.9) --++ (0,-1.6) -- cycle;
   \draw[myblue!40,fill=myblue,fill opacity=0.02,rounded corners=2]
     (5.6,-2.0) rectangle++ (1.8,4.0);
-  \node[right=19,above=3,align=center,myorange!60!black,font=\bfseries] at (3.1,1.8) {Convolutional\\[-0.2em]Layers};
-  \node[above=3,align=center,myblue!60!black,font=\bfseries] at (6.5,1.9) {Fully-Connected\\[-0.2em]Hidden Layers};
+  \node[right=19,above=3,align=center,myorange!60!black] at (3.1,1.8) {Convolutional\\[-0.2em]Layers};
+  \node[above=3,align=center,myblue!60!black] at (6.5,1.9) {Fully-Connected\\[-0.2em]Hidden Layers};
   
   \message{^^J  Layer}
   \foreachitem \N \in \Nnod{ % loop over layers
@@ -108,8 +108,8 @@
   }
   
   % LABELS
-  \node[above=3,align=center,mygreen!60!black,font=\bfseries] at (N1-1.90) {Input\\[-0.2em]Layer};
-  \node[above=3,align=center,myred!60!black,font=\bfseries] at (N\Nnodlen-1.90) {Output\\[-0.2em]Layer};
+  \node[above=3,align=center,mygreen!60!black] at (N1-1.90) {Input\\[-0.2em]Layer};
+  \node[above=3,align=center,myred!60!black] at (N\Nnodlen-1.90) {Output\\[-0.2em]Layer};
   
 \end{tikzpicture}
 

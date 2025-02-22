@@ -1,0 +1,80 @@
+\documentclass[border=1mm]{standalone}
+% \usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath,ifthen,tabularray} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta,matrix,decorations.text}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+% \resizebox{\textwidth}{!}{
+\tikz[font=\small, scale=1, every node/.style={outer sep=0pt, inner sep=0pt, rounded corners=.5mm, align=center}, w/.style={minimum width=#1}, h/.style={minimum height=#1}, s/.style={minimum size=#1}, eu/.style={shorten >=#1}, ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=1.5mm, width=1.25mm]}}
+
+
+\node[draw, w=2.2cm, h=1.25cm, fill=myblue!15] (a) {Image\\Encoder};
+\node[draw, w=2.2cm, h=1.25cm, fill=myblue!15, right=.5cm of a] (b) {Unimodal\\Text Decoder};
+\node[draw, w=2.2cm, h=1.25cm, fill=myblue!15, right=1cm of b] (c) {Image\\Encoder};
+\node[draw, w=2.2cm, h=1.25cm, fill=myblue!15, right=.5cm of c] (d) {Image\\Encoder};
+\node[draw, w=2.2cm, h=1.25cm, fill=myblue!15, right=.5cm of d] (e) {Unimodal\\Text Decoder};
+\node[draw, w=2.2cm, h=1.25cm, fill=myblue!15, right=.5cm of e] (f) {Image\\Encoder};
+\node[draw, w=2.2cm, h=1.25cm, fill=myblue!15, right=.5cm of f] (g) {Unimodal\\Text Decoder};
+
+\node[draw, w=2.2cm, h=1.25cm, fill=mygreen!15, above=.75cm of b] (u) {Multimodal\\Text Decoder};
+\node[draw, w=2.2cm, h=1.25cm, fill=mygreen!15, above=0cm of g] (v) {Multimodal\\Text Decoder};
+
+% Arrows and labels
+\def\myshift#1{\raisebox{1ex}}
+\draw [->,postaction={decorate,decoration={text along path,text align=center,text={|\footnotesize\myshift|cross-attention}}}]  (a.north) to [out=90, in=180, looseness=1.1] ($(u.west)+(-.1,0)$);
+% \draw[->] (a.north) to[out=90, in=180, looseness=1.1] ($(u.west)+(-.1,0)$);
+
+\foreach \i\j in {a/image,b/text,c/image,d/image,e/text,f/image,g/text}
+\draw[->] ($(\i.south)+(0,-.5)$)--node[pos=0,below=1mm] {\j} (\i);
+
+\draw[->] (c.north)--node[pos=1,above=1mm] (clas) {classification} +(0,.5);
+
+\draw[->] (b.north)--(u.south);
+
+\node (ali) at (clas-|{$(d)!.5!(e)$}) {alignment};
+\draw[->] (d.north) to[bend left=45] ($(ali.west)+(-.1,0)$);
+\draw[->] (e.north) to[bend right=45] ($(ali.east)+(.1,0)$);
+
+\draw[->] (f.north) to[out=90, in=180] ($(v.west)+(-.1,0)$);
+
+\draw[->] (v.north)--node[pos=1,above=1mm, font=\footnotesize] {image captioning\\ \& multimodal\\ representation} +(0,.5);
+
+\node[above=1.5mm of u, mygreen] {Captioning Loss};
+
+\node[below=1.75cm of c, font=\footnotesize] (vis) {Visual Recognition\\(single-encoder models)};
+\node[font=\footnotesize] at (vis-|{$(d)!.5!(e)$}) {Crossmodal Alignment\\(dual-encoder models)};
+\node[font=\footnotesize, anchor=south] at (vis.south-|{$(f)!.5!(g)$}) {Image Captioning \&\\Multimodal Understanding\\(encoder-decoder models)};
+
+\draw[densely dashed] ($(c)!.5!(d)$)--+(0,1.6) ($(c)!.5!(d)$)--+(0,-2);
+\draw[densely dashed] ($(e)!.5!(f)$)--+(0,1.6) ($(e)!.5!(f)$)--+(0,-2);
+
+\node[yshift=-3.5cm] at ($(a)!.5!(b)$) {\normalsize\textbf{Pretraining}};
+\node[yshift=-2.5cm] at ($(a)!.5!(b)$) {\Large\textbf{\color{myblue}Co\color{mygreen}Ca}};
+\node[yshift=-3.5cm] at (e) {\normalsize\textbf{Zero-shot, frozen-feature or finetuning}};
+
+\tikzset{>={Latex[length=2.5mm, width=2.25mm]}}
+\draw[myblue!50, ->, eu=2mm, ed=2mm, line width=1mm] (b)--(c);
+
+}
+
+% }
+
+
+
+\end{document}

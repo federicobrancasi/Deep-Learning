@@ -1,0 +1,66 @@
+\documentclass[border=1mm]{standalone}
+% \usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath,ifthen,tabularray} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta,matrix,decorations.pathreplacing}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+% \resizebox{\textwidth}{!}{
+\tikz[scale=1, every node/.style={outer sep=0pt, inner sep=0pt, align=center, rounded corners=0mm}, w/.style={minimum width=#1}, h/.style={minimum height=#1}, s/.style={minimum size=#1}, eu/.style={shorten >=#1}, ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=1.5mm, width=1.25mm]}}
+
+% Blocks and circles
+\node[draw, circle, s=.8cm] (x) {$x$};
+\node[draw, circle, s=.8cm, above=2mm of x, xshift=-2.5cm] (x1) {$x_1$};
+\node[draw, circle, s=.8cm, above=2mm of x, xshift=2.5cm] (x2) {$x_2$};
+\node[draw, fill=myblue!15, w=2.2cm, h=.8cm, above=.5cm of x2] (tea) {Teacher $g_{\theta t}$};
+\node[draw, fill=myblue!15, w=2.2cm, h=.8cm, above=.5cm of x1] (stu) {Student $g_{\theta s}$};
+\node[draw, w=2.2cm, h=.8cm, above=.25cm of tea] (cen) {Centering};
+\node[draw, w=2.2cm, h=.8cm, above=.25cm of cen] (sof1) {Softmax};
+\node[draw, w=2.2cm, h=.8cm] (sof2) at (sof1-|x1) {Softmax};
+\node[draw, circle, s=.8cm, above=.75cm of sof1] (p2) {$p_2$};
+\node[draw, circle, s=.8cm, above=.75cm of sof2] (p1) {$p_1$};
+
+% Arrows
+\draw[->] (x)--(x1);
+\draw[->] (x)--(x2);
+\draw[->] (x1)--(stu)--(sof2)--(p1);
+\draw     (x2)--(tea)--(cen)--(sof1)--node[w=.8cm, h=.35cm, label={[label distance=1mm]right:$sg$}] (ss) {} (p2);
+\draw[->, eu=4mm, ed=4mm] (stu)--node[above=1mm] {cma} (tea);
+\draw (ss.north east)--($(ss.south west)+(0,.2)$);
+\draw (ss.south west)--($(ss.north east)+(0,-.2)$);
+
+% Labels
+
+
+
+
+
+\node[font=\scriptsize, below left=.1cm of x1] {Local views\\$96\times 96$ pixels};
+
+\node[font=\scriptsize, below right=.15cm of x2] {Global views\\$224\times 224$ pixels};
+
+\node[font=\scriptsize, below=.15cm of x] {Image};
+
+
+}
+
+% }
+
+
+
+\end{document}

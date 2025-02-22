@@ -1,0 +1,175 @@
+\documentclass[border=1mm]{standalone}
+% \usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers,amsmath,ifthen,tabularray} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta,matrix}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+
+
+\begin{document}
+
+% \resizebox{\textwidth}{!}{
+\tikz[font=\footnotesize, scale=1, every node/.style={outer sep=0pt, inner sep=0pt, align=center, rounded corners=.5mm}, w/.style={minimum width=#1}, h/.style={minimum height=#1}, s/.style={minimum size=#1}, eu/.style={shorten >=#1}, ed/.style={shorten <=#1}, line join=round]
+{
+\tikzset{>={Latex[length=1.5mm, width=1.25mm]}}
+
+\node[draw, w=2cm, h=.8cm, fill=myred!15] (ie) {Input\\Embedding};
+\node[draw, circle, s=.3cm, above=.5cm of ie] (plus1) {$+$};
+\node[draw, circle, s=.6cm, left=.3cm of plus1, label={[label distance=1mm, font=\scriptsize]left:Positional\\Encoding}] (v1) {};
+\draw (v1.170) to[out=40,in=220,looseness=1.5] (v1.-10);
+
+\node[draw, w=2cm, h=.8cm, fill=orange!15, above=1cm of plus1] (mha) {Multi-Head\\Attention};
+\node[draw, w=2cm, h=.4cm, fill=mygreen!15, above=.1cm of mha] (an1) {Add \& Norm};
+
+\node[draw, w=2cm, h=.8cm, fill=myblue!15, above=.6cm of an1] (ff1) {Feed\\Forward};
+\node[draw, w=2cm, h=.4cm, fill=mygreen!15, above=.1cm of ff1] (an2) {Add \& Norm};
+%--------------
+\node[draw, w=2cm, h=.8cm, fill=myred!15, right=1.5cm of ie] (oe) {Output\\Embedding};
+\node[draw, circle, s=.3cm, above=.5cm of oe] (plus2) {$+$};
+\node[draw, circle, s=.6cm, right=.3cm of plus2, label={[label distance=1mm, font=\scriptsize]right:Positional\\Encoding}] (v2) {};
+\draw (v2.170) to[out=40,in=220,looseness=1.5] (v2.-10);
+
+\node[draw, w=2cm, h=1.1cm, fill=orange!15, above=1cm of plus2] (mmha) {Masked\\Multi-Head\\Attention};
+\node[draw, w=2cm, h=.4cm, fill=mygreen!15, above=.1cm of mmha] (an3) {Add \& Norm};
+
+\node[draw, w=2cm, h=.8cm, fill=orange!15, above=1cm of an3] (mha1) {Multi-Head\\Attention};
+\node[draw, w=2cm, h=.4cm, fill=mygreen!15, above=.1cm of mha1] (an4) {Add \& Norm};
+
+\node[draw, w=2cm, h=.8cm, fill=myblue!15, above=.6cm of an4] (ff2) {Feed\\Forward};
+\node[draw, w=2cm, h=.4cm, fill=mygreen!15, above=.1cm of ff2] (an5) {Add \& Norm};
+
+\node[draw, w=2cm, h=.4cm, fill=mydarkblue!10, above=.5cm of an5] (li) {Linear};
+\node[draw, w=2cm, h=.4cm, fill=mydarkgreen!10, above=.5cm of li] (so) {Softmax};
+
+\node[draw, densely dashed, w=3cm, h=4cm] (box1) at ([yshift=-.2cm]$(an1.north)!.5!(ff1.south)$) {};
+\node[draw, densely dashed, w=3cm, h=6.25cm] (box2) at ($(mha1)+(0,-.1)$) {};
+%----------------
+\node[right=3cm of mha1, yshift=-1.7cm] (v) {$V$};
+\node[right=1.3cm of v] (k) {$K$};
+\node[right=1.3cm of k] (q) {$Q$};
+
+
+
+\node[draw, w=1.1cm, h=.4cm, fill=mydarkblue!10, above=1.3cm of v, xshift=0.3cm, semitransparent] (li4) {Linear};
+\node[draw, w=1.1cm, h=.4cm, fill=mydarkblue!10, above=1.3cm of k, xshift=0.3cm, semitransparent] (li5) {Linear};
+\node[draw, w=1.1cm, h=.4cm, fill=mydarkblue!10, above=1.3cm of q, xshift=0.3cm, semitransparent] (li6) {Linear};
+
+\node[draw, w=1.1cm, h=.4cm, fill=mydarkblue!10, above=1.15cm of v, xshift=0.15cm, semitransparent] (li4) {};
+\node[draw, w=1.1cm, h=.4cm, fill=mydarkblue!10, above=1.15cm of k, xshift=0.15cm, semitransparent] (li5) {};
+\node[draw, w=1.1cm, h=.4cm, fill=mydarkblue!10, above=1.15cm of q, xshift=0.15cm, semitransparent] (li6) {};
+
+\node[draw, w=1.1cm, h=.4cm, fill=mydarkblue!10, above=1cm of v] (li1) {Linear};
+\node[draw, w=1.1cm, h=.4cm, fill=mydarkblue!10, above=1cm of k] (li2) {Linear};
+\node[draw, w=1.1cm, h=.4cm, fill=mydarkblue!10, above=1cm of q] (li3) {Linear};
+
+
+
+\node[draw, w=4.3cm, h=.8cm, fill=mydarkblue!20, above=1.3cm of li2, xshift = 0.3cm, semitransparent] (sdp) {Scaled Dot-Product\\Attention};
+\node[draw, w=4.3cm, h=.8cm, fill=mydarkblue!20, above=1.15cm of li2, xshift = 0.15cm, semitransparent] (sdp) {};
+\node[draw, w=4.3cm, h=.8cm, fill=mydarkblue!20, above=1cm of li2] (sdp) {Scaled Dot-Product\\Attention};
+
+
+
+\node[draw, w=1.1cm, h=.4cm, fill=mygreen!15, above=0.7cm of sdp] (con) {Concat};
+\node[draw, w=1.1cm, h=.4cm, fill=mydarkblue!10, above=.5cm of con] (li4) {Linear};
+
+\node[draw, densely dotted, w=5.5cm, h=6.5cm] (box3) at ($(sdp)+(0.2,-.1)$) {};
+\node[fill=white, w=3cm, h=.8cm, draw, densely dotted] at (box3.north) {Multi-head attention};
+%---------------
+\node[right=3cm of q, yshift=-4.5cm] (q11) {$Q$};
+\node[right=.7cm of q11] (k11) {$K$};
+\node[right=.7cm of k11] (v11) {$V$};
+
+\node[draw, w=1.8cm, h=.4cm, fill=mydarkblue!10, yshift=1cm] (mat) at ($(q11)!.5!(k11)$) {MatMul};
+\node[draw, w=1.8cm, h=.4cm, fill=mygreen!15, above=.5cm of mat] (sca) {Scale};
+\node[draw, w=1.8cm, h=.4cm, fill=myred!15, above=.5cm of sca] (mas) {Mask (opt.)};
+\node[draw, w=1.8cm, h=.4cm, fill=mydarkgreen!10, above=.5cm of mas] (so1) {Softmax};
+\node[draw, w=1.8cm, h=.4cm, fill=mydarkblue!10, above=.5cm of so1, xshift=.72cm] (mat1) {MatMul};
+
+\node[draw, densely dotted, w=3.7cm, h=6cm] (box4) at ($(mas)+(.5,-.3)$) {};
+\node[fill=white, w=3cm, h=.8cm, draw, densely dotted] at (box4.north) {Scaled dot-product\\attention};
+
+% Arrows
+\draw[->] ($(ie.south)+(0,-.4)$)--node[pos=0,below=1mm] {Inputs} (ie);
+\draw[->] (ie)--(plus1);
+\draw (plus1)--(v1);
+\draw[->] (plus1)--coordinate[pos=.6] (c1) (mha);
+\draw[->] (an1)--coordinate[pos=.5] (c2) (ff1);
+\draw[->] (c1)--++(-1.25,0) |- (an1);
+\draw[->] (c2)--++(-1.25,0) |- (an2);
+\draw[->] (an2) |- ++(1.8,.7)--++(0,-1.5)-|(mha1.-150);
+
+\draw[->] ($(oe.south)+(0,-.4)$)--node[pos=0,below=1mm] {Outputs\\(shifted right)} (oe);
+\draw[->] (oe)--(plus2);
+\draw (plus2)--(v2);
+\draw[->] (plus2)--coordinate[pos=.6] (c1) (mmha);
+\draw[->] (an3)--coordinate[pos=.5] (c2) (mha1);
+\draw[->] (c1)--++(1.25,0) |- (an3);
+\draw[->] (c2)--++(1.25,0) |- (an4);
+\draw[->] (an4)--(ff2);
+\draw[->] (an5)--(li);
+\draw[->] (li)--(so);
+\draw[->] (so)--node[pos=1,above] {Output\\probabilities} +(0,.5);
+
+\draw[->] ($(v.north)+(0,.1)$)--(li1);
+\draw[->] ($(k.north)+(0,.1)$)--(li2);
+\draw[->] ($(q.north)+(0,.1)$)--(li3);
+
+\draw[->] (li1)--(li1|-sdp.south);
+\draw[->] (li2)--(li2|-sdp.south);
+\draw[->] (li3)--(li3|-sdp.south);
+
+\draw[->] (sdp)--(con);
+\draw[->] (con)--(li4);
+\draw[->] (li4)--+(0,.5);
+
+\draw[->] ($(q11.north)+(0,.1)$)--(q11|-mat.south);
+\draw[->] ($(k11.north)+(0,.1)$)--(k11|-mat.south);
+\draw[->] ($(v11.north)+(0,.1)$)--(v11|-mat1.south);
+\draw[->] (mat)--(sca);
+\draw[->] (sca)--(mas);
+\draw[->] (mas)--(so1);
+\draw[->] ($(so1.north)+(0,0)$)--(so1|-mat1.south);
+
+\draw[densely dotted] (mha1.east) to[out=0,in=180] node[sloped,above=1mm,gray,pos=.6] {Zoom-in!} (box3.west);
+
+\draw[densely dotted] (sdp.east) to[out=0,in=180,looseness=.7] node[sloped,above=1mm,gray,pos=.6] {Zoom-in!} (box4.west);
+
+%------------
+%--
+\node[left=2mm of box1] (n1) {$n\times$};
+\node[right=2mm of box2.-60] (n2) {$\times n$};
+
+\draw[<-, thin] ($(n1.west)+(-.1,0)$) to[out=180,in=0] node[pos=1,left=1mm] {$=6$ in the\\original paper} +(-1,.5);
+\draw[<-, thin] ($(n2.east)+(.1,0)$) to[out=0,in=180] node[pos=1,right=1mm] {$=6$ in the\\original paper} +(1,-.5);
+
+% Colored boxes
+\begin{scope}[on behind layer]
+\node[draw, densely dotted, fill=blue!50!cyan!10, w=4.25cm, h=4.77cm, anchor=east] (b) at ([xshift=.7cm, yshift=1mm]$(ff1.south east)!.5!(an1.north east)$) {};
+
+\node[draw, densely dotted, fill=mygreen!10, w=4cm, h=7.6cm, anchor=south west] (g) at ([xshift=.2cm]b.south east) {};
+
+\node[draw, densely dotted, fill=orange!10, w=8.45cm, h=3.5cm, anchor=north west] (o) at ([yshift=-.1cm]b.south west) {};
+\end{scope}
+
+\node[anchor=north west] at ($(b.north west)+(.1,-.1)$) {\textbf{Encoder}};
+\node[anchor=north east] at ($(g.north east)+(-.1,-.1)$) {\textbf{Decoder}};
+% \node[anchor=south west] at ($(o.south west)+(.1,.1)$) {\textbf{Preprocessing stages}};
+\node[above=1mm] at (o.south) {\textbf{Preprocessing stages}};
+}
+
+% }
+
+
+
+\end{document}

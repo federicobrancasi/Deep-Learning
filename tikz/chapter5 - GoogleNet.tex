@@ -1,0 +1,339 @@
+\documentclass[border=1mm]{standalone}
+% \usepackage[margin=2.5cm]{geometry}
+
+\usepackage{graphicx,tikz,tikz-layers} 
+\usetikzlibrary{decorations.markings,calc,positioning,arrows,shapes.geometric,arrows.meta}
+
+\colorlet{myred}{red!80!black}
+\colorlet{myblue}{blue!80!black}
+\colorlet{mybluee}{myblue!80!black}
+\colorlet{mygreen}{green!60!black}
+\colorlet{myorange}{orange!70!red!60!black}
+\colorlet{mydarkred}{red!20!black}
+\colorlet{mydarkblue}{blue!40!black}
+\colorlet{mydarkgreen}{green!20!black}
+
+
+\begin{document}
+
+\resizebox{\textwidth}{!}{
+\tikz[font=\small,scale=1, every node/.style={outer sep=0pt, inner sep=0pt, align=center}, w/.style={minimum width=#1},h/.style={minimum height=#1},s/.style={minimum size=#1}, eu/.style={shorten >=#1},ed/.style={shorten <=#1},line join=round]
+{
+\tikzset{>={Latex[length=2mm, width=1.75mm]}}
+% Define a new command for rotated and stacked text
+\newcommand{\rotstack}[1]{\rotatebox{-90}{\shortstack{#1}}}
+
+
+%------------- Groupe 1 -----------------
+\begin{scope}[xshift=0cm]
+\node[draw, w=.9cm, h=2cm, fill=myblue!15] (gr1_a1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, below=.2cm of gr1_a1] (gr1_a2) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myred!15, below=.2cm of gr1_a2] (gr1_a3) {\rotstack{MaxPool \\ $3\times 3+1$(S)}};
+
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, right=.5cm of gr1_a3] (gr1_b4) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr1_b4] (gr1_b3) {\rotstack{Conv \\ $5\times 5+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr1_b3] (gr1_b2) {\rotstack{Conv \\ $3\times 3+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr1_b2] (gr1_b1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=mygreen!15, right=.75cm of {$(gr1_b2.east)!.5!(gr1_b3.east)$}] (gr1_c1) {\rotstack{DepthConcat}};
+
+% Arrows for group 1
+\draw[->] (gr1_a1)--(gr1_b2);
+\draw[->] (gr1_a2)--(gr1_b3);
+\draw[->] (gr1_a3)--(gr1_b4);
+\draw[->] (gr1_b4) to[out=0,in=180,looseness=.7] ($(gr1_c1.west)+(0,-.9)$);
+\draw[->] (gr1_b3) to[out=0,in=180,looseness=1.5] ($(gr1_c1.west)+(0,-.25)$);
+\draw[->] (gr1_b2) to[out=0,in=180,looseness=1.5] ($(gr1_c1.west)+(0,.25)$);
+\draw[->] (gr1_b1) to[out=0,in=180,looseness=.7] ($(gr1_c1.west)+(0,.9)$);
+\end{scope}
+
+%------------- Groupe 2 -----------------
+\begin{scope}[xshift=5cm]
+\node[draw, w=.9cm, h=2cm, fill=myblue!15] (gr2_a1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, below=.2cm of gr2_a1] (gr2_a2) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myred!15, below=.2cm of gr2_a2] (gr2_a3) {\rotstack{MaxPool \\ $3\times 3+1$(S)}};
+
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, right=.5cm of gr2_a3] (gr2_b4) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr2_b4] (gr2_b3) {\rotstack{Conv \\ $5\times 5+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr2_b3] (gr2_b2) {\rotstack{Conv \\ $3\times 3+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr2_b2] (gr2_b1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=mygreen!15, right=.75cm of {$(gr2_b2.east)!.5!(gr2_b3.east)$}] (gr2_c1) {\rotstack{DepthConcat}};
+
+% Arrows for group 2
+\draw[->] (gr2_a1)--(gr2_b2);
+\draw[->] (gr2_a2)--(gr2_b3);
+\draw[->] (gr2_a3)--(gr2_b4);
+\draw[->] (gr2_b4) to[out=0,in=180,looseness=.7] ($(gr2_c1.west)+(0,-.9)$);
+\draw[->] (gr2_b3) to[out=0,in=180,looseness=1.5] ($(gr2_c1.west)+(0,-.25)$);
+\draw[->] (gr2_b2) to[out=0,in=180,looseness=1.5] ($(gr2_c1.west)+(0,.25)$);
+\draw[->] (gr2_b1) to[out=0,in=180,looseness=.7] ($(gr2_c1.west)+(0,.9)$);
+\end{scope}
+
+%------------- Groupe 3 -----------------
+\begin{scope}[xshift=11.5cm]
+\node[draw, w=.9cm, h=2cm, fill=myblue!15] (gr3_a1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, below=.2cm of gr3_a1] (gr3_a2) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myred!15, below=.2cm of gr3_a2] (gr3_a3) {\rotstack{MaxPool \\ $3\times 3+1$(S)}};
+
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, right=.5cm of gr3_a3] (gr3_b4) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr3_b4] (gr3_b3) {\rotstack{Conv \\ $5\times 5+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr3_b3] (gr3_b2) {\rotstack{Conv \\ $3\times 3+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr3_b2] (gr3_b1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=mygreen!15, right=.75cm of {$(gr3_b2.east)!.5!(gr3_b3.east)$}] (gr3_c1) {\rotstack{DepthConcat}};
+
+% Arrows for group 3
+\draw[->] (gr3_a1)--(gr3_b2);
+\draw[->] (gr3_a2)--(gr3_b3);
+\draw[->] (gr3_a3)--(gr3_b4);
+\draw[->] (gr3_b4) to[out=0,in=180,looseness=.7] ($(gr3_c1.west)+(0,-.9)$);
+\draw[->] (gr3_b3) to[out=0,in=180,looseness=1.5] ($(gr3_c1.west)+(0,-.25)$);
+\draw[->] (gr3_b2) to[out=0,in=180,looseness=1.5] ($(gr3_c1.west)+(0,.25)$);
+\draw[->] (gr3_b1) to[out=0,in=180,looseness=.7] ($(gr3_c1.west)+(0,.9)$);
+\end{scope}
+
+\node[draw, w=.9cm, h=2.3cm, fill=myred!15, right=.6cm of gr2_c1] (m1) {\rotstack{MaxPool \\ $3\times 3+2$(S)}};
+
+%------------- Groupe 4 -----------------
+\begin{scope}[xshift=16.5cm]
+\node[draw, w=.9cm, h=2cm, fill=myblue!15] (gr4_a1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, below=.2cm of gr4_a1] (gr4_a2) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myred!15, below=.2cm of gr4_a2] (gr4_a3) {\rotstack{MaxPool \\ $3\times 3+1$(S)}};
+
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, right=.5cm of gr4_a3] (gr4_b4) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr4_b4] (gr4_b3) {\rotstack{Conv \\ $5\times 5+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr4_b3] (gr4_b2) {\rotstack{Conv \\ $3\times 3+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr4_b2] (gr4_b1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=mygreen!15, right=.75cm of {$(gr4_b2.east)!.5!(gr4_b3.east)$}] (gr4_c1) {\rotstack{DepthConcat}};
+
+% Arrows for group 4
+\draw[->] (gr4_a1)--(gr4_b2);
+\draw[->] (gr4_a2)--(gr4_b3);
+\draw[->] (gr4_a3)--(gr4_b4);
+\draw[->] (gr4_b4) to[out=0,in=180,looseness=.7] ($(gr4_c1.west)+(0,-.9)$);
+\draw[->] (gr4_b3) to[out=0,in=180,looseness=1.5] ($(gr4_c1.west)+(0,-.25)$);
+\draw[->] (gr4_b2) to[out=0,in=180,looseness=1.5] ($(gr4_c1.west)+(0,.25)$);
+\draw[->] (gr4_b1) to[out=0,in=180,looseness=.7] ($(gr4_c1.west)+(0,.9)$);
+\end{scope}
+
+%------------- Groupe 5 -----------------
+\begin{scope}[xshift=21.5cm]
+\node[draw, w=.9cm, h=2cm, fill=myblue!15] (gr5_a1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, below=.2cm of gr5_a1] (gr5_a2) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myred!15, below=.2cm of gr5_a2] (gr5_a3) {\rotstack{MaxPool \\ $3\times 3+1$(S)}};
+
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, right=.5cm of gr5_a3] (gr5_b4) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr5_b4] (gr5_b3) {\rotstack{Conv \\ $5\times 5+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr5_b3] (gr5_b2) {\rotstack{Conv \\ $3\times 3+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr5_b2] (gr5_b1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=mygreen!15, right=.75cm of {$(gr5_b2.east)!.5!(gr5_b3.east)$}] (gr5_c1) {\rotstack{DepthConcat}};
+
+% Arrows for group 5
+\draw[->] (gr5_a1)--(gr5_b2);
+\draw[->] (gr5_a2)--(gr5_b3);
+\draw[->] (gr5_a3)--(gr5_b4);
+\draw[->] (gr5_b4) to[out=0,in=180,looseness=.7] ($(gr5_c1.west)+(0,-.9)$);
+\draw[->] (gr5_b3) to[out=0,in=180,looseness=1.5] ($(gr5_c1.west)+(0,-.25)$);
+\draw[->] (gr5_b2) to[out=0,in=180,looseness=1.5] ($(gr5_c1.west)+(0,.25)$);
+\draw[->] (gr5_b1) to[out=0,in=180,looseness=.7] ($(gr5_c1.west)+(0,.9)$);
+\end{scope}
+
+%------------- Groupe 6 -----------------
+\begin{scope}[xshift=26.5cm]
+\node[draw, w=.9cm, h=2cm, fill=myblue!15] (gr6_a1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, below=.2cm of gr6_a1] (gr6_a2) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myred!15, below=.2cm of gr6_a2] (gr6_a3) {\rotstack{MaxPool \\ $3\times 3+1$(S)}};
+
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, right=.5cm of gr6_a3] (gr6_b4) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr6_b4] (gr6_b3) {\rotstack{Conv \\ $5\times 5+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr6_b3] (gr6_b2) {\rotstack{Conv \\ $3\times 3+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr6_b2] (gr6_b1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=mygreen!15, right=.75cm of {$(gr6_b2.east)!.5!(gr6_b3.east)$}] (gr6_c1) {\rotstack{DepthConcat}};
+
+% Arrows for group 6
+\draw[->] (gr6_a1)--(gr6_b2);
+\draw[->] (gr6_a2)--(gr6_b3);
+\draw[->] (gr6_a3)--(gr6_b4);
+\draw[->] (gr6_b4) to[out=0,in=180,looseness=.7] ($(gr6_c1.west)+(0,-.9)$);
+\draw[->] (gr6_b3) to[out=0,in=180,looseness=1.5] ($(gr6_c1.west)+(0,-.25)$);
+\draw[->] (gr6_b2) to[out=0,in=180,looseness=1.5] ($(gr6_c1.west)+(0,.25)$);
+\draw[->] (gr6_b1) to[out=0,in=180,looseness=.7] ($(gr6_c1.west)+(0,.9)$);
+\end{scope}
+
+%------------- Groupe 7 -----------------
+\begin{scope}[xshift=31.5cm]
+\node[draw, w=.9cm, h=2cm, fill=myblue!15] (gr7_a1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, below=.2cm of gr7_a1] (gr7_a2) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myred!15, below=.2cm of gr7_a2] (gr7_a3) {\rotstack{MaxPool \\ $3\times 3+1$(S)}};
+
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, right=.5cm of gr7_a3] (gr7_b4) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr7_b4] (gr7_b3) {\rotstack{Conv \\ $5\times 5+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr7_b3] (gr7_b2) {\rotstack{Conv \\ $3\times 3+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr7_b2] (gr7_b1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=mygreen!15, right=.75cm of {$(gr7_b2.east)!.5!(gr7_b3.east)$}] (gr7_c1) {\rotstack{DepthConcat}};
+
+% Arrows for group 7
+\draw[->] (gr7_a1)--(gr7_b2);
+\draw[->] (gr7_a2)--(gr7_b3);
+\draw[->] (gr7_a3)--(gr7_b4);
+\draw[->] (gr7_b4) to[out=0,in=180,looseness=.7] ($(gr7_c1.west)+(0,-.9)$);
+\draw[->] (gr7_b3) to[out=0,in=180,looseness=1.5] ($(gr7_c1.west)+(0,-.25)$);
+\draw[->] (gr7_b2) to[out=0,in=180,looseness=1.5] ($(gr7_c1.west)+(0,.25)$);
+\draw[->] (gr7_b1) to[out=0,in=180,looseness=.7] ($(gr7_c1.west)+(0,.9)$);
+\end{scope}
+
+%------------- Groupe 8 -----------------
+\begin{scope}[xshift=38cm]
+\node[draw, w=.9cm, h=2cm, fill=myblue!15] (gr8_a1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, below=.2cm of gr8_a1] (gr8_a2) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myred!15, below=.2cm of gr8_a2] (gr8_a3) {\rotstack{MaxPool \\ $3\times 3+1$(S)}};
+
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, right=.5cm of gr8_a3] (gr8_b4) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr8_b4] (gr8_b3) {\rotstack{Conv \\ $5\times 5+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr8_b3] (gr8_b2) {\rotstack{Conv \\ $3\times 3+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr8_b2] (gr8_b1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=mygreen!15, right=.75cm of {$(gr8_b2.east)!.5!(gr8_b3.east)$}] (gr8_c1) {\rotstack{DepthConcat}};
+
+% Arrows for group 8
+\draw[->] (gr8_a1)--(gr8_b2);
+\draw[->] (gr8_a2)--(gr8_b3);
+\draw[->] (gr8_a3)--(gr8_b4);
+\draw[->] (gr8_b4) to[out=0,in=180,looseness=.7] ($(gr8_c1.west)+(0,-.9)$);
+\draw[->] (gr8_b3) to[out=0,in=180,looseness=1.5] ($(gr8_c1.west)+(0,-.25)$);
+\draw[->] (gr8_b2) to[out=0,in=180,looseness=1.5] ($(gr8_c1.west)+(0,.25)$);
+\draw[->] (gr8_b1) to[out=0,in=180,looseness=.7] ($(gr8_c1.west)+(0,.9)$);
+\end{scope}
+
+\node[draw, w=.9cm, h=2.3cm, fill=myred!15, right=.6cm of gr7_c1] (m2) {\rotstack{MaxPool \\ $3\times 3+2$(S)}};
+
+%------------- Groupe 9 -----------------
+\begin{scope}[xshift=43cm]
+\node[draw, w=.9cm, h=2cm, fill=myblue!15] (gr9_a1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, below=.2cm of gr9_a1] (gr9_a2) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myred!15, below=.2cm of gr9_a2] (gr9_a3) {\rotstack{MaxPool \\ $3\times 3+1$(S)}};
+
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, right=.5cm of gr9_a3] (gr9_b4) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr9_b4] (gr9_b3) {\rotstack{Conv \\ $5\times 5+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr9_b3] (gr9_b2) {\rotstack{Conv \\ $3\times 3+1$(S)}};
+\node[draw, w=.9cm, h=2cm, fill=myblue!15, above=.2cm of gr9_b2] (gr9_b1) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=mygreen!15, right=.75cm of {$(gr9_b2.east)!.5!(gr9_b3.east)$}] (gr9_c1) {\rotstack{DepthConcat}};
+
+% Arrows for group 9
+\draw[->] (gr9_a1)--(gr9_b2);
+\draw[->] (gr9_a2)--(gr9_b3);
+\draw[->] (gr9_a3)--(gr9_b4);
+\draw[->] (gr9_b4) to[out=0,in=180,looseness=.7] ($(gr9_c1.west)+(0,-.9)$);
+\draw[->] (gr9_b3) to[out=0,in=180,looseness=1.5] ($(gr9_c1.west)+(0,-.25)$);
+\draw[->] (gr9_b2) to[out=0,in=180,looseness=1.5] ($(gr9_c1.west)+(0,.25)$);
+\draw[->] (gr9_b1) to[out=0,in=180,looseness=.7] ($(gr9_c1.west)+(0,.9)$);
+\end{scope}
+
+\node[draw, w=.9cm, h=2.3cm, fill=myred!15, right=.5cm of gr9_c1] (m3) {\rotstack{AveragePool \\ $7\times 7+1$(V)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=myblue!15, right=.5cm of m3] (fc5) {\rotstack{FC}};
+
+\node[draw, w=.9cm, h=3cm, fill=yellow!50!orange!15, right=.5cm of fc5] (sma3) {\rotstack{SoftMaxActivation}};
+
+\node[draw, w=.9cm, h=3cm, right=.5cm of sma3, rounded corners=3mm] (sm2) {\rotstack{softmax2}};
+
+%-----
+\node[draw, w=.9cm, h=2.3cm, fill=myred!15, below=1.5cm of gr4_a3] (gr4_a4) {\rotstack{AveragePool \\ $7\times 7+1$(V)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=myblue!15, right=.5cm of gr4_a4] (gr4_b5) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=myblue!15, right=.5cm of gr4_b5] (fc1) {\rotstack{FC}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=myblue!15, right=.5cm of fc1] (fc2) {\rotstack{FC}};
+
+\node[draw, w=.9cm, h=3cm, fill=yellow!50!orange!15, right=.5cm of fc2] (sma1) {\rotstack{SoftMaxActivation}};
+
+\node[draw, w=.9cm, h=3cm, right=.5cm of sma1, rounded corners=3mm] (sm0) {\rotstack{softmax0}};
+
+%-----
+\node[draw, w=.9cm, h=2.3cm, fill=myred!15, below=1.5cm of gr7_a3] (gr7_a4) {\rotstack{AveragePool \\ $7\times 7+1$(V)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=myblue!15, right=.5cm of gr7_a4] (gr7_b5) {\rotstack{Conv \\ $1\times 1+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=myblue!15, right=.5cm of gr7_b5] (fc3) {\rotstack{FC}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=myblue!15, right=.5cm of fc3] (fc4) {\rotstack{FC}};
+
+\node[draw, w=.9cm, h=3cm, fill=yellow!50!orange!15, right=.5cm of fc4] (sma2) {\rotstack{SoftMaxActivation}};
+
+\node[draw, w=.9cm, h=3cm, right=.5cm of sma2, rounded corners=3mm] (sm1) {\rotstack{softmax1}};
+
+%---
+\node[draw, w=.9cm, h=2.3cm, fill=myred!15, left=1cm of {$(gr1_a1.west)!.5!(gr1_a2.west)$}] (m0) {\rotstack{MaxPool \\ $3\times 3+2$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=mygreen!15, left=.5cm of m0] (loc2) {\footnotesize\rotstack{LocalRespNorm}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=myblue!15, left=.5cm of loc2] (con3) {\rotstack{Conv \\ $3\times 3+1$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=myblue!15, left=.5cm of con3] (con2) {\rotstack{Conv \\ $1\times 1+1$(V)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=mygreen!15, left=.5cm of con2] (loc1) {\footnotesize\rotstack{LocalRespNorm}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=myred!15, left=.5cm of loc1] (m00) {\rotstack{MaxPool \\ $3\times 3+2$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, fill=myblue!15, left=.5cm of m00] (con1) {\rotstack{Conv \\ $7\times 7+2$(S)}};
+
+\node[draw, w=.9cm, h=2.3cm, left=.5cm of con1, rounded corners=3mm] (input) {\rotstack{Input}};
+
+% Arrows
+\foreach \i/\j in {input/con1, con1/m00, m00/loc1, loc1/con2, con2/con3, con3/loc2, loc2/m0} {
+    \draw[->] (\i) -- (\j);
+}
+
+% \draw[->] (m0.south) to[out=-90,in=180] (gr1_a3.west);
+% \draw[->] (m0.north) to[out=90,in=180] (gr1_b1.west);
+% \draw[->] (m0.20) to[out=0,in=180, looseness=1.5] (gr1_a1);
+% \draw[->] (m0.-20) to[out=0,in=180, looseness=1.5] (gr1_a2);
+
+% \draw[->] (gr1_c1.south) to[out=-90,in=180] (gr2_a3.west);
+% \draw[->] (gr1_c1.north) to[out=90,in=180] (gr2_b1.west);
+% \draw[->] (gr1_c1.20) to[out=0,in=180, looseness=1.5] (gr2_a1);
+% \draw[->] (gr1_c1.-20) to[out=0,in=180, looseness=1.5] (gr2_a2);
+
+\foreach \x/\y in {m0/gr1, gr1_c1/gr2, m1/gr3, gr3_c1/gr4, gr4_c1/gr5, 
+    gr5_c1/gr6, gr6_c1/gr7, m2/gr8, gr8_c1/gr9} {
+    % Draw the south and north connections
+    \draw[->] (\x.south) to[out=-90,in=180] (\y_a3.west);
+    \draw[->] (\x.north) to[out=90,in=180,looseness=1.3] (\y_b1.west);
+    
+    % Draw the 20 and -20 angle connections
+    \draw[->] (\x.20) to[out=0,in=180, looseness=1.5] (\y_a1);
+    \draw[->] (\x.-20) to[out=0,in=180, looseness=1.5] (\y_a2);
+}
+
+\foreach \x/\y in {gr2_c1/m1, 
+    gr7_c1/m2, 
+    gr9_c1/m3, 
+    m3/fc5, 
+    fc5/sma3, 
+    sma3/sm2,
+    gr4_a4/gr4_b5, 
+    gr4_b5/fc1, 
+    fc1/fc2, 
+    fc2/sma1, 
+    sma1/sm0,
+    gr7_a4/gr7_b5, 
+    gr7_b5/fc3, 
+    fc3/fc4, 
+    fc4/sma2, 
+    sma2/sm1} {
+    \draw[->] (\x)--(\y);
+}
+
+\draw[->] (gr3_c1.south) to[out=-90,in=180,looseness=.7] (gr4_a4.west);
+\draw[->] (gr6_c1.south) to[out=-90,in=180,looseness=.7] (gr7_a4.west);
+
+}
+}
+\end{document}

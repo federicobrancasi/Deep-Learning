@@ -32,8 +32,8 @@ The first alternative to the previous class of models that emerged was \textbf{S
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.75\linewidth]{tikz/chapter11 - SimCLR.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} SimCLR architecture}
+    \includegraphics[width=\linewidth]{tikz/chapter11 - SimCLR.pdf}
+    \caption{SimCLR architecture}
 \end{figure}
 
 Here's how it works: given an image, \textbf{two different data augmentations} are applied. Each augmented image is then processed by an encoder, producing corresponding fixed latent representation vectors. These vectors are subsequently passed through a \textbf{projection head}, which maps them to another latent space, resulting in the vectors $z_i$ and $z_j$.
@@ -58,10 +58,13 @@ To ensure that the teacher makes accurate predictions for a given class, centeri
 
 The gradient is propagated only through the student network, allowing centering to be used on the teacher model.
 
+One important thing is that the student and the teacher have the same architecture (ViT or RN50), but a different set of weights. Also, the gradients only propagate loss through
+student ($sg$ = stop gradient).
+
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.75\linewidth]{tikz/chapter11 - DINO.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} DINO Architecture}
+    \includegraphics[width=0.7\linewidth]{tikz/chapter11 - DINO.pdf}
+    \caption{DINO Architecture}
 \end{figure}
 
 Thus, clustering tends to solve the batch size problem of SimCLR \textbf{learning a powerful visual encoder through self-supervised loss}.
@@ -83,8 +86,8 @@ In the end, we use a pre-trained decoder to predict the masked visual tokens.
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter11 - BEiT.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} BEiT Architecture}
+    \includegraphics[width=\linewidth]{tikz/chapter11 - BEiT.pdf}
+    \caption{BEiT Architecture}
 \end{figure}
 
 The model works rather well with fine-tuning rather than pre-training. Of course, one reason related to this fact is the complexity of the model. As a result, variants have been developed.
@@ -118,8 +121,8 @@ CLIP was trained on a large and diverse dataset containing approximately \textbf
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter11 - CLIP.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} CLIP Architecture}
+    \includegraphics[width=\linewidth]{tikz/chapter11 - CLIP.pdf}
+    \caption{CLIP Architecture}
 \end{figure}
 
 In essence, CLIP aims to maximize the similarity between pairs of images and texts, corresponding to \textbf{\textcolor{mybluee}{the diagonal of the similarity matrix}} you see in the figure. At the same time, it tries to minimize the similarity (increase dissimilarity) between all other pairs, that is, between unrelated images and texts. 
@@ -200,8 +203,8 @@ Thanks to this method, we can observe the relevance of each word in the embeddin
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\linewidth]{tikz/chapter11 - STAIR Results.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} STAIR Results}
+    \includegraphics[width=\linewidth]{tikz/chapter11 - STAIR Results.pdf}
+    \caption{STAIR Results}
 \end{figure}
 
 
@@ -227,7 +230,7 @@ FILIP is designed to learn detailed alignment between words and image patches, i
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\linewidth]{tikz/chapter11 - FILIP vs CLIP.pdf}
+    \includegraphics[width=0.6\linewidth]{tikz/chapter11 - FILIP vs CLIP.pdf}
     \caption{An Example of Word-patch Visualization with FILIP}
 \end{figure}
 
@@ -238,8 +241,8 @@ The CoCa model, introduced in the paper by Google \href{https://arxiv.org/pdf/22
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter11 - CoCa.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} CoCa}
+    \includegraphics[width=\linewidth]{tikz/chapter11 - CoCa.pdf}
+    \caption{CoCa Architecture}
 \end{figure}
 
 \textbf{CoCa unifies three paradigms into one model}: single-encoder, dual-encoder and encoder-decoder. The model has several key features. Cross-attention is omitted in the unimodal decoder layer, thus allowing only textual representations to be encoded. The multimodal decoder, on the other hand, uses cross-attention on the image encoder outputs to learn multimodal representations. While the dual-encoder approach encodes text as a whole, the generative approach aims for detailed granularity. This means that the model \textbf{not only creates a global representation of the text, but also predicts word by word the text associated with the image}.
@@ -266,8 +269,15 @@ Here's a recap of all the variations of CLIP that we have explored:
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter11 - CLIP Architectures Recap.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} CLIP Architectures Recap}
+    \includegraphics[width=0.8\linewidth]{tikz/chapter11 - CLIP Architectures Recap 1.pdf}
+    \caption{CLIP Architectures Recap (1)}
+\end{figure}
+
+\newpage
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{tikz/chapter11 - CLIP Architectures Recap 2.pdf}
+    \caption{CLIP Architectures Recap (2)}
 \end{figure}
 
 \textbf{Flamingo}, which we will discuss in the next section, blends the dual encoder approach with an \textbf{additional LLM} to further enhance performance.
@@ -286,33 +296,42 @@ This model consists of three main components: a \textbf{visual encoder} (NF-ResN
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\linewidth]{tikz/chapter11 - Frozen LM.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Frozen Architecture}
+    \includegraphics[width=0.7\linewidth]{tikz/chapter11 - Frozen LM.pdf}
+    \caption{Frozen Architecture}
 \end{figure}
 
+\newpage
 Next, \textbf{fine-tuning of the image encoder is performed} to improve the quality of its representations. However, its outputs are directly used as \textbf{soft prompts} for the LLM, which means they are \textbf{used to guide the behavior of the language model without directly changing its weights}. It is like giving a hint or guidance to the model on what it should focus on. Here are some examples:
+
+\vspace{1cm}
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{tikz/chapter11 - Frozen LM Tasks 1.pdf}
+    \caption{An example of Finetuning Frozen LM (1)}
+\end{figure}
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter11 - Frozen LM Tasks.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} An example of Finetuning Frozen LM}
+    \includegraphics[width=\linewidth]{tikz/chapter11 - Frozen LM Tasks 2.pdf}
+    \caption{An example of Finetuning Frozen LM (2)}
 \end{figure}
 
+\newpage
 \subsection{Flamingo}
 
 Flamingo, developed by Google DeepMind and introduced in \href{https://arxiv.org/pdf/2204.14198}{"Flamingo: a Visual Language Model for Few-Shot Learning" (Donahue et al.)}, represents an advance over previous frozen language models. It links powerful pre-trained visual encoders and pre-trained language models using innovative architectural components.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{tikz/chapter11 - Flamingo Architecture.pdf}
+    \caption{Flamingo Architecture}
+\end{figure}
 
 The model can process images, video, and text, enabling it to perform a variety of tasks such as classification, captioning, question answering, and text completion.
 
 Flamingo's visual encoders, based on a \textbf{Normalizer-Free ResNet architecture}, are trained similarly to CLIP to "perceive" visual scenes. For the textual encoder, Flamingo initially uses \textbf{BERT} instead of GPT-2; however, it is \textbf{discarded after the visual encoder is trained} because it is not used in the final model. Large language models (LLMs) are used to perform basic reasoning tasks.
 
 Flamingo's main innovations include the \textbf{Perceiver Resampler} and \textbf{Gated XATTN-DENSE} layers, which are trained from scratch.
-
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=\linewidth]{tikz/chapter11 - Flamingo Architecture.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Flamingo Architecture}
-\end{figure}
 
 The model is trained with sequences of arbitrarily interleaved visual and textual data (\textbf{heterogeneous data}). One challenge of this approach is to \textbf{handle visual inputs of varying sizes}. The Perceiver Resampler addresses this challenge by providing meaningful representations of fixed size. This flexibility allows Flamingo to be trained on \textbf{large-scale multimodal data}.
 

@@ -26,15 +26,15 @@
 % \tikzset{>={Latex[length=2mm,width=1.5mm]}}
 
 % Blocks
-\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, label={[label distance=1mm]above left:}] (a) {\color{white} $\bar{h}_s$};
-\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of a] (b) {};
-\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of b] (c) {};
-\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of c] (d) {};
+\node[draw, h=1cm, w=.5cm, fill=myblue!40, label={[label distance=1mm]above left:}] (a) {\color{white} $\bar{h}_s$};
+\node[draw, h=1cm, w=.5cm, fill=myblue!40, right=.5cm of a] (b) {};
+\node[draw, h=1cm, w=.5cm, fill=myblue!40, right=.5cm of b] (c) {};
+\node[draw, h=1cm, w=.5cm, fill=myblue!40, right=.5cm of c] (d) {};
 \node[draw, h=1cm, w=.5cm, fill=myblue!20, right=.5cm of d] (e) {};
 \node[draw, h=1cm, w=.5cm, fill=myblue!20, right=.5cm of e] (f) {$h_t$};
 
-\node[draw, h=1cm, w=.5cm, fill=myred!20, above=1.75cm of b] (g) { $c_t$};
-\node[draw, h=1cm, w=.5cm, fill=mygreen!20, xshift=1cm] (h) at (g-|f) {$\bar{h}_t$};
+\node[draw, h=1cm, w=.5cm, fill=mygreen!20, above=1.75cm of b] (g) { $c_t$};
+\node[draw, h=1cm, w=.5cm, fill=myred!20, xshift=1cm] (h) at (g-|f) {$\bar{h}_t$};
 
 % Dashed box
 \node[draw, densely dashed, w=5cm, h=2.5cm, anchor=north west, rounded corners=1.5mm, label={[label distance=1mm]above:Attention layer}] at ($(g.north west)+(-.5,.25)$) {};
@@ -74,15 +74,15 @@
 \begin{scope}[xshift=8cm]
 \tikzset{>={Latex[length=1.75mm,width=1.25mm]}}
 % Blocks
-\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, label={[label distance=1mm]above left:}] (a) {\color{white} $\bar{h}_s$};
-\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of a] (b) {};
-\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of b] (c) {};
-\node[draw, h=1cm, w=.5cm, fill=mydarkblue!70, right=.5cm of c] (d) {};
+\node[draw, h=1cm, w=.5cm, fill=myblue!40, label={[label distance=1mm]above left:}] (a) {\color{white} $\bar{h}_s$};
+\node[draw, h=1cm, w=.5cm, fill=myblue!40, right=.5cm of a] (b) {};
+\node[draw, h=1cm, w=.5cm, fill=myblue!40, right=.5cm of b] (c) {};
+\node[draw, h=1cm, w=.5cm, fill=myblue!40, right=.5cm of c] (d) {};
 \node[draw, h=1cm, w=.5cm, fill=myblue!20, right=.5cm of d] (e) {};
 \node[draw, h=1cm, w=.5cm, fill=myblue!20, right=.5cm of e] (f) {$h_t$};
 
-\node[draw, h=1cm, w=.5cm, fill=myred!20, above=1.75cm of b] (g) { $c_t$};
-\node[draw, h=1cm, w=.5cm, fill=mygreen!20, xshift=1cm] (h) at (g-|f) {$\bar{h}_t$};
+\node[draw, h=1cm, w=.5cm, fill=mygreen!20, above=1.75cm of b] (g) { $c_t$};
+\node[draw, h=1cm, w=.5cm, fill=myred!20, xshift=1cm] (h) at (g-|f) {$\bar{h}_t$};
 
 % Dashed box
 \node[draw, densely dashed, w=5cm, h=2.5cm, anchor=north west, rounded corners=1.5mm, label={[label distance=1mm]above:Attention layer}] at ($(g.north west)+(-.5,.25)$) {};

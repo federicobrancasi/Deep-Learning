@@ -179,7 +179,7 @@ To simplify the evaluation problem, we can divide into two main properties: the 
 
 Both properties are associated with probability (likelihood). This is computed using a classifier, such as Inception-v3 (state of the art at the time). Then, we use its output (probability distribution) to calculate the inception score.
 
-\begin{remark}{mygreen}{mygreen!20}
+\begin{remark}{mygreen}{mygreen!15}
 The inception score is calculated based on the output of an image classification model and is maximized if the entropy of the distribution of labels for the generated images is minimized (\textbf{recognizable}) and the predictions of the classification model are uniformly distributed over all possible labels (\textbf{variety}).
 \end{remark}
 
@@ -187,7 +187,7 @@ However, this metric has an overfitting problem: with this method, a GAN that si
 
 Therefore, a better approach is to use the Fréchet Inception Distance (FID).
 
-\begin{remark}{mybluee}{mybluee!20}
+\begin{remark}{mybluee}{mybluee!15}
 Using FID, both the real and the generated samples are passed through a classification network and for a chosen layer the activations are calculated. The metric then takes the embeddings of that layer and treats them as \textbf{multivariate normal distributions}. The mean and covariance are calculated for both the generated samples and the actual data and compared using Multivariate Normal Fréchet Distance. However, \textbf{the overfitting problem is not completely avoided}.
 \end{remark}
 
@@ -316,8 +316,8 @@ Below we have the "unrolled" versions of the model and the concept of Cycle-Cons
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.75\linewidth]{tikz/chapter9 - Progressive GAN.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Progressive GAN architecture}
+    \includegraphics[width=0.9\linewidth]{tikz/chapter9 - Progressive GAN.pdf}
+    \caption{Progressive GAN architecture}
 \end{figure}
 
 The principle behind this approach is that, at each stage of training, both networks benefit from the parameters learned in the previous stages. Initially, the networks work with smaller image sizes. As the training continues and stabilizes, new blocks of layers capable of handling larger images are added. This gradual growth process allows the model to \textbf{first learn the main structures and then refine the details}, thus improving the final quality of the generated images.
@@ -467,17 +467,17 @@ For example, in images we may have categories such as "Dog" or "Bicycle," and it
 \hline
 & \textbf{GANs} & \textbf{VAEs} \\
 \hline
-Efficient sampling & \cellcolor{mygreen!25}\checkmark & \cellcolor{mygreen!25}\checkmark \\
+Efficient sampling & \cellcolor{mygreen!15}\checkmark & \cellcolor{mygreen!15}\checkmark \\
 \hline
-High quality & \cellcolor{mygreen!25}\checkmark & \cellcolor{myred!20}$\times$ \\
+High quality & \cellcolor{mygreen!15}\checkmark & \cellcolor{myred!15}$\times$ \\
 \hline
-Coverage & \cellcolor{myred!20}$\times$ & \cellcolor{myblue!20}? \\
+Coverage & \cellcolor{myred!15}$\times$ & \cellcolor{myblue!15}? \\
 \hline
-Well-behaved latent space & \cellcolor{mygreen!25}\checkmark & \cellcolor{mygreen!25}\checkmark \\
+Well-behaved latent space & \cellcolor{mygreen!15}\checkmark & \cellcolor{mygreen!15}\checkmark \\
 \hline
-Interpretable latent space & \cellcolor{myblue!20}? & \cellcolor{myblue!20}? \\
+Interpretable latent space & \cellcolor{myblue!15}? & \cellcolor{myblue!15}? \\
 \hline
-Efficient likelihood & \cellcolor{myorange!20}n/a & \cellcolor{myred!20}$\times$ \\
+Efficient likelihood & \cellcolor{myorange!15}n/a & \cellcolor{myred!15}$\times$ \\
 \hline
 \end{tabular}
 \caption{GAN and VAE Comparison}

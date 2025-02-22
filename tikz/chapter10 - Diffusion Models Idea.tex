@@ -39,11 +39,11 @@
 \draw[<-, bend left=45] (xt2) to node[below] {$q(x_{t+1}|x_t)$} (xt);
 \draw[<-, bend left=45] (xt2) to node[above] {$p_\theta(x_{T-1}|x_T)$} (xT);
 
-\node[inner sep=0, outer sep=0, below=1.3cm of x0] (image) at (0,0) {\includegraphics[width=1.5cm,height=1.5cm]{tikz/chapter10 - Diffusion Models Idea Image 1.png}};
+\node[inner sep=0, outer sep=0, below=1.3cm of x0] (image) at (0,0) {\includegraphics[width=1.5cm,height=1.5cm]{images/parrot3.jpg}};
 
-\node[inner sep=0, outer sep=0, below=1.3cm of xt, xshift=4.05cm] (image2) at (0,0) {\includegraphics[width=1.5cm,height=1.5cm]{tikz/chapter10 - Diffusion Models Idea Image 2.png}};
+\node[inner sep=0, outer sep=0, below=1.3cm of xt, xshift=4.05cm] (image2) at (0,0) {\includegraphics[width=1.5cm,height=1.5cm]{images/parrot3_noise.jpg}};
 
-\node[inner sep=0, outer sep=0, below=1.3cm of xT, xshift=8.1cm] (image3) at (0,0) {\includegraphics[width=1.5cm,height=1.5cm]{tikz/chapter10 - Diffusion Models Idea Image 3.png}};
+\node[inner sep=0, outer sep=0, below=1.3cm of xT, xshift=8.1cm] (image3) at (0,0) {\includegraphics[width=1.5cm,height=1.5cm]{images/noise.png}};
 
 \draw[<-, bend left=45] ($(image.east)+(0.1cm,0.1cm)$) to node[above] {} ($(image2.west)+(-0.1cm,0.1cm)$);
 \draw[->, bend right=45] ($(image.east)+(0.1cm,-0.1cm)$) to node[above] {} ($(image2.west)+(-0.1cm,-0.1cm)$);

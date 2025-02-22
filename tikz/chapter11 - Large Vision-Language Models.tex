@@ -1,5 +1,6 @@
 \documentclass{standalone}
 \usepackage{tikz}
+\usepackage{emoji}
 \usetikzlibrary{positioning,arrows.meta,shapes.misc,calc}
 
 % COLORS
@@ -20,18 +21,22 @@
 ]
 
 % Input block
-\node[draw=mygreen, rounded corners, thick, minimum width=3.8cm, minimum height=3cm] (input) at (5.9,-3.7) {
-    \begin{tabular}{c}
-        \includegraphics[width=3cm,height=2cm]{tikz/chapter11 - Large Vision-Language Models.png} \\
-        a dog is running \\
-        through the grass
-    \end{tabular}
+\node[draw=black, rounded corners, thick, minimum width=3.8cm, minimum height=2.3cm, xshift=-1.2cm, yshift=-0.4cm] (input) at (5.9,-3.7) {
+    \begin{minipage}{2cm}
+        \includegraphics[width=2cm,height=2cm]{images/seagull.jpg} 
+    \end{minipage}%
+    \hspace{0.3cm}%
+    \begin{minipage}{2cm}
+        \centering
+        a seagull is chilling \\
+        (\emoji{smiling-face-with-sunglasses}) on the beach
+    \end{minipage}
 };
 
 % Main components on the same line
-\node[block, green!20!black, draw=green!30!black,fill=green!20] (encoder) at (0,0) {Image\\Encoder};
-\node[block, blue!20!black,draw=myblue!30!black,fill=myblue!20, right=2cm of encoder] (llm) {LLM for Language \\ Understanding and \\ Generation};
-\node[block, red!20!black, draw=red!30!black,fill=red!20, right=2cm of llm] (generator) {Image\\Generation};
+\node[block, black, draw=black,fill=mygreen!20] (encoder) at (0,0) {Image\\Encoder};
+\node[block, black,draw=black,fill=myblue!20, right=2cm of encoder] (llm) {LLM for Language \\ Understanding and \\ Generation};
+\node[block, black, draw=black,fill=myred!20, right=2cm of llm] (generator) {Image\\Generation};
 
 % Arrows and labels
 \draw[->] (encoder) -- node[above, align=center] {} (llm);
@@ -40,7 +45,7 @@
 % Additional text
 \node[text width=3cm, below=0.2cm of generator, align=center] {Produce \\ Visual Data};
 \node[text width=3cm, below=0.2cm of encoder, align=center] {Consume \\ Visual Data};
-\node[text width=3cm, left=0.25cm of input, align=center] {Example of Input Data:\\ (Image + Text)};
+\node[above=0.25cm of input] {Example of Input Data: (Image + Text)};
 
 \end{tikzpicture}
 \end{document}

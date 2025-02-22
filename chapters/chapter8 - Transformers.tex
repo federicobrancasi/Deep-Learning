@@ -40,10 +40,11 @@ For a better understanding see this explanatory diagram:
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter8 - Temporal Convolutional Network.pdf}
+    \includegraphics[width=0.8\linewidth]{tikz/chapter8 - Temporal Convolutional Network.pdf}
     \caption{A global overview of Dilated Causal Convolution.}
 \end{figure}
 
+\newpage
 The architecture differs significantly from standard CNNs because the output of each hidden layer is obtained using dilation (1, 2, 4) and kernels of size 3. The most notable change is the causal effect: the CNN has been adapted to predict tokens sequentially. For example, the output $y_t$ is predicted after $y_{t-1}$ using only a "shifted" number of features from the previous level, i.e. $x_t, x_{t-4}, x_{t-8}$.
 
 
@@ -56,8 +57,8 @@ In this work, researchers replaced the bidirectional LSTM in the encoder with a 
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.6\linewidth]{tikz/chapter8 - Convolutional Seq2Seq.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Convolutional Seq2Seq Architecture}
+    \includegraphics[angle=90, width=0.7\linewidth]{tikz/chapter8 - Convolutional Seq2Seq.pdf}
+    \caption{Convolutional Seq2Seq Architecture}
 \end{figure}
 
 The CNN-based decoder improves training efficiency by exploiting parallel computing capabilities. Both the encoder and decoder consist of 15 levels each.
@@ -97,8 +98,8 @@ The scalar product between query and key ($QK^T$) is called \textbf{score} and m
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.8\linewidth]{tikz/chapter8 - Self-Attention Calculation.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Self-Attention Calculation}
+    \includegraphics[width=\linewidth]{tikz/chapter8 - Self-Attention Calculation.pdf}
+    \caption{Self-Attention Calculation}
 \end{figure}
 
 One thing that is important is that soft attention is differentiable, making it easy to train the model by backpropagation.
@@ -131,20 +132,26 @@ One of the common techniques for positional encoding is the use of \textbf{sinus
 
 The architecture includes all the elements explained so far. Before moving to the encoder and decoder, embeddings are computed with positional encoding added.
 
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth]{tikz/chapter8 - Transformer Architecture.pdf}
+    \caption{Transformer Architecture}
+\end{figure}
+
 The Encoder consists mainly of two modules: the \textbf{Multi-Head Attention} and the \textbf{Feed-Forward Network}, which processes the output vectors of the multi-head attention. This layer is independent along different paths, enabling parallel execution.
 
 The Decoder, in contrast, consists of three separate modules: the \textbf{Multi-Head Attention}, the \textbf{Masked Multi-Head Attention}, and the \textbf{Feed-Forward Network}.
 The Masked Multi-Head Attention is used to ensure that \textbf{each position in the sequence can only attend to previous positions}, and not future ones, thereby allowing the Decoder to generate the sequence step-by-step without peeking ahead. The additional module of Attention Multi-Head is used to operate on the outputs of the Encoder stack, allowing the Decoder to focus on different parts of the Encoder input, improving the model's ability to capture information relevant to output generation.
 
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=0.85\linewidth]{tikz/chapter8 - TRANSFORMERS.jpg}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} Transformer Architecture}
-\end{figure}
-
 In both the Decoder and the Encoder, \textbf{Residual Connections} and \textbf{Layer Normalizations} are used to provide greater stability during training and to facilitate the flow of gradients through the various layers of the architecture.
 
-In the visual representation, it is emphasized with a kind of magnifying glass how a multi-head attention module is structured, which in turn includes numerous self-attention modules for each of its heads.
+In the visual representation below, it is emphasized with a kind of magnifying glass how a multi-head attention module is structured, which in turn includes numerous self-attention modules for each of its heads.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=\linewidth]{tikz/chapter8 - Transformer Architecture Extended.pdf}
+    \caption{Transformer Architecture Extended}
+\end{figure}
 
 In conclusion, transformers offer significant advantages, such as \textbf{efficient parallel computations} and improved handling of long sequences compared to previous architectures like RNNs and CNNs. Moreover, the paradigm of \textbf{pre-training language models on large-scale datasets}, followed by fine-tuning for specific tasks, has transformed natural language processing.
 
@@ -161,8 +168,8 @@ Self-attention is a mechanism for constructing \textbf{learnable long-range sema
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{tikz/chapter8 - Vision Transformer.png}
-    \caption{{\color{red}\colorbox{pink}{Tikz TO-DO}} ViT architecture}
+    \includegraphics[width=\linewidth]{tikz/chapter8 - Vision Transformer.pdf}
+    \caption{ViT architecture}
 \end{figure}
 
 The input (as a patch) is embedded in a smaller size to reduce complexity. In addition, ViT adds an additional learnable embedding called \textbf{class token}, colored gray in the figure above, which is a randomly initialized embedding vector learned during the training process. This is used to collect global information from the image through the Transformer's self-attention mechanism. At the end of the process, the MLP (Multilayer Perceptron) head \textbf{only looks at the data from the class token of the last layer} and no other information.
@@ -173,10 +180,4 @@ When trained on medium-sized datasets such as ImageNet, such models show modest 
 
 Unlike ViT, which is not optimized for dense recognition tasks, the Swin Transformer can serve as a general skeleton for these tasks as well. Presented in \href{https://arxiv.org/pdf/2103.14030}{"Swin Transformer: Hierarchical Vision Transformer using Shifted Windows" (Hu et al.)}, this model builds hierarchical feature maps by joining image patches in the deepest layers. By using dynamic partitioning, it improves the accuracy of localized representations. 
 
-\begin{figure}[!htbp]
-    \centering
-    \includegraphics[width=0.85\linewidth]{tikz/chapter8 - Swin Transformer.pdf}
-    \caption{Comparison of Swin and ViT}
-\end{figure}
-
-The image shows the comparison between Swin Transformer and ViT when calculating self-attention. The Swin calculates self-attention in sub-areas of the image. At each level, the Swin Transformer partitions the image into regular windows and calculates the self-attention within each window. When moving to the next level, the window layout is updated, creating \textbf{new windows that may partially or completely overlap the previous windows}. This approach allows the model to manage and integrate information from different parts of the image effectively, improving its ability to capture complex, long-range relationships.
+The Swin calculates self-attention in sub-areas of the image. At each level, the Swin Transformer partitions the image into regular windows and calculates the self-attention within each window. When moving to the next level, the window layout is updated, creating \textbf{new windows that may partially or completely overlap the previous windows}. This approach allows the model to manage and integrate information from different parts of the image effectively, improving its ability to capture complex, long-range relationships.

@@ -27,13 +27,13 @@ The quality of the generated caption depends strongly on the performance of the 
 
 For inference time, the model uses one of the following methods: \textbf{Sampling} and \textbf{Beam Search}.
 
-In the sampling method, the first word is extracted according to a probability $p_1$, then the corresponding embedding is provided as input and the next word is extracted with probability $p_2$ (which depends on the probability that a certain word has been predicted previously). This process continues until the special end-of-sentence token is extracted or a maximum length is reached.
-
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=\linewidth]{tikz/chapter7 - Sampling.pdf}
     \caption{Sampling Visual Example}
 \end{figure}
+
+In the sampling method, the first word is extracted according to a probability $p_1$, then the corresponding embedding is provided as input and the next word is extracted with probability $p_2$ (which depends on the probability that a certain word has been predicted previously). This process continues until the special end-of-sentence token is extracted or a maximum length is reached.
 
 With Beam Search, on the other hand, we iteratively consider the \textbf{$k$ best sentences up to time $t$} as candidates to generate sentences of length $t+1$, keeping only the $k$ best of them. This approach allows more word combinations to be explored, improving the quality of the generated sentences compared to simple sampling.
 
@@ -318,10 +318,10 @@ However, as is evident, this representation is not effective in showing semantic
 \begin{tabular}{l|c|c|c|c|c}
 & KING & QUEEN & MAN & GIRL & PRINCE \\
 \hline
-Royalty & \cellcolor{myred!20}0.96 & \cellcolor{myred!20}0.98 & \cellcolor{mygreen!25}0.05 & \cellcolor{myblue!20}0.56 & \cellcolor{myred!20}0.95 \\
-Age & \cellcolor{myred!20}0.92 & \cellcolor{mygreen!25}0.01 & \cellcolor{myred!20}0.90 & \cellcolor{mygreen!25}0.09 & \cellcolor{myred!20}0.85 \\
-Masculinity & \cellcolor{mygreen!25}0.08 & \cellcolor{myred!20}0.93 & \cellcolor{mygreen!25}0.10 & \cellcolor{myred!20}0.91 & \cellcolor{mygreen!25}0.15 \\
-Femininity & \cellcolor{myblue!20}0.61 & \cellcolor{myblue!20}0.71 & \cellcolor{myblue!20}0.56 & \cellcolor{mygreen!25}0.11 & \cellcolor{myblue!25}0.42 \\
+Royalty & \cellcolor{myred!10}0.96 & \cellcolor{myred!10}0.98 & \cellcolor{mygreen!10}0.05 & \cellcolor{myblue!10}0.56 & \cellcolor{myred!10}0.95 \\
+Age & \cellcolor{myred!10}0.92 & \cellcolor{mygreen!10}0.01 & \cellcolor{myred!10}0.90 & \cellcolor{mygreen!10}0.09 & \cellcolor{myred!10}0.85 \\
+Masculinity & \cellcolor{mygreen!10}0.08 & \cellcolor{myred!10}0.93 & \cellcolor{mygreen!10}0.10 & \cellcolor{myred!10}0.91 & \cellcolor{mygreen!10}0.15 \\
+Femininity & \cellcolor{myblue!10}0.61 & \cellcolor{myblue!10}0.71 & \cellcolor{myblue!10}0.56 & \cellcolor{mygreen!10}0.11 & \cellcolor{myblue!10}0.42 \\
 \end{tabular}
 \caption{Word Embeddings Example}
 \end{table}
